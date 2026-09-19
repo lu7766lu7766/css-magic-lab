@@ -58,5 +58,29 @@ export const QUIZ_QUESTIONS = [
     ],
     correctAnswer: 'D',
     explanation: '【正確答案是 (D) transform 與 opacity！】\n解析：瀏覽器渲染管線分為 Layout（重排/Reflow）、Paint（重繪/Repaint）與 Composite（圖層合成）。改變 width、height、top、left 或 margin 都會牽動其他元素位置，強制瀏覽器重新計算幾何幾何佈局 (Reflow)，造成卡頓掉幀！而 transform（位移/縮放/旋轉）與 opacity 可以在獨立的 GPU 合成層運算，直接由顯卡加速繪製，是打造絲滑 60fps 微動態的黃金法則！'
+  },
+  {
+    id: 6,
+    question: '題目 6：行動優先 (Mobile-First) 與 Media Query 斷點邏輯\n在現代 RWD 切版實務中，業界極力推崇「行動優先 (Mobile-First)」架構。請問在 CSS 撰寫中，行動優先主要採用哪一種媒體查詢語法來實現由小到大的樣式漸進增強 (Progressive Enhancement)？',
+    options: [
+      { key: 'A', text: '@media (max-width: 768px) 從大螢幕往下覆蓋修改' },
+      { key: 'B', text: '@media (min-width: 768px) 先寫手機預設樣式，再隨螢幕變大向上覆蓋擴充' },
+      { key: 'C', text: '@media (orientation: landscape) 僅根據橫向縱向旋轉判定' },
+      { key: 'D', text: '@media (resolution: 2dppx) 專門根據視網膜高畫質螢幕判定' }
+    ],
+    correctAnswer: 'B',
+    explanation: '【正確答案是 (B) @media (min-width: 768px)！】\n解析：Mobile-First（行動優先）的哲學是：在無任何 @media 的基礎 CSS 中，直接定義最輕量、最精簡的手機版版型（如寬度 100%、單欄垂直流）。當使用者螢幕放大到平板 (>= 768px) 或桌面 (>= 1024px) 時，才透過 @media (min-width: ...) 逐步追加雙欄或多欄樣式！相較於傳統用 max-width 到處打補丁覆蓋桌機臃腫代碼，min-width 階梯式覆蓋邏輯更乾淨且效能更佳！'
+  },
+  {
+    id: 7,
+    question: '題目 7：現代 CSS Grid 無斷點自適應與 clamp() 流體單位\n在現代 CSS 排版中，下列哪一組寫法能夠「完全不寫任何 @media 媒體查詢」，就能讓商品網格隨容器寬度智慧折行，且標題文字隨螢幕流暢動態縮放？',
+    options: [
+      { key: 'A', text: 'grid-template-columns: repeat(4, 1fr); font-size: 14px;' },
+      { key: 'B', text: 'float: left; width: 25%; font-size: 2rem;' },
+      { key: 'C', text: 'grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 與 font-size: clamp(0.875rem, 2vw, 1.25rem);' },
+      { key: 'D', text: 'display: inline-block; width: 200px; font-size: 100%;' }
+    ],
+    correctAnswer: 'C',
+    explanation: '【正確答案是 (C) repeat(auto-fit, minmax(200px, 1fr)) 與 clamp()！】\n解析：\n1. repeat(auto-fit, minmax(200px, 1fr)) 是 CSS Grid 的免斷點響應大神技！它指示瀏覽器在空間足夠時盡量填滿 (auto-fit)，卡片寬度在 200px ~ 1fr 彈性伸縮，一旦空間不足 200px 就自動換行，無需手寫繁瑣的 @media 斷點！\n2. clamp(MIN, VAL, MAX) 是現代流體字級 (Fluid Typography) 的標配：設定最小極限 (0.875rem)、首選動態比例 (2vw) 與最大極限 (1.25rem)，讓文字隨螢幕視窗寬度平滑流動縮放，徹底終結斷點切換瞬間的生硬跳格！'
   }
 ];

@@ -1,5 +1,5 @@
 <script setup>
-import { Sliders, RotateCcw, Sparkles, Smartphone, Tablet, Monitor } from 'lucide-vue-next'
+import { Sliders, RotateCcw, Sparkles, Smartphone, Tablet, Monitor, LayoutGrid, Columns, Type } from 'lucide-vue-next'
 
 const props = defineProps({
   missionId: { type: String, required: true },
@@ -243,54 +243,137 @@ function toggleClass(className) {
       </div>
     </div>
 
-    <!-- MISSION 3 CONTROLS: Flexbox & RWD -->
+    <!-- MISSION 3 CONTROLS: Modern RWD, Breakpoints, Grid & Fluid -->
     <div v-else-if="missionId === 'mission-3'" class="space-y-4 text-xs">
-      <!-- Display flex toggle -->
+      <!-- 1. Layout Engine Strategy Switcher -->
       <div>
-        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">1. 排版模式 (display)</label>
+        <label class="font-semibold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center justify-between">
+          <span>1. RWD 響應式佈局策略</span>
+          <span class="text-[10px] text-purple-600 dark:text-purple-400 font-normal">雙核心架構對照</span>
+        </label>
         <div class="grid grid-cols-2 gap-2">
           <button
-            @click="setVal('display', 'block')"
-            class="rounded-xl border p-2 text-center font-mono font-semibold transition-all"
-            :class="state.display === 'block' ? 'border-purple-500 bg-purple-500/15 text-purple-900 dark:text-white ring-1 ring-purple-500/30' : 'border-slate-200 bg-slate-100/80 text-slate-600 hover:border-slate-300 hover:bg-slate-200/80 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400 dark:hover:border-slate-700'"
+            @click="emit('update:state', { ...state, layoutEngine: 'flex', display: 'flex' })"
+            class="flex items-center justify-center gap-1.5 rounded-xl border p-2 text-center font-semibold transition-all"
+            :class="(state.layoutEngine || 'flex') === 'flex' ? 'border-purple-500 bg-purple-500/15 text-purple-900 dark:text-white ring-1 ring-purple-500/30' : 'border-slate-200 bg-slate-100/80 text-slate-600 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400'"
           >
-            block (傳統區塊)
+            <Columns class="h-3.5 w-3.5" />
+            Flexbox 斷點流
           </button>
           <button
-            @click="setVal('display', 'flex')"
-            class="rounded-xl border p-2 text-center font-mono font-semibold transition-all"
-            :class="state.display === 'flex' ? 'border-emerald-500 bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 ring-1 ring-emerald-500/30' : 'border-slate-200 bg-slate-100/80 text-slate-600 hover:border-slate-300 hover:bg-slate-200/80 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400 dark:hover:border-slate-700'"
+            @click="emit('update:state', { ...state, layoutEngine: 'grid', display: 'grid' })"
+            class="flex items-center justify-center gap-1.5 rounded-xl border p-2 text-center font-semibold transition-all"
+            :class="state.layoutEngine === 'grid' ? 'border-emerald-500 bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 ring-1 ring-emerald-500/30' : 'border-slate-200 bg-slate-100/80 text-slate-600 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400'"
           >
-            flex (彈性排版)
+            <LayoutGrid class="h-3.5 w-3.5" />
+            Grid 現代自適應流
           </button>
         </div>
       </div>
 
-      <!-- flex-wrap toggle -->
-      <div>
-        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">2. 自動折行 (flex-wrap)</label>
-        <div class="grid grid-cols-2 gap-2">
-          <button
-            @click="setVal('flexWrap', 'nowrap')"
-            class="rounded-xl border p-2 text-center font-mono font-semibold transition-all"
-            :class="state.flexWrap === 'nowrap' ? 'border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300 ring-1 ring-rose-500/30' : 'border-slate-200 bg-slate-100/80 text-slate-600 hover:border-slate-300 hover:bg-slate-200/80 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400 dark:hover:border-slate-700'"
-          >
-            nowrap (硬擠同一行)
-          </button>
-          <button
-            @click="setVal('flexWrap', 'wrap')"
-            class="rounded-xl border p-2 text-center font-mono font-semibold transition-all"
-            :class="state.flexWrap === 'wrap' ? 'border-emerald-500 bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 ring-1 ring-emerald-500/30' : 'border-slate-200 bg-slate-100/80 text-slate-600 hover:border-slate-300 hover:bg-slate-200/80 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400 dark:hover:border-slate-700'"
-          >
-            wrap (空間不足自動換行)
-          </button>
+      <!-- 2A. Sub-controls for Flexbox mode -->
+      <div v-if="(state.layoutEngine || 'flex') === 'flex'" class="space-y-3 rounded-xl border border-purple-500/20 bg-purple-50/50 dark:bg-purple-950/20 p-3">
+        <div class="flex items-center justify-between text-[11px] font-bold text-purple-700 dark:text-purple-300 border-b border-purple-500/20 pb-1.5">
+          <span>Flexbox + Mobile-First @media 斷點</span>
+          <span class="text-[10px] font-mono font-normal">min-width 階梯覆蓋</span>
+        </div>
+
+        <!-- Display mode -->
+        <div>
+          <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">排版模式 (display)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              @click="setVal('display', 'block')"
+              class="rounded-lg border p-1.5 text-center font-mono font-semibold transition-all"
+              :class="state.display === 'block' ? 'border-purple-500 bg-purple-500/15 text-purple-900 dark:text-white' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
+            >
+              block (傳統單向)
+            </button>
+            <button
+              @click="setVal('display', 'flex')"
+              class="rounded-lg border p-1.5 text-center font-mono font-semibold transition-all"
+              :class="state.display === 'flex' ? 'border-purple-500 bg-purple-500/20 text-purple-900 dark:text-white font-bold ring-1 ring-purple-500/40' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
+            >
+              flex (彈性排版)
+            </button>
+          </div>
+        </div>
+
+        <!-- Flex Wrap -->
+        <div>
+          <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">自動折行 (flex-wrap)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              @click="setVal('flexWrap', 'nowrap')"
+              class="rounded-lg border p-1.5 text-center font-mono transition-all"
+              :class="state.flexWrap === 'nowrap' ? 'border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300 font-bold' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
+            >
+              nowrap (硬擠單行)
+            </button>
+            <button
+              @click="setVal('flexWrap', 'wrap')"
+              class="rounded-lg border p-1.5 text-center font-mono font-bold transition-all"
+              :class="state.flexWrap === 'wrap' ? 'border-emerald-500 bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 ring-1 ring-emerald-500/40' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
+            >
+              wrap (智慧換行)
+            </button>
+          </div>
+        </div>
+
+        <!-- Justify content -->
+        <div>
+          <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">主軸對齊 (justify-content)</label>
+          <div class="grid grid-cols-3 gap-1.5 font-mono text-[11px]">
+            <button
+              v-for="j in ['flex-start', 'center', 'space-between']"
+              :key="j"
+              @click="setVal('justifyContent', j)"
+              class="rounded-lg border p-1.5 text-center transition-all"
+              :class="state.justifyContent === j ? 'border-purple-500 bg-purple-500/20 text-purple-900 dark:text-white font-bold ring-1 ring-purple-500/40' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
+            >
+              {{ j }}
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- gap slider -->
+      <!-- 2B. Sub-controls for CSS Grid mode -->
+      <div v-else-if="state.layoutEngine === 'grid'" class="space-y-3 rounded-xl border border-emerald-500/20 bg-emerald-50/50 dark:bg-emerald-950/20 p-3">
+        <div class="flex items-center justify-between text-[11px] font-bold text-emerald-700 dark:text-emerald-300 border-b border-emerald-500/20 pb-1.5">
+          <span>CSS Grid 現代無斷點流體自適應</span>
+          <span class="text-[10px] font-mono font-normal">repeat(auto-fit, minmax)</span>
+        </div>
+
+        <!-- Grid Auto-fit toggle -->
+        <div>
+          <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">欄位分配規則 (grid-template-columns)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              @click="setVal('gridAutoFit', false)"
+              class="rounded-lg border p-1.5 text-center font-mono transition-all text-[11px]"
+              :class="!state.gridAutoFit ? 'border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300 font-bold' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
+            >
+              repeat(4, 1fr)<br><span class="text-[10px] font-normal opacity-80">(固定4欄・窄螢幕擠扁)</span>
+            </button>
+            <button
+              @click="setVal('gridAutoFit', true)"
+              class="rounded-lg border p-1.5 text-center font-mono font-bold transition-all text-[11px]"
+              :class="state.gridAutoFit ? 'border-emerald-500 bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 ring-1 ring-emerald-500/40' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
+            >
+              auto-fit + minmax<br><span class="text-[10px] font-normal opacity-80">(智能折行・免寫斷點)</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+          💡 <span class="font-bold text-emerald-600 dark:text-emerald-400">auto-fit 魔法：</span>當每個卡片寬度低於 200px 臨界點時，瀏覽器自動收縮並跳至下一行，完美實現響應式自適應！
+        </p>
+      </div>
+
+      <!-- 3. Gap Slider -->
       <div>
         <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1 font-medium">
-          <span>3. 元件呼吸間距 (gap):</span>
+          <span>2. 元件呼吸間距 (gap):</span>
           <span class="font-mono text-purple-600 dark:text-purple-400 font-bold">{{ state.gap }}px</span>
         </div>
         <input
@@ -304,26 +387,42 @@ function toggleClass(className) {
         />
       </div>
 
-      <!-- Justify Content -->
-      <div>
-        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1.5">4. 主軸對齊 (justify-content)</label>
-        <div class="grid grid-cols-3 gap-1.5 font-mono text-[11px]">
+      <!-- 4. Fluid Typography with clamp() -->
+      <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100/60 dark:bg-slate-900/60 p-3">
+        <div class="flex items-center justify-between mb-1.5">
+          <label class="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <Type class="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+            3. 現代流體動態字級 (clamp)
+          </label>
+          <span class="font-mono text-[10px] px-1.5 py-0.5 rounded" :class="state.fluidTypography ? 'bg-purple-500/20 text-purple-700 dark:text-purple-300 font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-500'">
+            {{ state.fluidTypography ? 'clamp() 開啟' : '固定 14px' }}
+          </span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
           <button
-            v-for="j in ['flex-start', 'center', 'space-between']"
-            :key="j"
-            @click="setVal('justifyContent', j)"
-            class="rounded-lg border p-1.5 text-center transition-all"
-            :class="state.justifyContent === j ? 'border-purple-500 bg-purple-500/20 text-purple-900 dark:text-white font-bold ring-1 ring-purple-500/40' : 'border-slate-200 bg-slate-100/80 text-slate-600 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400'"
+            @click="setVal('fluidTypography', false)"
+            class="rounded-lg border p-1.5 text-center font-mono text-[11px] transition-all"
+            :class="!state.fluidTypography ? 'border-purple-500 bg-purple-500/15 text-purple-900 dark:text-white font-bold' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
           >
-            {{ j }}
+            固定字級 (14px)
+          </button>
+          <button
+            @click="setVal('fluidTypography', true)"
+            class="rounded-lg border p-1.5 text-center font-mono text-[11px] font-bold transition-all"
+            :class="state.fluidTypography ? 'border-purple-500 bg-purple-500/20 text-purple-900 dark:text-white ring-1 ring-purple-500/40' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 text-slate-600 dark:text-slate-400'"
+          >
+            clamp(0.85rem, 2vw, 1.2rem)
           </button>
         </div>
+        <p class="mt-1.5 text-[10px] text-slate-500 dark:text-slate-400">
+          字體隨螢幕寬度連續線性平滑縮放，不再出現斷點切換瞬間的生硬跳動！
+        </p>
       </div>
 
-      <!-- Viewport Width Quick Switcher -->
+      <!-- 5. Viewport Width Quick Switcher -->
       <div class="border-t border-slate-200 dark:border-slate-800 pt-3">
         <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1.5 font-medium">
-          <span>5. 模擬 Viewport 視窗寬度:</span>
+          <span>4. 模擬 Viewport 視窗寬度:</span>
           <span class="font-mono text-purple-600 dark:text-purple-400 font-bold">{{ state.viewportWidth }}px</span>
         </div>
         <div class="grid grid-cols-3 gap-1.5 mb-2">

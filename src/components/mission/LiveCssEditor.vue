@@ -58,30 +58,46 @@ ${props.state.selectorType === 'tag' ? 'h2' : props.state.selectorType === 'clas
   to { transform: rotate(360deg); }
 }`
   } else if (props.missionId === 'mission-3') {
-    return `/* 彈性卡片容器 */
-.card-grid {
+    if (props.state.layoutEngine === 'grid') {
+      return `/* 1. CSS Grid 現代自適應容器 */
+.product-grid {
   display: ${props.state.display};
-  flex-direction: ${props.state.flexDirection};
-  flex-wrap: ${props.state.flexWrap};
-  justify-content: ${props.state.justifyContent};
-  align-items: ${props.state.alignItems};
+  grid-template-columns: ${props.state.gridAutoFit ? 'repeat(auto-fit, minmax(200px, 1fr))' : 'repeat(4, 1fr)'};
   gap: ${props.state.gap}px;
 }
 
-/* 響應式卡片項目 */
-.card-item {
-  flex: 1 1 100%; /* 手機預設滿版 1 欄 */
+/* 2. 商品卡片與流體動態字級 */
+.product-card h4 {
+  ${props.state.fluidTypography ? 'font-size: clamp(0.875rem, 1.8vw, 1.25rem); /* clamp(MIN, VAL, MAX) */' : 'font-size: 13px; /* 固定字級 */'}
+}`
+    }
+
+    return `/* 1. 父容器彈性排版 */
+.card-grid {
+  display: ${props.state.display};
+  flex-direction: ${props.state.flexDirection || 'row'};
+  flex-wrap: ${props.state.flexWrap};
+  justify-content: ${props.state.justifyContent};
+  gap: ${props.state.gap}px;
 }
 
+/* 2. 行動優先 (Mobile-First) 預設手機單欄 (100%) */
+.card-item {
+  flex: 1 1 100%;
+  ${props.state.fluidTypography ? 'font-size: clamp(0.875rem, 1.8vw, 1.25rem);' : 'font-size: 13px;'}
+}
+
+/* 3. 平板斷點（自動切換為雙欄 50%） */
 @media (min-width: 768px) {
   .card-item {
-    flex: 1 1 calc(50% - ${props.state.gap}px); /* 平板雙欄 */
+    flex: 1 1 calc(50% - ${props.state.gap}px);
   }
 }
 
+/* 4. 桌機斷點（自動展開為四欄 25%） */
 @media (min-width: 1024px) {
   .card-item {
-    flex: 1 1 calc(25% - ${props.state.gap}px); /* 桌機四欄 */
+    flex: 1 1 calc(25% - ${props.state.gap}px);
   }
 }`
   } else if (props.missionId === 'mission-4') {
@@ -170,10 +186,18 @@ const tailwindEquivalent = computed(() => {
   <span class="animate-spin inline-block mr-2">⟳</span> 立即報名
 </button>`
   } else if (props.missionId === 'mission-3') {
-    return `<!-- Tailwind 響應式佈局 -->
-<div class="flex flex-wrap gap-4 justify-center">
-  <div class="w-full md:w-1/2 lg:w-1/4 bg-slate-800 p-4 rounded-xl">
-    商品卡片
+    if (props.state.layoutEngine === 'grid') {
+      return `<!-- Tailwind 4 現代 CSS Grid 自適應寫法 -->
+<div class="${props.state.display === 'block' ? 'block' : 'grid'} ${props.state.gridAutoFit ? 'grid-cols-[repeat(auto-fit,minmax(200px,1fr))]' : 'grid-cols-4'} gap-[${props.state.gap}px]">
+  <div class="bg-slate-800 p-4 rounded-xl ${props.state.fluidTypography ? 'text-[clamp(0.875rem,1.8vw,1.25rem)]' : 'text-xs'}">
+    智慧自適應卡片 (免手寫斷點)
+  </div>
+</div>`
+    }
+    return `<!-- Tailwind 4 行動優先 (Mobile-First) 斷點階梯 -->
+<div class="${props.state.display} ${props.state.flexWrap} gap-[${props.state.gap}px] justify-${props.state.justifyContent}">
+  <div class="w-full md:w-1/2 lg:w-1/4 bg-slate-800 p-4 rounded-xl ${props.state.fluidTypography ? 'text-[clamp(0.875rem,1.8vw,1.25rem)]' : 'text-xs'}">
+    商品卡片 (手機單欄 / md 雙欄 / lg 四欄)
   </div>
 </div>`
   } else if (props.missionId === 'mission-4') {

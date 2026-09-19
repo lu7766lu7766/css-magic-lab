@@ -180,56 +180,176 @@ function handleSubmit() {
 
       </div>
 
-      <!-- MISSION 3: Responsive Cards & Viewport -->
-      <div v-else-if="missionId === 'mission-3'" class="w-full flex flex-col items-center py-4">
+      <!-- MISSION 3: Modern RWD, Breakpoints, Grid & Fluid Preview -->
+      <div v-else-if="missionId === 'mission-3'" class="w-full flex flex-col items-center py-2 space-y-3">
         
-        <!-- Viewport Width Indicator Frame -->
-        <div
-          class="transition-all duration-300 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/60 p-4 w-full shadow-md dark:shadow-2xl overflow-y-auto max-h-[380px]"
-          :style="{ maxWidth: state.viewportWidth + 'px' }"
-        >
-          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2 mb-3 text-[11px] text-slate-500 dark:text-slate-400">
-            <span class="font-bold text-slate-800 dark:text-white flex items-center gap-1">
-              <ShoppingBag class="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
-              周邊商品列表 (Viewport: {{ state.viewportWidth }}px)
+        <!-- 1. Real-time Breakpoint Indicator & Ruler -->
+        <div class="w-full max-w-xl rounded-xl border border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 p-3 shadow-xs">
+          <div class="flex items-center justify-between text-[11px] mb-2 font-medium">
+            <span class="text-slate-600 dark:text-slate-400 flex items-center gap-1.5 font-bold">
+              <span class="inline-block h-2 w-2 rounded-full" :class="state.viewportWidth <= 640 ? 'bg-purple-500 animate-pulse' : state.viewportWidth < 1024 ? 'bg-indigo-500 animate-pulse' : 'bg-emerald-500 animate-pulse'"></span>
+              即時斷點命中標尺 (Breakpoint Ruler)
             </span>
-            <span class="font-mono text-purple-600 dark:text-purple-300">
-              {{ state.viewportWidth <= 640 ? '📱 手機斷點 (單欄)' : state.viewportWidth <= 800 ? '📟 平板斷點 (雙欄)' : '💻 桌面斷點 (四欄)' }}
+            <span class="font-mono font-bold text-purple-600 dark:text-purple-400">
+              當前: {{ state.viewportWidth }}px
             </span>
           </div>
 
-          <!-- Flex Container -->
+          <!-- Ruler Segments -->
+          <div class="grid grid-cols-3 gap-1 text-[10px] font-mono text-center">
+            <!-- Mobile Segment -->
+            <div
+              class="rounded-lg p-1.5 transition-all border"
+              :class="state.viewportWidth <= 640
+                ? 'border-purple-500 bg-purple-500/20 text-purple-900 dark:text-white font-bold ring-1 ring-purple-500/40 shadow-xs'
+                : 'border-slate-200 dark:border-slate-800 text-slate-400 bg-slate-50 dark:bg-slate-950/40'"
+            >
+              <div class="font-bold flex items-center justify-center gap-1">📱 手機 Mobile</div>
+              <div class="opacity-75">&lt; 640px (1欄滿版)</div>
+            </div>
+
+            <!-- Tablet Segment -->
+            <div
+              class="rounded-lg p-1.5 transition-all border"
+              :class="state.viewportWidth > 640 && state.viewportWidth < 1024
+                ? 'border-indigo-500 bg-indigo-500/20 text-indigo-900 dark:text-white font-bold ring-1 ring-indigo-500/40 shadow-xs'
+                : 'border-slate-200 dark:border-slate-800 text-slate-400 bg-slate-50 dark:bg-slate-950/40'"
+            >
+              <div class="font-bold flex items-center justify-center gap-1">📟 平板 Tablet</div>
+              <div class="opacity-75">@media &ge; 768px (2欄)</div>
+            </div>
+
+            <!-- Desktop Segment -->
+            <div
+              class="rounded-lg p-1.5 transition-all border"
+              :class="state.viewportWidth >= 1024
+                ? 'border-emerald-500 bg-emerald-500/20 text-emerald-900 dark:text-white font-bold ring-1 ring-emerald-500/40 shadow-xs'
+                : 'border-slate-200 dark:border-slate-800 text-slate-400 bg-slate-50 dark:bg-slate-950/40'"
+            >
+              <div class="font-bold flex items-center justify-center gap-1">💻 桌機 Desktop</div>
+              <div class="opacity-75">@media &ge; 1024px (4欄)</div>
+            </div>
+          </div>
+
+          <!-- Active CSS Rule Summary -->
+          <div class="mt-2.5 rounded-lg bg-slate-100 dark:bg-slate-950/80 px-2.5 py-1.5 text-[11px] flex items-center justify-between font-mono">
+            <span class="text-slate-500 dark:text-slate-400">當前生效佈局：</span>
+            <span v-if="(state.layoutEngine || 'flex') === 'flex'" class="font-bold text-purple-700 dark:text-purple-300">
+              {{ state.display === 'block' ? '⚠️ block (垂直未折行)' : state.flexWrap === 'nowrap' ? '⚠️ nowrap (硬擠單行壓縮)' : state.viewportWidth <= 640 ? '📱 手機斷點：flex 1 1 100%' : state.viewportWidth < 1024 ? '📟 平板斷點：flex 1 1 50%' : '💻 桌機斷點：flex 1 1 25%' }}
+            </span>
+            <span v-else class="font-bold text-emerald-700 dark:text-emerald-300">
+              {{ state.display === 'block' ? '⚠️ block (傳統區塊)' : state.gridAutoFit ? '⚡ Grid auto-fit 自適應' : '⚠️ Grid 固定 4 欄 (窄螢幕壓縮)' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- 2. Viewport Width Simulation Frame -->
+        <div
+          class="transition-all duration-300 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/60 p-4 w-full shadow-md dark:shadow-2xl overflow-y-auto max-h-96"
+          :style="{ maxWidth: state.viewportWidth + 'px' }"
+        >
+          <!-- Frame Header -->
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2 mb-3 text-[11px] text-slate-500 dark:text-slate-400">
+            <span class="font-bold text-slate-800 dark:text-white flex items-center gap-1">
+              <ShoppingBag class="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+              周邊商品流 (寬度: {{ state.viewportWidth }}px)
+            </span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded" :class="state.fluidTypography ? 'bg-purple-500/15 text-purple-700 dark:text-purple-300 font-bold' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'">
+              {{ state.fluidTypography ? '✨ clamp() 流體動態字級' : '固定字級 13px' }}
+            </span>
+          </div>
+
+          <!-- Product Cards Container (Flexbox or CSS Grid) -->
           <div
+            v-if="(state.layoutEngine || 'flex') === 'flex'"
             :style="{
               display: state.display,
-              flexDirection: state.flexDirection,
+              flexDirection: state.flexDirection || 'row',
               flexWrap: state.flexWrap,
               justifyContent: state.justifyContent,
-              alignItems: state.alignItems,
+              alignItems: state.alignItems || 'stretch',
               gap: state.gap + 'px'
             }"
+            :class="{ 'overflow-x-auto pb-2': state.display === 'flex' && state.flexWrap === 'nowrap' }"
           >
-            <!-- 4 Product Cards -->
+            <!-- Flex Cards -->
             <div
               v-for="p in products"
               :key="p.id"
               class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 p-3.5 transition-all shadow-2xs"
               :style="{
-                flex: state.viewportWidth <= 640
-                  ? '1 1 100%'
-                  : state.viewportWidth <= 800
-                    ? `1 1 calc(50% - ${state.gap}px)`
-                    : `1 1 calc(25% - ${state.gap}px)`
+                flex: state.display === 'block'
+                  ? 'none'
+                  : state.flexWrap === 'nowrap'
+                    ? '0 0 200px'
+                    : state.viewportWidth <= 640
+                      ? '1 1 100%'
+                      : state.viewportWidth < 1024
+                        ? `1 1 calc(50% - ${state.gap}px)`
+                        : `1 1 calc(25% - ${state.gap}px)`,
+                marginBottom: state.display === 'block' ? state.gap + 'px' : '0'
               }"
             >
               <div class="flex items-center justify-between mb-2">
                 <span class="text-2xl">{{ p.icon }}</span>
                 <span class="rounded bg-purple-500/15 dark:bg-purple-500/20 px-1.5 py-0.5 text-[10px] font-bold text-purple-700 dark:text-purple-300">{{ p.tag }}</span>
               </div>
-              <h4 class="text-xs font-bold text-slate-800 dark:text-white truncate">{{ p.title }}</h4>
+              <h4
+                class="font-bold text-slate-800 dark:text-white truncate transition-all"
+                :style="{
+                  fontSize: state.fluidTypography
+                    ? `clamp(0.8rem, ${Math.round(state.viewportWidth * 0.016)}px, 1.2rem)`
+                    : '13px'
+                }"
+              >
+                {{ p.title }}
+              </h4>
               <div class="mt-2 flex items-center justify-between">
                 <span class="font-mono text-xs font-extrabold text-emerald-600 dark:text-emerald-400">{{ p.price }}</span>
                 <button class="rounded-md bg-purple-600 px-2 py-1 text-[10px] font-bold text-white hover:bg-purple-500 shadow-xs">選購</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CSS Grid Container -->
+          <div
+            v-else-if="state.layoutEngine === 'grid'"
+            :style="{
+              display: state.display === 'block' ? 'block' : 'grid',
+              gridTemplateColumns: state.display === 'block'
+                ? 'none'
+                : state.gridAutoFit
+                  ? 'repeat(auto-fit, minmax(180px, 1fr))'
+                  : 'repeat(4, 1fr)',
+              gap: state.gap + 'px'
+            }"
+          >
+            <!-- Grid Cards -->
+            <div
+              v-for="p in products"
+              :key="p.id"
+              class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 p-3.5 transition-all shadow-2xs"
+              :style="{
+                marginBottom: state.display === 'block' ? state.gap + 'px' : '0'
+              }"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-2xl">{{ p.icon }}</span>
+                <span class="rounded bg-emerald-500/15 dark:bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">{{ p.tag }}</span>
+              </div>
+              <h4
+                class="font-bold text-slate-800 dark:text-white truncate transition-all"
+                :style="{
+                  fontSize: state.fluidTypography
+                    ? `clamp(0.8rem, ${Math.round(state.viewportWidth * 0.016)}px, 1.2rem)`
+                    : '13px'
+                }"
+              >
+                {{ p.title }}
+              </h4>
+              <div class="mt-2 flex items-center justify-between">
+                <span class="font-mono text-xs font-extrabold text-emerald-600 dark:text-emerald-400">{{ p.price }}</span>
+                <button class="rounded-md bg-emerald-600 px-2 py-1 text-[10px] font-bold text-white hover:bg-emerald-500 shadow-xs">選購</button>
               </div>
             </div>
           </div>

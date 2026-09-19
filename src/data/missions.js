@@ -83,38 +83,41 @@ export const MISSIONS = [
   {
     id: 'mission-3',
     number: 3,
-    title: '任務三：跨螢幕響應式商品卡片流',
-    lessonTag: 'Part 2: 07~09 Viewport、RWD 媒體查詢與 Flexbox',
-    subtitle: '告別 Float 浮動，一鍵掌握主軸、交叉軸、gap 與跨裝置自適應',
-    badge: '響應式切版大師',
-    scenario: '社團文創周邊商品在桌機上橫排很美，但到了手機螢幕卻字體縮小或擠壓變形！請在父層啟動 Flexbox 彈性排版，開啟 flex-wrap 自動折行，設定現代 gap 呼吸間距，並在模擬手機 (390px) 與桌機 (1024px) 視窗間流暢自適應！',
+    title: '任務三：跨螢幕 RWD 響應式商品卡片流',
+    lessonTag: 'Part 2: 07~09 Viewport、@media 媒體查詢、CSS Grid 與流體排版',
+    subtitle: '從行動優先 @media 斷點到現代 CSS Grid auto-fit 與 clamp() 流體美學',
+    badge: '現代 RWD 響應式大師',
+    scenario: '社團文創商品在桌機看似正常，但在手機上卻嚴重破版、字體過小或擠壓變形！請掌握現代 RWD 響應式核心技法：運用「行動優先 (Mobile-First)」結合 @media 斷點或 CSS Grid auto-fit 自適應排版、設定現代 gap 呼吸間距，並啟用 clamp() 流體動態字級，讓網站在任何裝置都無懈可擊！',
     learningObjectives: [
-      '理解 Viewport meta 標籤如何防止手機縮放螞蟻字',
-      '掌握 Flexbox 主軸 (justify-content) 與交叉軸 (align-items) 置中心法',
-      '運用 flex-wrap: wrap 解決手機版排版擠壓破版',
-      '用現代 gap 屬性徹底取代傳統 margin 負邊距噩夢'
+      '理解 Viewport meta 標籤與 Mobile-First 行動優先哲學（從小螢幕出發，向大螢幕漸進增強）',
+      '掌握 @media (min-width: ...) 斷點階梯：手機單欄 (100%) -> 平板雙欄 (50%) -> 桌機四欄 (25%)',
+      '探索現代 CSS Grid repeat(auto-fit, minmax(200px, 1fr)) 無斷點自適應魔力',
+      '運用現代 clamp(min, val, max) 打造免寫 Media Query 的流體字級 (Fluid Typography)',
+      '用現代 gap 屬性徹底取代傳統 margin 負邊距排版噩夢'
     ],
     initialState: {
-      display: 'block',
+      layoutEngine: 'flex', // flex | grid
+      display: 'block', // block | flex | grid
       flexDirection: 'row',
       flexWrap: 'nowrap',
       justifyContent: 'flex-start',
       alignItems: 'stretch',
       gap: 0,
-      viewportWidth: 1024,
-      mobileColumns: 1,
-      desktopColumns: 4
+      gridAutoFit: false,
+      fluidTypography: false,
+      viewportWidth: 1024
     },
     hints: [
-      '如果沒有設定 flex-wrap: wrap，Flex 容器會把所有卡片死死硬塞在一行，導致在窄螢幕上縮成扁條！',
-      'gap: 16px 可以在子項目之間產生等距呼吸感，且最外側不會多出難看的邊界留白。'
+      'Mobile-First 行動優先是全球主流：先寫好手機版預設（如單欄），再用 @media (min-width: 768px) 為平板與桌機追加樣式，代碼更簡潔且具備層疊優勢！',
+      '現代 CSS Grid 的 repeat(auto-fit, minmax(200px, 1fr)) 可以一行代碼實現智慧折行，完全不需要手動定義任何 @media 斷點！',
+      'clamp(0.875rem, 2vw, 1.25rem) 能讓文字隨著螢幕寬度平滑流體縮放，擺脫生硬的斷點跳躍感！'
     ],
     checklist: [
-      { id: 'c1', label: '父容器啟用 display: flex 彈性排版', check: (s) => s.display === 'flex' },
-      { id: 'c2', label: '啟用 flex-wrap: wrap 允許在空間不足時自動折行', check: (s) => s.flexWrap === 'wrap' },
+      { id: 'c1', label: '啟用現代排版引擎 (Flexbox 或 CSS Grid)', check: (s) => (s.layoutEngine === 'flex' && s.display === 'flex') || (s.layoutEngine === 'grid' && s.display === 'grid') },
+      { id: 'c2', label: '開啟自適應折行 (flex-wrap: wrap 或 Grid auto-fit)', check: (s) => (s.layoutEngine === 'flex' && s.flexWrap === 'wrap') || (s.layoutEngine === 'grid' && s.gridAutoFit === true) },
       { id: 'c3', label: '設定元件呼吸間距 gap 為 16px 或以上', check: (s) => s.gap >= 16 },
-      { id: 'c4', label: '主軸對齊 (justify-content) 設為 center 或 space-between', check: (s) => s.justifyContent === 'center' || s.justifyContent === 'space-between' || s.justifyContent === 'space-around' },
-      { id: 'c5', label: '在手機視窗 (390px) 測試自動收合為單欄 (100%)', check: (s) => s.viewportWidth <= 640 }
+      { id: 'c4', label: '啟用 clamp() 流體動態字級 (Fluid Typography)', check: (s) => s.fluidTypography === true },
+      { id: 'c5', label: '在手機視窗 (<= 640px) 測試自動收合自適應效果', check: (s) => s.viewportWidth <= 640 }
     ]
   },
   {
