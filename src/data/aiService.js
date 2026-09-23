@@ -269,7 +269,7 @@ export async function parseNaturalLanguageIntent(userPrompt, mission, currentCss
  * 目標範例吻合度評分引擎
  * 評估 4 大維度：色彩調和、空間呼吸、光影層次、文字結構
  */
-export function evaluateMission(mission, currentCss) {
+export function evaluateMission(mission, currentCss, currentToolStates = {}) {
   const css = currentCss.toLowerCase();
 
   let colorScore = 40;
@@ -309,16 +309,55 @@ export function evaluateMission(mission, currentCss) {
     hierarchyScore += 30;
   }
 
-  // 檢查是否誤觸陷阱項 (Traps)
+  // 檢查是否誤觸干擾項 (Traps)
   let trapPenalty = 0;
-  const trapTriggers = [];
-  if (css.includes('grayscale(100%)')) { trapPenalty += 20; trapTriggers.push('灰階去色濾鏡'); }
-  if (css.includes('rotate(')) { trapPenalty += 15; trapTriggers.push('旋轉歪斜'); }
-  if (css.includes('sepia(100%)')) { trapPenalty += 15; trapTriggers.push('黃褐變質濾鏡'); }
-  if (css.includes('border-style: dotted') || css.includes('double')) { trapPenalty += 15; trapTriggers.push('虛線/雙層老舊邊框'); }
-  if (css.includes('text-shadow:')) { trapPenalty += 10; trapTriggers.push('復古文字陰影'); }
-  if (css.includes('skewx(')) { trapPenalty += 15; trapTriggers.push('容器歪斜'); }
-  if (css.includes('粗黑外框') || css.includes('粗糙黑框')) { trapPenalty += 15; trapTriggers.push('過時粗黑外邊框'); }
+  const trapWarnings = [];
+
+  // 1. 若有工具狀態字典，依據 mission.tools 精確比對
+  if (mission.tools && Array.isArray(mission.tools)) {
+    mission.tools.forEach(tool => {
+      if (tool.isTrap && currentToolStates[tool.id]?.enabled) {
+        trapPenalty += 15;
+        trapWarnings.push({
+          id: tool.id,
+          name: tool.name,
+          warning: tool.trapWarning || `不建議啟用「${tool.name}」，這會破壞現代視覺質感。`
+        });
+      }
+    });
+  }
+
+  // 2. 作為後備相容機制（若未傳入 toolStates 則比對 CSS 字串）
+  if (trapWarnings.length === 0 && (!currentToolStates || Object.keys(currentToolStates).length === 0)) {
+    if (css.includes('grayscale(100%)')) {
+      trapPenalty += 15;
+      trapWarnings.push({ name: '灰階去色濾鏡', warning: '灰階去色會使按鈕或卡片失去色彩主導權與活力。' });
+    }
+    if (css.includes('rotate(')) {
+      trapPenalty += 15;
+      trapWarnings.push({ name: '平面旋轉角度', warning: '旋轉會破壞網頁標準排版的對齊與秩序感。' });
+    }
+    if (css.includes('sepia(100%)')) {
+      trapPenalty += 15;
+      trapWarnings.push({ name: '復古泛黃濾鏡', warning: '泛黃色調會讓美食照片看起來像隔夜菜，破壞食慾。' });
+    }
+    if (css.includes('border-style: dotted') || css.includes('double') || css.includes('dashed')) {
+      trapPenalty += 15;
+      trapWarnings.push({ name: '虛線/雙層邊框', warning: '不規則或雙層邊框容易產生雜亂老舊的視覺感。' });
+    }
+    if (css.includes('text-shadow:')) {
+      trapPenalty += 15;
+      trapWarnings.push({ name: '刻痕文字陰影', warning: '早期的凹凸文字陰影在現代極簡 UI 中容易影響易讀性。' });
+    }
+    if (css.includes('skewx(')) {
+      trapPenalty += 15;
+      trapWarnings.push({ name: '透視歪斜變形', warning: '容器歪斜會讓內文難以閱讀，破壞介面結構。' });
+    }
+    if (css.includes('粗黑外邊框') || css.includes('實線深黑外框') || css.includes('粗糙深黑邊框')) {
+      trapPenalty += 15;
+      trapWarnings.push({ name: '粗黑外邊框', warning: '粗硬的黑邊框會破壞層次留白與光芒質感。' });
+    }
+  }
 
   // 限制各維度在 10 ~ 100
   colorScore = Math.min(100, Math.max(15, colorScore));
@@ -326,7 +365,7 @@ export function evaluateMission(mission, currentCss) {
   elevationScore = Math.min(100, Math.max(15, elevationScore));
   hierarchyScore = Math.min(100, Math.max(15, hierarchyScore));
 
-  // 計算加權總分 (扣除陷阱項懲罰)
+  // 計算加權總分 (扣除干擾項懲罰)
   let totalScore = Math.round(
     colorScore * 0.25 +
     whitespaceScore * 0.25 +
@@ -344,8 +383,8 @@ export function evaluateMission(mission, currentCss) {
 
   // 判定救命錦囊（未滿 70 分時精準指引）
   let rescueHint = null;
-  if (trapTriggers.length > 0) {
-    rescueHint = `⚠️ 警告！你開啟了干擾陷阱項【${trapTriggers.join('、')}】，這會嚴重破壞現代設計美感！請在下方工具箱找到該按鈕「再點一下」關閉還原！`;
+  if (trapWarnings.length > 0) {
+    rescueHint = `⚠️ 提醒：你開啟了 ${trapWarnings.length} 項不推薦的干擾屬性【${trapWarnings.map(t => t.name).join('、')}】！請在下方工具箱找到該按鈕「再點一下」關閉還原，分數即可回升！`;
   } else if (totalScore < 70) {
     const scores = [
       { name: '空間呼吸 (Padding/Gap)', score: whitespaceScore, hint: '文字和內容緊貼著外框毫無留白！試著開啟「內留白」或「間距」工具並拖動滑桿，分數就能大幅躍升！' },
@@ -360,13 +399,13 @@ export function evaluateMission(mission, currentCss) {
   // 設計師短評
   let critique = '';
   if (totalScore >= 90) {
-    critique = `太不可思議了！完美的比例、細膩的留白與光影層次，成功避開了所有干擾陷阱，完全達到了設計師的高階水準！${mission.client.name} 對你五體投地！`;
+    critique = `太不可思議了！完美的比例、細膩的留白與光影層次，成功避開了所有干擾項，完全達到了設計師的高階水準！${mission.client.name} 對你五體投地！`;
   } else if (totalScore >= 80) {
     critique = `非常出色！現代感大幅提升，已掌握了 80% 以上的核心設計法則，只要再微調一點點細節就能達到大師境界！`;
   } else if (totalScore >= 70) {
     critique = `恭喜合格過關！成功擺脫了陽春破版的噩夢，視覺已經具備現代 UI 的基本質感！`;
-  } else if (trapTriggers.length > 0) {
-    critique = `注意！你誤觸了 ${trapTriggers.length} 個干擾陷阱項，導致評審大幅扣分。請參考下方的救命錦囊將它們關閉！`;
+  } else if (trapWarnings.length > 0) {
+    critique = `注意！你開啟了 ${trapWarnings.length} 項干擾屬性，導致評分受到扣分。請參考下方的警示說明將它們關閉！`;
   } else {
     critique = `還差一點點就能及格（70分）！目前的修改已經朝著正確方向前進，請參考下方的救命錦囊補強最弱項！`;
   }
@@ -380,6 +419,7 @@ export function evaluateMission(mission, currentCss) {
       elevation: elevationScore,
       hierarchy: hierarchyScore
     },
+    trapWarnings,
     critique,
     rescueHint,
     isPassed: totalScore >= 70

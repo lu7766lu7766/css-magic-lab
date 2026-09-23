@@ -83,7 +83,7 @@ function applyEyedropper(toolId, hex) {
             </span>
           </div>
           <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-            🎯 點一下開啟並顯示控制項（從乾淨初始值起步），再點一下還原；注意避開內藏的 5 項干擾陷阱！
+            🎯 點一下開啟控制項（從乾淨預設值起步），再次點擊可關閉還原；請對照設計師目標成品，挑選真正需要的關鍵屬性！
           </p>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
 import { MISSIONS } from './data/missions.js'
 import { BADGES } from './data/badges.js'
 import { generateMissionCss } from './data/cssGenerators.js'
@@ -16,9 +16,33 @@ import ScoreModal from './components/modal/ScoreModal.vue'
 import TargetCompareModal from './components/modal/TargetCompareModal.vue'
 import BadgeModal from './components/modal/BadgeModal.vue'
 
-// 關卡索引
-const currentMissionIndex = ref(0)
+// 關卡索引（支援重新整理與 URL Hash 記憶）
+function getInitialMissionIndex() {
+  const hash = window.location.hash.replace('#', '')
+  if (hash) {
+    const idx = MISSIONS.findIndex(m => m.id === hash)
+    if (idx !== -1) return idx
+  }
+  const savedIdx = localStorage.getItem('css_lab_current_mission')
+  if (savedIdx !== null) {
+    const parsed = parseInt(savedIdx, 10)
+    if (!isNaN(parsed) && parsed >= 0 && parsed < MISSIONS.length) {
+      return parsed
+    }
+  }
+  return 0
+}
+
+const currentMissionIndex = ref(getInitialMissionIndex())
 const currentMission = computed(() => MISSIONS[currentMissionIndex.value])
+
+watch(currentMissionIndex, (newIdx) => {
+  localStorage.setItem('css_lab_current_mission', String(newIdx))
+  const targetHash = `#${MISSIONS[newIdx].id}`
+  if (window.location.hash !== targetHash) {
+    history.replaceState(null, '', targetHash)
+  }
+})
 
 // 每關十項工具的開關與數值狀態字典
 const missionToolStates = reactive({})
@@ -176,6 +200,36 @@ const currentEvalResult = ref(null)
 // 深淺色模式
 const isDark = ref(true)
 
+function saveToolStates() {
+  localStorage.setItem('css_lab_tool_states', JSON.stringify(missionToolStates))
+}
+
+function loadToolStates() {
+  const saved = localStorage.getItem('css_lab_tool_states')
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved)
+      Object.keys(parsed).forEach(mid => {
+        if (missionToolStates[mid]) {
+          Object.assign(missionToolStates[mid], parsed[mid])
+        }
+      })
+    } catch {
+      // 略過
+    }
+  }
+}
+
+function handleHashChange() {
+  const hash = window.location.hash.replace('#', '')
+  if (hash) {
+    const idx = MISSIONS.findIndex(m => m.id === hash)
+    if (idx !== -1 && idx !== currentMissionIndex.value) {
+      currentMissionIndex.value = idx
+    }
+  }
+}
+
 onMounted(() => {
   const savedDark = localStorage.getItem('css_lab_theme')
   if (savedDark !== null) {
@@ -193,6 +247,17 @@ onMounted(() => {
     }
   }
   checkAndUnlockBadges()
+
+  // 載入工具保存進度並監聽 Hash
+  loadToolStates()
+  window.addEventListener('hashchange', handleHashChange)
+  if (!window.location.hash) {
+    history.replaceState(null, '', `#${MISSIONS[currentMissionIndex.value].id}`)
+  }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('hashchange', handleHashChange)
 })
 
 function toggleDark() {
@@ -245,6 +310,7 @@ function handleToggleTool({ toolId, enabled, value }) {
   const actionText = enabled ? `啟用屬性：${toolDef?.name || toolId}` : `還原屬性：${toolDef?.name || toolId}`
   triggerChangePulse(actionText)
   saveStats()
+  saveToolStates()
 }
 
 // 拖拉滑桿或選取顏色更新數值
@@ -259,6 +325,7 @@ function handleUpdateToolValue({ toolId, value }) {
 
   triggerChangePulse(`微調數值：${value}`)
   saveStats()
+  saveToolStates()
 }
 
 // 吸取目標顏色
@@ -278,12 +345,13 @@ function handleResetMission() {
   })
   triggerChangePulse('已將所有工具重置為初始陽春狀態')
   saveStats()
+  saveToolStates()
 }
 
 // 送交 AI 綜合評分
 function handleSubmitEvaluation() {
   const mid = currentMission.value.id
-  const evalRes = evaluateMission(currentMission.value, currentCss.value)
+  const evalRes = evaluateMission(currentMission.value, currentCss.value, missionToolStates[mid] || {})
   currentEvalResult.value = evalRes
 
   const prevScore = stats.scores[mid] || 0
@@ -301,8 +369,19 @@ function handleSubmitEvaluation() {
 
 // 切換關卡
 function handleSelectMission(index) {
+  if (index < 0 || index >= MISSIONS.length) return
   currentMissionIndex.value = index
   lastFeedback.value = ''
+  localStorage.setItem('css_lab_current_mission', String(index))
+  window.location.hash = MISSIONS[index].id
+}
+
+// 前往下一關
+function handleNextMission() {
+  if (currentMissionIndex.value < MISSIONS.length - 1) {
+    handleSelectMission(currentMissionIndex.value + 1)
+  }
+  isScoreModalOpen.value = false
 }
 
 // 平滑滾動回主畫布

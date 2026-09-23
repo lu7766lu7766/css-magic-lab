@@ -14,6 +14,7 @@ import {
   Minimize2,
   Maximize2
 } from 'lucide-vue-next'
+import { scopeCss } from '../../data/cssGenerators.js'
 
 const props = defineProps({
   mission: { type: Object, required: true },
@@ -45,6 +46,10 @@ function handleCopyColor(hex) {
     copiedColor.value = null
   }, 2000)
 }
+
+// 樣式作用域隔離：確保使用者調整與設計師目標畫布互不干擾
+const scopedUserCss = computed(() => scopeCss(props.currentCss, 'user-workbench-canvas'))
+const scopedTargetCss = computed(() => scopeCss(props.mission.designerTargetCss, 'target-workbench-canvas'))
 
 // 格式化當前 CSS 每一行
 const formattedLines = computed(() => {
@@ -139,9 +144,9 @@ const formattedLines = computed(() => {
           class="flex-1 p-4 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 overflow-auto relative"
           style="background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px); background-size: 16px 16px;"
         >
-          <!-- 注入使用者目前的 CSS -->
+          <!-- 注入使用者目前的 CSS (使用 user-workbench-canvas 作用域隔離) -->
           <component :is="'style'">
-            {{ currentCss }}
+            {{ scopedUserCss }}
           </component>
 
           <div
@@ -151,7 +156,7 @@ const formattedLines = computed(() => {
               hasRecentChange ? 'element-glow-pulse' : ''
             ]"
           >
-            <div class="w-full flex justify-center" v-html="mission.htmlTemplate"></div>
+            <div class="user-workbench-canvas w-full flex justify-center" v-html="mission.htmlTemplate"></div>
           </div>
         </div>
 
@@ -246,23 +251,15 @@ const formattedLines = computed(() => {
 
         <!-- 渲染目標成品畫布 -->
         <div
-          class="flex-1 p-4 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 overflow-auto relative target-canvas-scope"
+          class="flex-1 p-4 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 overflow-auto relative"
           style="background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px); background-size: 16px 16px;"
         >
-          <!-- 注入設計師 Target CSS (使用 target 命名空間隔離) -->
+          <!-- 注入設計師 Target CSS (使用 target-workbench-canvas 命名空間隔離) -->
           <component :is="'style'">
-            {{ mission.designerTargetCss.replace(/\.action-btn/g, '.target-scope-btn').replace(/\.profile-card/g, '.target-scope-card').replace(/\.product-card/g, '.target-scope-prod').replace(/\.login-form/g, '.target-scope-form').replace(/\.hero-banner/g, '.target-scope-hero') }}
+            {{ scopedTargetCss }}
           </component>
 
-          <div
-            class="w-full flex justify-center"
-            v-html="mission.htmlTemplate
-              .replace('class=&quot;action-btn&quot;', 'class=&quot;target-scope-btn&quot;')
-              .replace('class=&quot;profile-card&quot;', 'class=&quot;target-scope-card&quot;')
-              .replace('class=&quot;product-card&quot;', 'class=&quot;target-scope-prod&quot;')
-              .replace('class=&quot;login-form&quot;', 'class=&quot;target-scope-form&quot;')
-              .replace('class=&quot;hero-banner&quot;', 'class=&quot;target-scope-hero&quot;')"
-          ></div>
+          <div class="target-workbench-canvas w-full flex justify-center" v-html="mission.htmlTemplate"></div>
         </div>
 
         <!-- 目標情報卡（色碼滴管 + 關鍵尺寸） -->

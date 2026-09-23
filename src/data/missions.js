@@ -54,11 +54,11 @@ export const MISSIONS = [
       ],
       tip: '💡 現代電競按鈕講究圓潤膠囊與流光漸層，千萬別加上生硬黑色外框，那是 90 年代老產物！'
     },
-    // 共 15 項工具：10 項核心必選 + 5 項干擾/陷阱項
+    // 共 15 項工具：交錯打亂混排
     tools: [
       {
         id: 'borderRadius',
-        name: '圓角大小 (Border Radius)',
+        name: '圓角修飾 (Border Radius)',
         type: 'slider',
         unit: 'px',
         min: 0,
@@ -70,7 +70,23 @@ export const MISSIONS = [
         targetValue: 9999,
         targetRange: [16, 9999],
         isTrap: false,
-        desc: '磨平直角，支援 9999px 膠囊快捷'
+        desc: '磨平直角邊緣，支援 9999px 膠囊快捷'
+      },
+      {
+        id: 'borderHeavy',
+        name: '實線外邊框 (Border)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 8,
+        step: 1,
+        defaultValue: 2,
+        cleanValue: 3,
+        targetValue: 0,
+        targetRange: [0, 0],
+        isTrap: true,
+        trapWarning: '實線外邊框 (Border)：現代膠囊設計通常不需要加粗硬黑邊框，這會破壞極簡膠囊的美感。',
+        desc: '為按鈕周圍添加固定寬度的邊界外框輪廓'
       },
       {
         id: 'paddingY',
@@ -103,8 +119,23 @@ export const MISSIONS = [
         desc: '增加左右按鍵呼吸空間'
       },
       {
+        id: 'letterSpacingTrap',
+        name: '字母排列間距 (Letter Spacing)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 12,
+        step: 1,
+        defaultValue: 0,
+        cleanValue: 6,
+        targetValue: 0,
+        isTrap: true,
+        trapWarning: '字母排列間距 (Letter Spacing)：過寬的字元間隔會分散閱讀焦點，使按鈕文字顯得鬆散。',
+        desc: '調整每個英文字母之間的水平排列間隙'
+      },
+      {
         id: 'bgColor',
-        name: '主背景色 (Background Color)',
+        name: '主背景色彩 (Background Color)',
         type: 'color',
         defaultValue: '#cbd5e1',
         cleanValue: '#94a3b8',
@@ -122,6 +153,17 @@ export const MISSIONS = [
         gradientTo: '#a855f7',
         isTrap: false,
         desc: '啟動 135deg 雙色漸層流光'
+      },
+      {
+        id: 'textShadowTrap',
+        name: '刻痕文字陰影 (Text Shadow)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '刻痕文字陰影 (Text Shadow)：文字凹凸陰影屬於早期立體字風格，現代 UI 建議保持純色文字以維持易讀性。',
+        desc: '在文字下方加上立體刻痕投影效果'
       },
       {
         id: 'gradientColor',
@@ -142,6 +184,21 @@ export const MISSIONS = [
         targetValue: '#ffffff',
         isTrap: false,
         desc: '高對比文字色彩'
+      },
+      {
+        id: 'btnRotateTrap',
+        name: '平面旋轉角度 (Rotate)',
+        type: 'slider',
+        unit: 'deg',
+        min: -15,
+        max: 15,
+        step: 1,
+        defaultValue: 0,
+        cleanValue: 8,
+        targetValue: 0,
+        isTrap: true,
+        trapWarning: '平面旋轉角度 (Rotate)：按鈕傾斜會破壞網頁標準排版的對齊與秩序感。',
+        desc: '將整個按鈕沿中心點順時針或逆時針傾斜旋轉'
       },
       {
         id: 'shadowBlur',
@@ -175,6 +232,17 @@ export const MISSIONS = [
         desc: '提升標題視覺權重與點擊吸引力'
       },
       {
+        id: 'grayscaleTrap',
+        name: '灰階去色濾鏡 (Grayscale Filter)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '灰階去色濾鏡 (Grayscale Filter)：將鮮明高飽和的漸層轉為灰階，會失去科技活力與點擊主導性。',
+        desc: '將按鈕所有飽和色彩轉化為黑白灰階效果'
+      },
+      {
         id: 'hoverY',
         name: '懸停微上浮 (Hover Translate)',
         type: 'slider',
@@ -188,70 +256,6 @@ export const MISSIONS = [
         targetRange: [-5, -2],
         isTrap: false,
         desc: '滑鼠懸停時上浮反饋，具備機械按壓感'
-      },
-      // === 5 項干擾/陷阱項 ===
-      {
-        id: 'borderHeavy',
-        name: '粗黑外邊框 (Border) [陷阱項]',
-        type: 'slider',
-        unit: 'px',
-        min: 0,
-        max: 8,
-        step: 1,
-        defaultValue: 2,
-        cleanValue: 3,
-        targetValue: 0,
-        targetRange: [0, 0],
-        isTrap: true,
-        desc: '⚠️ 現代電競膠囊不應加硬邊框！開啟會嚴重扣分！'
-      },
-      {
-        id: 'textShadowTrap',
-        name: '復古文字陰影 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 90年代刻痕凹凸字殘留，現代極簡不需要！'
-      },
-      {
-        id: 'letterSpacingTrap',
-        name: '超寬字母間距 [干擾項]',
-        type: 'slider',
-        unit: 'px',
-        min: 0,
-        max: 12,
-        step: 1,
-        defaultValue: 0,
-        cleanValue: 6,
-        targetValue: 0,
-        isTrap: true,
-        desc: '⚠️ 文字間距過寬會分散眼球注意力'
-      },
-      {
-        id: 'btnRotateTrap',
-        name: '按鈕歪斜旋轉 [陷阱項]',
-        type: 'slider',
-        unit: 'deg',
-        min: -15,
-        max: 15,
-        step: 1,
-        defaultValue: 0,
-        cleanValue: 8,
-        targetValue: 0,
-        isTrap: true,
-        desc: '⚠️ 按鈕歪斜會破壞規範排版！'
-      },
-      {
-        id: 'grayscaleTrap',
-        name: '灰階去色濾鏡 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 啟動會把美麗漸層瞬間變成死灰色！'
       }
     ]
   },
@@ -332,6 +336,7 @@ export const MISSIONS = [
       ],
       tip: '💡 頭像一定要裁成正圓形（50%），搭配 28px 大留白才能終結窒息感！'
     },
+    // 共 15 項工具：交錯打亂混排
     tools: [
       {
         id: 'cardPadding',
@@ -349,19 +354,19 @@ export const MISSIONS = [
         desc: '充裕空間，徹底告別邊緣擠壓'
       },
       {
-        id: 'avatarRadius',
-        name: '大頭貼圓弧度 (Avatar Radius)',
+        id: 'cardBorderHeavy',
+        name: '深色硬邊框 (Border)',
         type: 'slider',
-        unit: '%',
+        unit: 'px',
         min: 0,
-        max: 50,
-        step: 5,
-        defaultValue: 0,
-        cleanValue: 0,
-        targetValue: 50,
-        targetRange: [45, 50],
-        isTrap: false,
-        desc: '設為 50% 完美將頭像裁切為圓形'
+        max: 8,
+        step: 1,
+        defaultValue: 2,
+        cleanValue: 3,
+        targetValue: 1,
+        isTrap: true,
+        trapWarning: '深色硬邊框 (Border)：深藍毛玻璃名片不應加上粗黑框，只需 1px 微光澤淡邊即可突顯質感。',
+        desc: '為卡片外圍包覆深黑色的實線邊框'
       },
       {
         id: 'cardRadius',
@@ -389,6 +394,21 @@ export const MISSIONS = [
         desc: '換成沉穩科技深色背景'
       },
       {
+        id: 'cardSkewTrap',
+        name: '透視歪斜 (Skew X)',
+        type: 'slider',
+        unit: 'deg',
+        min: -15,
+        max: 15,
+        step: 1,
+        defaultValue: 0,
+        cleanValue: 6,
+        targetValue: 0,
+        isTrap: true,
+        trapWarning: '透視歪斜 (Skew X)：水平傾斜卡片會讓內文難以閱讀，違背名片資訊傳遞的核心目的。',
+        desc: '使卡片產生水平梯形平行四邊形傾斜變形'
+      },
+      {
         id: 'backdropBlur',
         name: '磨砂玻璃特效 (Backdrop Blur)',
         type: 'slider',
@@ -402,6 +422,32 @@ export const MISSIONS = [
         targetRange: [10, 20],
         isTrap: false,
         desc: '蘋果風霧面磨砂玻璃質感'
+      },
+      {
+        id: 'avatarRadius',
+        name: '大頭貼圓弧度 (Avatar Radius)',
+        type: 'slider',
+        unit: '%',
+        min: 0,
+        max: 50,
+        step: 5,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 50,
+        targetRange: [45, 50],
+        isTrap: false,
+        desc: '設為 50% 完美將頭像裁切為圓形'
+      },
+      {
+        id: 'avatarSquareTrap',
+        name: '直角方形頭像 (Square Avatar)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '直角方形頭像 (Square Avatar)：現代人像名片普遍採用圓形裁切配合高光外環，直角方框顯得生硬冰冷。',
+        desc: '強制去除頭像圓形裁切，恢復直角方框'
       },
       {
         id: 'avatarRingColor',
@@ -429,6 +475,17 @@ export const MISSIONS = [
         desc: '放大姓名，樹立第一主視覺'
       },
       {
+        id: 'userNameItalicTrap',
+        name: '字體斜體化 (Font Style Italic)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '字體斜體化 (Font Style Italic)：專業名片中的名字應使用端正字重（font-weight）突顯，斜體反而顯得不夠穩重。',
+        desc: '將姓名文字設定為傾斜草書排版風格'
+      },
+      {
         id: 'userNameWeight',
         name: '名字字重大粗 (Font Weight)',
         type: 'select',
@@ -454,6 +511,17 @@ export const MISSIONS = [
         desc: '副標職稱專屬亮色'
       },
       {
+        id: 'cardDashedTrap',
+        name: '虛線邊框樣式 (Dashed Border)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '虛線邊框樣式 (Dashed Border)：虛線邊框容易讓人聯想到超市折價券截角，破壞高階幹部名片的專業形象。',
+        desc: '將外框線更換為虛線截角分割造型'
+      },
+      {
         id: 'cardShadow',
         name: '立體懸浮陰影 (Card Shadow)',
         type: 'slider',
@@ -467,65 +535,6 @@ export const MISSIONS = [
         targetRange: [25, 50],
         isTrap: false,
         desc: '營造卡片脫離桌面的懸浮深度'
-      },
-      // === 5 項干擾/陷阱項 ===
-      {
-        id: 'cardBorderHeavy',
-        name: '硬粗黑邊框 (Border) [陷阱項]',
-        type: 'slider',
-        unit: 'px',
-        min: 0,
-        max: 8,
-        step: 1,
-        defaultValue: 2,
-        cleanValue: 3,
-        targetValue: 1,
-        isTrap: true,
-        desc: '⚠️ 不要加粗黑色外框！高雅名片只需 1px 淡白邊'
-      },
-      {
-        id: 'cardSkewTrap',
-        name: '卡片透視歪斜 [陷阱項]',
-        type: 'slider',
-        unit: 'deg',
-        min: -15,
-        max: 15,
-        step: 1,
-        defaultValue: 0,
-        cleanValue: 6,
-        targetValue: 0,
-        isTrap: true,
-        desc: '⚠️ 歪斜會讓名片文字難以閱讀！'
-      },
-      {
-        id: 'userNameItalicTrap',
-        name: '姓名歪斜斜體 [干擾項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 正式幹部名片不適合花俏歪字'
-      },
-      {
-        id: 'avatarSquareTrap',
-        name: '方形大頭貼硬框 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 會強制將頭像還原為冰冷方形！'
-      },
-      {
-        id: 'cardDashedTrap',
-        name: '折價券虛線邊框 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 虛線邊框看起來像超市截角！'
       }
     ]
   },
@@ -608,6 +617,7 @@ export const MISSIONS = [
       ],
       tip: '💡 overflow: hidden 才能鎖死圖片圓角不炸版；標籤設為 absolute 才能優雅浮在照片上方！'
     },
+    // 共 15 項工具：交錯打亂混排
     tools: [
       {
         id: 'overflowToggle',
@@ -618,6 +628,17 @@ export const MISSIONS = [
         targetValue: true,
         isTrap: false,
         desc: '鎖住圖片溢出邊界，終結破版！'
+      },
+      {
+        id: 'cardBorderDoubleTrap',
+        name: '雙重線外框 (Double Border)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '雙重線外框 (Double Border)：雙線框帶有濃厚的早期復古印表機傳單感，不符合現代極簡電商菜單。',
+        desc: '在卡片邊界疊加雙層平行線條外框'
       },
       {
         id: 'cardRadius',
@@ -635,16 +656,6 @@ export const MISSIONS = [
         desc: '包覆美食卡片的美麗倒角'
       },
       {
-        id: 'cardBg',
-        name: '商品卡背景 (Card Background)',
-        type: 'color',
-        defaultValue: '#ffffff',
-        cleanValue: '#cbd5e1',
-        targetValue: '#1e293b',
-        isTrap: false,
-        desc: '襯托美食色澤的深色底座'
-      },
-      {
         id: 'foodImgFit',
         name: '照片比例模式 (Object Fit)',
         type: 'select',
@@ -657,6 +668,42 @@ export const MISSIONS = [
         targetValue: 'cover',
         isTrap: false,
         desc: '讓排骨照片維持黃金美味比例'
+      },
+      {
+        id: 'imgRotateTrap',
+        name: '照片旋轉角度 (Rotate)',
+        type: 'slider',
+        unit: 'deg',
+        min: -15,
+        max: 15,
+        step: 1,
+        defaultValue: 0,
+        cleanValue: 10,
+        targetValue: 0,
+        isTrap: true,
+        trapWarning: '照片旋轉角度 (Rotate)：無故旋轉特餐封面會讓整體排版失衡，甚至遮擋價格與說明。',
+        desc: '讓食物封面照片產生自轉角度'
+      },
+      {
+        id: 'cardBg',
+        name: '商品卡背景 (Card Background)',
+        type: 'color',
+        defaultValue: '#ffffff',
+        cleanValue: '#cbd5e1',
+        targetValue: '#1e293b',
+        isTrap: false,
+        desc: '襯托美食色澤的深色底座'
+      },
+      {
+        id: 'imgSepiaTrap',
+        name: '復古泛黃濾鏡 (Sepia Filter)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '復古泛黃濾鏡 (Sepia Filter)：泛黃濾鏡會讓新鮮烹煮的美食排骨看起來像放了很久的隔夜菜，嚴重影響食慾！',
+        desc: '套用老照片懷舊復古泛黃色調濾鏡'
       },
       {
         id: 'badgePosition',
@@ -694,6 +741,17 @@ export const MISSIONS = [
         desc: '高彩度促銷標籤色'
       },
       {
+        id: 'badgeInvertTrap',
+        name: '標籤明度反相 (Invert Filter)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '標籤明度反相 (Invert Filter)：將醒目的暖紅熱銷促銷標籤反相，會失去促銷的緊迫感與亮眼度。',
+        desc: '將促銷標籤之亮紅色彩做 180 度反相變換'
+      },
+      {
         id: 'priceColor',
         name: '價格醒目主色 (Price Color)',
         type: 'color',
@@ -702,6 +760,17 @@ export const MISSIONS = [
         targetValue: '#f43f5e',
         isTrap: false,
         desc: '換成激發食慾與下單的亮麗玫紅'
+      },
+      {
+        id: 'priceUnderlineTrap',
+        name: '文字底線裝飾 (Underline)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '文字底線裝飾 (Underline)：在價格數字加上底線容易與超連結混淆，且會割裂數字字形。',
+        desc: '在特餐價格金額下方增加一條裝飾底線'
       },
       {
         id: 'priceSize',
@@ -732,61 +801,6 @@ export const MISSIONS = [
         targetRange: [20, 35],
         isTrap: false,
         desc: '托起卡片層次'
-      },
-      // === 5 項干擾/陷阱項 ===
-      {
-        id: 'imgRotateTrap',
-        name: '照片歪斜旋轉 [陷阱項]',
-        type: 'slider',
-        unit: 'deg',
-        min: -15,
-        max: 15,
-        step: 1,
-        defaultValue: 0,
-        cleanValue: 10,
-        targetValue: 0,
-        isTrap: true,
-        desc: '⚠️ 不要無故旋轉美食照片！歪斜會嚴重扣分！'
-      },
-      {
-        id: 'imgSepiaTrap',
-        name: '黃褐變質濾鏡 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 會讓新鮮排骨看起來像放了三天的隔夜菜！'
-      },
-      {
-        id: 'cardBorderDoubleTrap',
-        name: '雙層老舊邊框 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 90年代復古便當傳單才會用的粗糙邊框'
-      },
-      {
-        id: 'priceUnderlineTrap',
-        name: '價格文字底線 [干擾項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 畫蛇添足的底線會遮擋數字！'
-      },
-      {
-        id: 'badgeInvertTrap',
-        name: '標籤黑白反相 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 讓標籤失去熱銷醒目感'
       }
     ]
   },
@@ -880,6 +894,7 @@ export const MISSIONS = [
       ],
       tip: '💡 gap: 20px 才能拉開三個框的呼吸距離；:focus 光暈才能讓使用者明確知道游標在哪裡！'
     },
+    // 共 15 項工具：交錯打亂混排
     tools: [
       {
         id: 'formGap',
@@ -895,6 +910,21 @@ export const MISSIONS = [
         targetRange: [16, 24],
         isTrap: false,
         desc: '用 gap 拉開三個欄位之間的距離'
+      },
+      {
+        id: 'inputBorderHeavyTrap',
+        name: '粗黑實線框 (Input Border)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 6,
+        step: 1,
+        defaultValue: 2,
+        cleanValue: 3,
+        targetValue: 1,
+        isTrap: true,
+        trapWarning: '粗黑實線框 (Input Border)：深色現代暗黑介面不宜使用粗糙黑邊框，會與背景融合並破壞輸入層次。',
+        desc: '為文字輸入框加厚黑色邊線'
       },
       {
         id: 'formPadding',
@@ -927,6 +957,17 @@ export const MISSIONS = [
         desc: '舒適的高度好打字，擺脫窄線條'
       },
       {
+        id: 'inputDottedTrap',
+        name: '點狀邊框樣式 (Dotted Border)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '點狀邊框樣式 (Dotted Border)：點狀邊框看起來像考卷填空題，缺乏商務與現代應用的嚴謹與質感。',
+        desc: '將輸入框四邊轉換為密集圓點邊線'
+      },
+      {
         id: 'inputRadius',
         name: '輸入框圓弧倒角 (Input Radius)',
         type: 'slider',
@@ -940,6 +981,21 @@ export const MISSIONS = [
         targetRange: [8, 16],
         isTrap: false,
         desc: '12px 圓角提升親和力'
+      },
+      {
+        id: 'labelBlurTrap',
+        name: '文字模糊濾鏡 (Blur Filter)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 5,
+        step: 1,
+        defaultValue: 0,
+        cleanValue: 2,
+        targetValue: 0,
+        isTrap: true,
+        trapWarning: '文字模糊濾鏡 (Blur Filter)：模糊文字嚴重破壞無障礙與易讀性，讓使用者無法看清該填寫什麼。',
+        desc: '在欄位標題標籤上方增加毛玻璃模糊效果'
       },
       {
         id: 'focusGlowToggle',
@@ -960,6 +1016,32 @@ export const MISSIONS = [
         targetValue: '#38bdf8',
         isTrap: false,
         desc: '天藍高對比光圈'
+      },
+      {
+        id: 'formRadius',
+        name: '表單大外框圓角 (Form Radius)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 32,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 24,
+        targetRange: [18, 28],
+        isTrap: false,
+        desc: '24px 現代科技外框倒角'
+      },
+      {
+        id: 'submitInvertTrap',
+        name: '按鈕明度反相 (Invert Filter)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '按鈕明度反相 (Invert Filter)：送出按鈕反相會失去原本精心調配的漸層或主色光澤，導致按鈕層次塌陷。',
+        desc: '將送出按鈕的主色調轉換為反向明度效果'
       },
       {
         id: 'submitBtnBg',
@@ -987,19 +1069,19 @@ export const MISSIONS = [
         desc: '與輸入框統一的圓弧'
       },
       {
-        id: 'formRadius',
-        name: '表單大外框圓角 (Form Radius)',
+        id: 'formSkewTrap',
+        name: '表單水平傾斜 (Form Skew)',
         type: 'slider',
-        unit: 'px',
-        min: 0,
-        max: 32,
-        step: 2,
+        unit: 'deg',
+        min: -10,
+        max: 10,
+        step: 1,
         defaultValue: 0,
-        cleanValue: 0,
-        targetValue: 24,
-        targetRange: [18, 28],
-        isTrap: false,
-        desc: '24px 現代科技外框倒角'
+        cleanValue: 5,
+        targetValue: 0,
+        isTrap: true,
+        trapWarning: '表單水平傾斜 (Form Skew)：表單傾斜會嚴重妨礙游標對齊與文字輸入，是破壞使用者體驗的禁忌。',
+        desc: '將整個登入表單容器進行 X 軸歪斜幾何變換'
       },
       {
         id: 'formShadow',
@@ -1015,69 +1097,6 @@ export const MISSIONS = [
         targetRange: [35, 60],
         isTrap: false,
         desc: '強烈深邃懸浮景深'
-      },
-      // === 5 項干擾/陷阱項 ===
-      {
-        id: 'inputBorderHeavyTrap',
-        name: '輸入框粗黑框 [陷阱項]',
-        type: 'slider',
-        unit: 'px',
-        min: 0,
-        max: 6,
-        step: 1,
-        defaultValue: 2,
-        cleanValue: 3,
-        targetValue: 1,
-        isTrap: true,
-        desc: '⚠️ 不要加粗黑色硬框！那是瀏覽器預設醜邊框'
-      },
-      {
-        id: 'inputDottedTrap',
-        name: '點狀虛線邊框 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 看起來像小學生考卷填空欄！'
-      },
-      {
-        id: 'labelBlurTrap',
-        name: '標籤文字模糊度 [陷阱項]',
-        type: 'slider',
-        unit: 'px',
-        min: 0,
-        max: 5,
-        step: 1,
-        defaultValue: 0,
-        cleanValue: 2,
-        targetValue: 0,
-        isTrap: true,
-        desc: '⚠️ 文字模糊會讓表單無法填寫！'
-      },
-      {
-        id: 'submitInvertTrap',
-        name: '按鈕反相死白 [干擾項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 失去核心送出動作的層次感'
-      },
-      {
-        id: 'formSkewTrap',
-        name: '表單左右傾斜 [陷阱項]',
-        type: 'slider',
-        unit: 'deg',
-        min: -10,
-        max: 10,
-        step: 1,
-        defaultValue: 0,
-        cleanValue: 5,
-        targetValue: 0,
-        isTrap: true,
-        desc: '⚠️ 輸入框歪斜嚴重扣分！'
       }
     ]
   },
@@ -1172,6 +1191,7 @@ export const MISSIONS = [
       ],
       tip: '💡 文字漸層裁切讓字體流光溢彩；主按鈕發光與次按鈕幽靈邊框形成鮮明主次！'
     },
+    // 共 15 項工具：交錯打亂混排
     tools: [
       {
         id: 'heroPadding',
@@ -1187,6 +1207,21 @@ export const MISSIONS = [
         targetRange: [36, 50],
         isTrap: false,
         desc: '充沛大留白，撐起半世紀校慶氣派'
+      },
+      {
+        id: 'heroBorderHeavyTrap',
+        name: '外框重黑邊線 (Heavy Border)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 6,
+        step: 1,
+        defaultValue: 2,
+        cleanValue: 4,
+        targetValue: 1,
+        isTrap: true,
+        trapWarning: '外框重黑邊線 (Heavy Border)：粗黑框會在明暗交界處形成生硬割裂，徹底遮蔽深色背景自然散發的環境光。',
+        desc: '在主視覺 Hero 外圍加深加粗黑邊線條'
       },
       {
         id: 'heroRadius',
@@ -1214,6 +1249,17 @@ export const MISSIONS = [
         desc: '頂端放射狀紫色聚光燈光暈'
       },
       {
+        id: 'rainbowBorderTrap',
+        name: '對比虛線外框 (Dashed Border)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '對比虛線外框 (Dashed Border)：高對比度的鮮豔虛線外框會搶走氛圍光芒（ambient glow）與主標題的風采。',
+        desc: '在橫幅外緣加上高對比度的桃紅虛線'
+      },
+      {
         id: 'titleGradientToggle',
         name: '文字流金漸層 (-webkit-clip: text)',
         type: 'toggle',
@@ -1222,6 +1268,21 @@ export const MISSIONS = [
         targetValue: true,
         isTrap: false,
         desc: '將漸層色直接灌注入標題筆畫'
+      },
+      {
+        id: 'titleSkewTrap',
+        name: '主標題傾斜 (Title Skew)',
+        type: 'slider',
+        unit: 'deg',
+        min: -15,
+        max: 15,
+        step: 1,
+        defaultValue: 0,
+        cleanValue: 6,
+        targetValue: 0,
+        isTrap: true,
+        trapWarning: '主標題傾斜 (Title Skew)：隆重的校慶或品牌首頁標題應莊重端正，歪斜會破壞品牌信任感與權威性。',
+        desc: '為 Hero 主視覺大標題增加傾角'
       },
       {
         id: 'titleSize',
@@ -1254,6 +1315,17 @@ export const MISSIONS = [
         desc: '800 特粗厚實有力'
       },
       {
+        id: 'descTinyTrap',
+        name: '說明極小字號 (Compact Font)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '說明極小字號 (Compact Font)：字號縮小至 9px 會嚴重影響行動裝置閱讀與無障礙標準（WCAG）。',
+        desc: '將副標題說明文縮減為 9px 超緊湊排版'
+      },
+      {
         id: 'primaryBtnBg',
         name: '主 CTA 按鈕漸層色 (Primary CTA)',
         type: 'color',
@@ -1280,6 +1352,17 @@ export const MISSIONS = [
         desc: '9999px 膠囊流暢手感'
       },
       {
+        id: 'ghostDashedTrap',
+        name: '次按鈕虛線框 (Ghost Dashed)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '次按鈕虛線框 (Ghost Dashed)：幽靈按鈕（Ghost Button）的核心在於純淨的細實線與背景通透，虛線會破壞極簡美感。',
+        desc: '將次要幽靈按鈕的外框改為虛線造型'
+      },
+      {
         id: 'secondaryGhostToggle',
         name: '次按鈕幽靈模式 (Ghost Button)',
         type: 'toggle',
@@ -1303,65 +1386,6 @@ export const MISSIONS = [
         targetRange: [40, 70],
         isTrap: false,
         desc: '深度懸浮陰影'
-      },
-      // === 5 項干擾/陷阱項 ===
-      {
-        id: 'titleSkewTrap',
-        name: '標題歪斜歪轉 [陷阱項]',
-        type: 'slider',
-        unit: 'deg',
-        min: -15,
-        max: 15,
-        step: 1,
-        defaultValue: 0,
-        cleanValue: 6,
-        targetValue: 0,
-        isTrap: true,
-        desc: '⚠️ 莊嚴校慶首頁不要把標題歪斜！會扣分！'
-      },
-      {
-        id: 'rainbowBorderTrap',
-        name: '七彩跳動花框 [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 俗氣電子花車感，嚴重扣分！'
-      },
-      {
-        id: 'descTinyTrap',
-        name: '說明文字縮小至 9px [陷阱項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 破壞無障礙易讀性！'
-      },
-      {
-        id: 'ghostDashedTrap',
-        name: '次按鈕虛線外框 [干擾項]',
-        type: 'toggle',
-        defaultValue: false,
-        cleanValue: true,
-        targetValue: false,
-        isTrap: true,
-        desc: '⚠️ 破壞高級幽靈邊框的純淨感'
-      },
-      {
-        id: 'heroBorderHeavyTrap',
-        name: '粗黑外邊框 [陷阱項]',
-        type: 'slider',
-        unit: 'px',
-        min: 0,
-        max: 6,
-        step: 1,
-        defaultValue: 2,
-        cleanValue: 4,
-        targetValue: 1,
-        isTrap: true,
-        desc: '⚠️ 粗糙黑框遮擋氛圍光芒！'
       }
     ]
   }

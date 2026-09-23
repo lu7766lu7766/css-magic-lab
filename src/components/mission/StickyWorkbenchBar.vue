@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ChevronUp
 } from 'lucide-vue-next'
+import { scopeCss } from '../../data/cssGenerators.js'
 
 const props = defineProps({
   mission: { type: Object, required: true },
@@ -43,31 +44,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
 })
-
-// CSS 作用域隔離函數：將 CSS 選擇器加上指定 scope 前綴，避免雙畫布樣式互相干擾
-function scopeCss(css, scopeClass) {
-  if (!css) return ''
-  return css
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .split('}')
-    .map(block => {
-      const trimmed = block.trim()
-      if (!trimmed) return ''
-      const braceIdx = trimmed.indexOf('{')
-      if (braceIdx === -1) return trimmed
-      const selectorPart = trimmed.substring(0, braceIdx)
-      const bodyPart = trimmed.substring(braceIdx + 1)
-      if (selectorPart.trim().startsWith('@')) {
-        return `${selectorPart} { ${bodyPart} }`
-      }
-      const scopedSelectors = selectorPart
-        .split(',')
-        .map(s => `.${scopeClass} ${s.trim()}`)
-        .join(', ')
-      return `${scopedSelectors} {\n${bodyPart}\n}`
-    })
-    .join('\n')
-}
 
 const scopedUserCss = computed(() => scopeCss(props.currentCss, 'sticky-user-scope'))
 const scopedTargetCss = computed(() => scopeCss(props.mission.designerTargetCss, 'sticky-target-scope'))

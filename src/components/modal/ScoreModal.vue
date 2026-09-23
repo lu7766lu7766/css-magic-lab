@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, watch } from 'vue'
-import { X, Award, Sparkles, CheckCircle2, AlertCircle, ArrowRight, RotateCcw, HeartHandshake } from 'lucide-vue-next'
+import { X, Award, Sparkles, CheckCircle2, AlertCircle, AlertTriangle, ArrowRight, RotateCcw, HeartHandshake } from 'lucide-vue-next'
 import confetti from 'canvas-confetti'
 
 const props = defineProps({
@@ -126,6 +126,25 @@ function triggerConfetti() {
       <div class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 p-3.5 rounded-xl bg-purple-50/80 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800/80 mb-5 flex items-start gap-2.5">
         <Sparkles class="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
         <p class="leading-relaxed">{{ evalResult.critique }}</p>
+      </div>
+
+      <!-- ⚠️ 評分警告提示（誤觸干擾項時才提示） -->
+      <div
+        v-if="evalResult.trapWarnings && evalResult.trapWarnings.length > 0"
+        class="text-xs p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/80 text-rose-800 dark:text-rose-200 mb-5 space-y-2"
+      >
+        <div class="flex items-center gap-1.5 font-bold text-rose-700 dark:text-rose-300">
+          <AlertTriangle class="w-4 h-4 text-rose-500 shrink-0" />
+          <span>美感警示：偵測到誤啟用了 {{ evalResult.trapWarnings.length }} 項不推薦的干擾樣式</span>
+        </div>
+        <ul class="list-disc list-inside space-y-1 pl-1 text-[11px] leading-relaxed">
+          <li v-for="(item, i) in evalResult.trapWarnings" :key="i">
+            <span class="font-bold">{{ item.name }}</span>：{{ item.warning }}
+          </li>
+        </ul>
+        <p class="text-[10px] text-rose-600 dark:text-rose-400 pt-0.5">
+          💡 建議：回到工具箱找到上述按鈕「再點一下」關閉還原，評分即可大幅提升！
+        </p>
       </div>
 
       <!-- 💡 救命錦囊（未滿 70 分時觸發） -->

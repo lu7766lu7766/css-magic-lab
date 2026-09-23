@@ -14,11 +14,11 @@ export function generateMissionCss(missionId, state) {
       : 'none';
 
     const borderCss = state.borderHeavy > 0
-      ? `${state.borderHeavy}px solid #000000; /* ⚠️ 粗黑外框 (陷阱項) */`
+      ? `${state.borderHeavy}px solid #000000; /* ⚠️ 粗黑外邊框 */`
       : 'none; /* 💡 移除老舊硬邊框，俐落純淨 */';
 
     const textShadowCss = state.textShadowTrap
-      ? 'text-shadow: 2px 2px 0px #000000; /* ⚠️ 刻痕凹凸字殘留 (陷阱項) */'
+      ? 'text-shadow: 2px 2px 0px #000000; /* ⚠️ 刻痕凹凸文字陰影 */'
       : '';
 
     const letterSpacingCss = state.letterSpacingTrap > 0
@@ -26,7 +26,7 @@ export function generateMissionCss(missionId, state) {
       : 'letter-spacing: normal;';
 
     const filterCss = state.grayscaleTrap
-      ? 'filter: grayscale(100%); /* ⚠️ 灰階濾鏡 (陷阱項) */'
+      ? 'filter: grayscale(100%); /* ⚠️ 灰階去色濾鏡 */'
       : '';
 
     const rotateCss = state.btnRotateTrap !== 0
@@ -67,11 +67,11 @@ export function generateMissionCss(missionId, state) {
       : 'none';
 
     const borderCss = state.cardBorderHeavy > 1
-      ? `${state.cardBorderHeavy}px solid #000000; /* ⚠️ 粗糙黑框 (陷阱項) */`
+      ? `${state.cardBorderHeavy}px solid #000000; /* ⚠️ 實線深黑外框 */`
       : '1px solid rgba(255, 255, 255, 0.12); /* 💡 極細高雅白光澤邊框 */';
 
-    const borderStyleCss = state.cardDashedTrap ? 'border-style: dashed; /* ⚠️ 折價券虛線 (陷阱項) */' : '';
-    const cardSkewCss = state.cardSkewTrap !== 0 ? `transform: skewX(${state.cardSkewTrap}deg); /* ⚠️ 透視歪斜 (陷阱項) */` : '';
+    const borderStyleCss = state.cardDashedTrap ? 'border-style: dashed; /* ⚠️ 虛線邊框樣式 */' : '';
+    const cardSkewCss = state.cardSkewTrap !== 0 ? `transform: skewX(${state.cardSkewTrap}deg); /* ⚠️ 水平透視傾斜 */` : '';
 
     return `/* 🛠️ 我的幹部名片樣式 */
 .profile-card {
@@ -90,7 +90,7 @@ export function generateMissionCss(missionId, state) {
 .avatar-img {
   width: 80px;
   height: 80px;
-  border-radius: ${state.avatarSquareTrap ? '0px !important; /* ⚠️ 生硬方框 (陷阱項) */' : state.avatarRadius >= 50 ? '50%' : state.avatarRadius + '%'}; /* ${state.avatarRadius >= 50 ? '💡 50% 正圓形頭像裁切' : '💡 頭像倒角'} */
+  border-radius: ${state.avatarSquareTrap ? '0px !important; /* ⚠️ 直角方形頭像 */' : state.avatarRadius >= 50 ? '50%' : state.avatarRadius + '%'}; /* ${state.avatarRadius >= 50 ? '💡 50% 正圓形頭像裁切' : '💡 頭像倒角'} */
   border: 3px solid ${state.avatarRingColor}; /* 💡 專屬天藍高光外環 */
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
 }
@@ -100,7 +100,7 @@ export function generateMissionCss(missionId, state) {
   font-size: ${state.userNameSize}px;
   font-weight: ${state.userNameWeight}; /* 💡 名字大粗亮，確立視覺第一主導權 */
   letter-spacing: -0.5px;
-  ${state.userNameItalicTrap ? 'font-style: italic; /* ⚠️ 歪斜花俏字體 (干擾項) */' : ''}
+  ${state.userNameItalicTrap ? 'font-style: italic; /* ⚠️ 斜體排版 */' : ''}
 }
 
 .user-role {
@@ -118,19 +118,19 @@ export function generateMissionCss(missionId, state) {
       : 'none';
 
     const cardBorderCss = state.cardBorderDoubleTrap
-      ? 'border: 4px double #ff0000; /* ⚠️ 雙層老傳單邊框 (陷阱項) */'
+      ? 'border: 4px double #ff0000; /* ⚠️ 雙層平行外框線 */'
       : 'border: 1px solid rgba(255, 255, 255, 0.08);';
 
     const imgRotateCss = state.imgRotateTrap !== 0
-      ? `transform: rotate(${state.imgRotateTrap}deg); /* ⚠️ 照片歪斜 (陷阱項) */`
+      ? `transform: rotate(${state.imgRotateTrap}deg); /* ⚠️ 照片旋轉傾斜 */`
       : '';
 
     const imgFilterCss = state.imgSepiaTrap
-      ? 'filter: sepia(100%); /* ⚠️ 變質黃褐濾鏡 (陷阱項) */'
+      ? 'filter: sepia(100%); /* ⚠️ 復古泛黃濾鏡 */'
       : '';
 
     const badgeFilterCss = state.badgeInvertTrap
-      ? 'filter: invert(100%); /* ⚠️ 標籤反相 (陷阱項) */'
+      ? 'filter: invert(100%); /* ⚠️ 標籤明度反相 */'
       : '';
 
     return `/* 🛠️ 我的便當特餐卡樣式 */
@@ -171,29 +171,29 @@ export function generateMissionCss(missionId, state) {
   color: ${state.priceColor}; /* 💡 醒目亮色激發食慾與下單 */
   font-size: ${state.priceSize}px;
   font-weight: 800;
-  ${state.priceUnderlineTrap ? 'text-decoration: underline; /* ⚠️ 價格畫蛇添足底線 (干擾項) */' : ''}
+  ${state.priceUnderlineTrap ? 'text-decoration: underline; /* ⚠️ 價格文字底線裝飾 */' : ''}
 }`;
   }
 
   if (missionId === 'mission-4') {
     const inputBorderCss = state.inputBorderHeavyTrap > 1
-      ? `${state.inputBorderHeavyTrap}px solid #000000; /* ⚠️ 粗黑硬框 (陷阱項) */`
+      ? `${state.inputBorderHeavyTrap}px solid #000000; /* ⚠️ 粗糙深黑邊框 */`
       : '1.5px solid rgba(255, 255, 255, 0.1);';
 
     const inputBorderStyle = state.inputDottedTrap
-      ? 'border-style: dotted; /* ⚠️ 填空考卷虛線 (陷阱項) */'
+      ? 'border-style: dotted; /* ⚠️ 點狀邊框線條 */'
       : '';
 
     const labelBlurCss = state.labelBlurTrap > 0
-      ? `filter: blur(${state.labelBlurTrap}px); /* ⚠️ 標籤模糊 (陷阱項) */`
+      ? `filter: blur(${state.labelBlurTrap}px); /* ⚠️ 文字模糊濾鏡 */`
       : '';
 
     const submitFilterCss = state.submitInvertTrap
-      ? 'filter: invert(100%); /* ⚠️ 按鈕反相 (干擾項) */'
+      ? 'filter: invert(100%); /* ⚠️ 按鈕明度反相 */'
       : '';
 
     const formSkewCss = state.formSkewTrap !== 0
-      ? `transform: skewX(${state.formSkewTrap}deg); /* ⚠️ 表單歪斜 (陷阱項) */`
+      ? `transform: skewX(${state.formSkewTrap}deg); /* ⚠️ 表單容器歪斜 */`
       : '';
 
     return `/* 🛠️ 我的會員登入表單樣式 */
@@ -255,15 +255,15 @@ ${state.focusGlow ? `.form-input:focus {
     : '#ffffff';
 
   const heroBorderCss = state.heroBorderHeavyTrap > 1
-    ? `${state.heroBorderHeavyTrap}px solid #000000; /* ⚠️ 粗糙黑框遮擋氛圍光 (陷阱項) */`
+    ? `${state.heroBorderHeavyTrap}px solid #000000; /* ⚠️ 粗黑外邊框 */`
     : '1px solid rgba(255, 255, 255, 0.1);';
 
   const rainbowBorderCss = state.rainbowBorderTrap
-    ? 'border: 3px dashed #f43f5e; /* ⚠️ 俗氣電子花車框 (陷阱項) */'
+    ? 'border: 3px dashed #f43f5e; /* ⚠️ 鮮豔虛線邊框 */'
     : '';
 
   const titleSkewCss = state.titleSkewTrap !== 0
-    ? `transform: skewX(${state.titleSkewTrap}deg); /* ⚠️ 莊嚴校慶標題歪斜 (陷阱項) */`
+    ? `transform: skewX(${state.titleSkewTrap}deg); /* ⚠️ 標題旋轉歪斜 */`
     : '';
 
   return `/* 🛠️ 我的校慶旗艦 Hero 樣式 */
@@ -296,7 +296,7 @@ ${state.focusGlow ? `.form-input:focus {
 
 .hero-desc {
   color: #94a3b8;
-  ${state.descTinyTrap ? 'font-size: 9px; /* ⚠️ 易讀性過小 (陷阱項) */' : 'font-size: 15px;'}
+  ${state.descTinyTrap ? 'font-size: 9px; /* ⚠️ 極小字號排版 */' : 'font-size: 15px;'}
   line-height: 1.6;
   max-width: 440px;
 }
@@ -321,7 +321,7 @@ ${state.focusGlow ? `.form-input:focus {
   font-size: 14px;
   font-weight: 600;
   border: 1px solid rgba(255, 255, 255, 0.15); /* 💡 幽靈按鈕邊框，保持主次分明 */
-  ${state.ghostDashedTrap ? 'border-style: dashed; /* ⚠️ 虛線按鈕 (干擾項) */' : ''}
+  ${state.ghostDashedTrap ? 'border-style: dashed; /* ⚠️ 次按鈕虛線外框 */' : ''}
   cursor: pointer;
 }`;
 }
@@ -334,4 +334,37 @@ function hexToRgba(hex, alpha = 1) {
   }
   const num = parseInt(c, 16);
   return `rgba(${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}, ${alpha})`;
+}
+
+/**
+ * CSS 作用域隔離函數：將 CSS 選擇器加上指定 scope 前綴，避免雙畫布樣式互相干擾
+ */
+export function scopeCss(css, scopeClass) {
+  if (!css) return '';
+  const cleanCss = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  return cleanCss
+    .split('}')
+    .map(block => {
+      const trimmed = block.trim();
+      if (!trimmed) return '';
+      const braceIdx = trimmed.indexOf('{');
+      if (braceIdx === -1) return '';
+      const selectorPart = trimmed.substring(0, braceIdx).trim();
+      const bodyPart = trimmed.substring(braceIdx + 1).trim();
+      if (selectorPart.startsWith('@')) {
+        return `${selectorPart} { ${bodyPart} }`;
+      }
+      const scopedSelectors = selectorPart
+        .split(',')
+        .map(s => {
+          const trimmedS = s.trim();
+          if (!trimmedS) return '';
+          return `.${scopeClass} ${trimmedS}`;
+        })
+        .filter(Boolean)
+        .join(', ');
+      return `${scopedSelectors} {\n  ${bodyPart}\n}`;
+    })
+    .filter(Boolean)
+    .join('\n\n');
 }
