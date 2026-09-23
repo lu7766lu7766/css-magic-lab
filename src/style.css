@@ -21,7 +21,7 @@
 }
 
 :where(.dark, .dark *) .glass-card {
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: none;
@@ -39,16 +39,38 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.glow-purple {
-  box-shadow: 0 0 30px -5px rgba(168, 85, 247, 0.35);
+/* 畫布元件變動微光聚焦動畫（Pulse Glow FX） */
+@keyframes pulseGlow {
+  0% {
+    outline: 3px solid rgba(168, 85, 247, 0.8);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+  }
+  50% {
+    outline: 4px solid rgba(56, 189, 248, 0.9);
+    box-shadow: 0 0 35px rgba(56, 189, 248, 0.7);
+  }
+  100% {
+    outline: 0px solid transparent;
+    box-shadow: inherit;
+  }
 }
 
-.glow-blue {
-  box-shadow: 0 0 30px -5px rgba(59, 130, 246, 0.35);
+.element-glow-pulse {
+  animation: pulseGlow 1.8s ease-out forwards;
 }
 
-.glow-pink {
-  box-shadow: 0 0 30px -5px rgba(236, 72, 153, 0.35);
+/* 程式碼動態修改高亮動畫 */
+@keyframes codeLineFlash {
+  0% {
+    background-color: rgba(147, 51, 234, 0.35);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.code-line-highlight {
+  animation: codeLineFlash 2.5s ease-out forwards;
 }
 
 /* 平滑自訂滾動條 */
