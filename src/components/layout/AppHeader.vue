@@ -43,12 +43,12 @@ const unlockedBadgesCount = computed(() => {
       </div>
 
       <!-- 關卡導航選單 (Tabs) -->
-      <nav class="hidden md:flex items-center gap-1.5 bg-slate-100/80 dark:bg-slate-900/80 p-1 rounded-xl border border-slate-200 dark:border-slate-800">
+      <nav class="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-900/80 p-1 rounded-xl border border-slate-200 dark:border-slate-800 overflow-x-auto max-w-[580px] lg:max-w-[720px] no-scrollbar">
         <button
           v-for="(m, idx) in missions"
           :key="m.id"
           @click="emit('selectMission', idx)"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all relative"
+          class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all relative shrink-0 whitespace-nowrap"
           :class="[
             currentMissionIndex === idx
               ? 'bg-white dark:bg-slate-800 text-purple-600 dark:text-purple-400 shadow-sm'
@@ -56,7 +56,7 @@ const unlockedBadgesCount = computed(() => {
           ]"
         >
           <span>第 {{ m.number }} 關</span>
-          <span v-if="(stats.scores[m.id] || 0) >= 70" class="text-amber-500 font-bold flex items-center">
+          <span v-if="(stats.scores[m.id] || 0) >= 70" class="text-amber-500 font-bold flex items-center text-[10px]">
             ★{{ stats.stars[m.id] || 1 }}
           </span>
           <span v-else class="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"></span>

@@ -295,6 +295,36 @@ const MISSION_TOOL_DIMENSIONS = {
     whitespace: ['heroPadding'],
     elevation: ['heroRadius', 'primaryBtnRadius', 'heroShadow'],
     hierarchy: ['titleGradientToggle', 'titleSize', 'titleWeight']
+  },
+  'mission-6': {
+    colorHarmony: ['musicBg', 'progressColor', 'playBtnBg'],
+    whitespace: ['musicPadding', 'progressHeight'],
+    elevation: ['musicRadius', 'discRadius', 'musicShadow', 'playBtnGlow'],
+    hierarchy: ['discSpin']
+  },
+  'mission-7': {
+    colorHarmony: ['stepActiveColor', 'stepCardBg'],
+    whitespace: ['stepCardPadding', 'stepLineHeight'],
+    elevation: ['stepNodeRadius', 'stepCardRadius', 'stepBadgeRadius', 'stepCardShadow'],
+    hierarchy: ['stepPulseGlow', 'stepNodeSize']
+  },
+  'mission-8': {
+    colorHarmony: ['bubbleBg', 'heartBtnBg'],
+    whitespace: ['confessCardPadding', 'confessLineHeight'],
+    elevation: ['bubbleRadius', 'confessCardRadius', 'heartBtnGlow', 'confessCardShadow'],
+    hierarchy: ['bubbleArrow', 'heartHoverBounce']
+  },
+  'mission-9': {
+    colorHarmony: ['cyberNeonColor', 'cyberAccentColor', 'cyberPassBg'],
+    whitespace: ['cyberPassPadding', 'cyberBorderWidth'],
+    elevation: ['cyberClipCorner', 'cyberNeonGlow', 'cyberAvatarGlow'],
+    hierarchy: ['cyberScanlineToggle', 'cyberTitleGlow']
+  },
+  'mission-10': {
+    colorHarmony: ['prismGlassBg', 'prismAuroraBorder'],
+    whitespace: ['prismPadding'],
+    elevation: ['prismTilt', 'prismRadius', 'prismShadow', 'prismBackdropBlur', 'prismChipGlow'],
+    hierarchy: ['prismTitleReflect', 'prismBorderHighlight']
   }
 };
 

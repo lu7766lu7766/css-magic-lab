@@ -249,8 +249,8 @@ ${state.focusGlow ? `.form-input:focus {
 }`;
   }
 
-  // mission-5
-  const heroBgCss = state.ambientGlow
+  if (missionId === 'mission-5') {
+    const heroBgCss = state.ambientGlow
     ? 'radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.25), transparent 70%), #090d16'
     : '#ffffff';
 
@@ -324,6 +324,819 @@ ${state.focusGlow ? `.form-input:focus {
   ${state.ghostDashedTrap ? 'border-style: dashed; /* ⚠️ 次按鈕虛線外框 */' : ''}
   cursor: pointer;
 }`;
+  }
+
+  if (missionId === 'mission-6') {
+    const cardShadowCss = state.musicShadow > 0
+      ? `0 20px ${state.musicShadow}px -10px rgba(0, 0, 0, 0.7)`
+      : 'none';
+
+    const discRadiusCss = state.discSquareTrap
+      ? '0px; /* ⚠️ 直角鋸齒黑膠唱片 */'
+      : state.discRadius >= 50
+        ? '50%; /* 💡 50% 圓潤黑膠唱片完美正圓 */'
+        : `${state.discRadius}%; /* 💡 唱片倒角修飾 */`;
+
+    const discSpinAnim = state.discSpin
+      ? 'spinDisc 6s linear infinite; /* 💡 啟動 @keyframes spin 6s 平滑旋轉 */'
+      : 'none; /* 💡 靜止狀態 */';
+
+    const neonBorderCss = state.neonBorderTrap
+      ? 'border: 4px double #ff007f; /* ⚠️ 刺眼霓虹雙線邊框 */'
+      : 'border: 1px solid rgba(255, 255, 255, 0.08); /* 💡 極簡低調收邊 */';
+
+    const trackSkewCss = state.trackSkewTrap
+      ? 'transform: skew(-15deg); /* ⚠️ 文字傾斜失衡 */'
+      : '';
+
+    const progressFillCss = state.progressStripeTrap
+      ? 'repeating-linear-gradient(45deg, #000, #000 5px, #fff 5px, #fff 10px); /* ⚠️ 晃眼斑馬斜紋 */'
+      : state.progressColor;
+
+    const controlsGap = state.controlsScatterTrap ? '48px' : '20px';
+
+    return `/* 🛠️ 我的深夜電台音樂小卡樣式 */
+@keyframes spinDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.music-card {
+  width: 320px;
+  background: ${state.musicBg}; /* 💡 沉浸暗夜底色烘托深夜廣播氛圍 */
+  padding: ${state.musicPadding}px; /* 💡 內艙充裕留白 */
+  border-radius: ${state.musicRadius}px; /* 💡 現代柔潤大圓角 */
+  box-shadow: ${cardShadowCss}; /* 💡 浮空景深暗影 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #f8fafc;
+  font-family: inherit;
+  ${neonBorderCss}
+}
+
+.disc-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl-disc {
+  width: 140px;
+  height: 140px;
+  border-radius: ${discRadiusCss}
+  background: radial-gradient(circle, #1e1b4b 0%, #0f172a 40%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  animation: ${discSpinAnim}
+  border: 2px solid #334155;
+  position: relative;
+}
+
+.disc-grooves {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.disc-label {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  z-index: 2;
+}
+
+.track-info {
+  text-align: center;
+  width: 100%;
+  ${trackSkewCss}
+}
+
+.track-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+}
+
+.track-artist {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.progress-section {
+  width: 100%;
+}
+
+.progress-bar {
+  width: 100%;
+  height: ${state.progressHeight}px; /* 💡 膠囊音軌進度槽高度 */
+  background: #1e293b;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 68%;
+  height: 100%;
+  background: ${progressFillCss}; /* 💡 進度條色彩 */
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(129, 140, 248, 0.6);
+}
+
+.time-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${controlsGap}; /* 💡 控制鍵對稱舒適間隙 */
+}
+
+.ctrl-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.ctrl-btn:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.play-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: ${state.playBtnBg}; /* 💡 播放主按鈕高光色彩 */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px ${state.playBtnGlow}px ${hexToRgba(state.playBtnBg, 0.5)}; /* 💡 播放鍵外發光景深 */
+  font-size: 16px;
+}`;
+  }
+
+  if (missionId === 'mission-7') {
+    const cardShadowCss = state.stepCardShadow > 0
+      ? `0 20px ${state.stepCardShadow}px -10px rgba(0, 0, 0, 0.5)`
+      : 'none';
+
+    const nodeRadiusCss = state.stepNodeSquareTrap
+      ? '0px; /* ⚠️ 生硬直角方形節點 */'
+      : state.stepNodeRadius >= 50
+        ? '50%; /* 💡 50% 正圓狀態節點 */'
+        : `${state.stepNodeRadius}%;`;
+
+    const trackLineStyle = state.stepDashedTrackTrap ? 'dotted' : 'solid';
+
+    const pulseAnim = state.stepPulseGlow
+      ? `nodePulse 2s infinite; /* 💡 騎士進行中脈衝呼吸微動態 */`
+      : 'none;';
+
+    const headerShakeCss = state.stepHeaderShakeTrap
+      ? 'transform: rotate(-5deg); /* ⚠️ 標題歪斜晃動 */'
+      : '';
+
+    const filterTrapCss = state.stepGlitchInvertTrap
+      ? 'filter: invert(100%); /* ⚠️ 負片色彩倒轉 */'
+      : '';
+
+    const badgeBlurCss = state.stepBadgeBlurTrap
+      ? 'filter: blur(3px); /* ⚠️ 模糊失焦徽章 */'
+      : '';
+
+    return `/* 🛠️ 我的外送進度追蹤步進卡樣式 */
+@keyframes nodePulse {
+  0% { box-shadow: 0 0 0 0 ${hexToRgba(state.stepActiveColor, 0.7)}; }
+  70% { box-shadow: 0 0 0 12px ${hexToRgba(state.stepActiveColor, 0)}; }
+  100% { box-shadow: 0 0 0 0 ${hexToRgba(state.stepActiveColor, 0)}; }
+}
+
+.stepper-card {
+  width: 340px;
+  background: ${state.stepCardBg}; /* 💡 深藍夜間模式卡片背景 */
+  padding: ${state.stepCardPadding}px; /* 💡 舒展內留白 */
+  border-radius: ${state.stepCardRadius}px; /* 💡 20px 柔潤收邊 */
+  box-shadow: ${cardShadowCss};
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  ${filterTrapCss}
+}
+
+.stepper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  ${headerShakeCss}
+}
+
+.order-badge {
+  background: ${hexToRgba(state.stepActiveColor, 0.15)};
+  color: ${state.stepActiveColor};
+  padding: 4px 12px;
+  border-radius: ${state.stepBadgeRadius >= 9999 ? '9999px' : state.stepBadgeRadius + 'px'}; /* 💡 膠囊配送狀態徽章 */
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid ${hexToRgba(state.stepActiveColor, 0.3)};
+  ${badgeBlurCss}
+}
+
+.order-eta {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.step-track {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+}
+
+.step-progress-line {
+  position: absolute;
+  top: ${Math.round(state.stepNodeSize / 2) + 10}px;
+  left: 30px;
+  right: 30px;
+  height: ${state.stepLineHeight}px; /* 💡 進度軌道厚度 */
+  background: #334155;
+  border-style: ${trackLineStyle};
+  z-index: 1;
+}
+
+.step-progress-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: ${state.stepActiveColor};
+}
+
+.step-item {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-node {
+  width: ${state.stepNodeSize}px; /* 💡 節點尺寸寬高 */
+  height: ${state.stepNodeSize}px;
+  border-radius: ${nodeRadiusCss}
+  background: #1e293b;
+  border: 2px solid #334155;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.step-completed .step-node {
+  background: ${state.stepActiveColor};
+  border-color: ${state.stepActiveColor};
+  color: #ffffff;
+}
+
+.step-active .step-node {
+  background: ${state.stepCardBg};
+  border-color: ${state.stepActiveColor};
+  color: ${state.stepActiveColor};
+  animation: ${pulseAnim}
+}
+
+.step-label {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.step-active .step-label {
+  color: ${state.stepActiveColor};
+}
+
+.driver-bar {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.driver-avatar {
+  font-size: 24px;
+}
+
+.driver-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.driver-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.driver-rate {
+  font-size: 11px;
+  color: #fbbf24;
+}`;
+  }
+
+  if (missionId === 'mission-8') {
+    const cardShadowCss = state.confessCardShadow > 0
+      ? `0 15px ${state.confessCardShadow}px -5px rgba(244, 63, 94, 0.18), 0 5px 15px rgba(0, 0, 0, 0.05)`
+      : 'none';
+
+    const bubbleRadiusCss = state.bubbleSharpTrap
+      ? '0px; /* ⚠️ 銳利刺手直角氣泡 */'
+      : `${state.bubbleRadius}px; /* 💡 柔和對話氣泡圓角 */`;
+
+    const arrowDisplay = state.bubbleArrow ? 'block' : 'none';
+    const arrowRotate = state.bubbleArrowDistortTrap ? 'transform: rotate(45deg); /* ⚠️ 扭曲失控尖角 */' : '';
+
+    const filterTrapCss = state.confessSepiaDarkTrap ? 'filter: sepia(90%); /* ⚠️ 泛黃老舊復古濾鏡 */' : '';
+    const borderTrapCss = state.confessHeavyBorderTrap ? 'border: 4px solid #000000; /* ⚠️ 粗重壓抑黑邊框 */' : 'border: 1px solid rgba(244, 63, 94, 0.12); /* 💡 精緻粉嫩微外框 */';
+    const letterSpacingCss = state.confessTextSpacingTrap ? 'letter-spacing: 10px; /* ⚠️ 鬆散脫節字元間距 */' : 'letter-spacing: normal;';
+
+    const hoverBounceCss = state.heartHoverBounce
+      ? `
+.heart-btn:hover {
+  transform: scale(1.08); /* 💡 懸停心跳微彈跳反饋 */
+  box-shadow: 0 6px ${state.heartBtnGlow + 4}px ${hexToRgba(state.heartBtnBg, 0.5)};
+}`
+      : '';
+
+    return `/* 🛠️ 我的告白牆對話氣泡卡樣式 */
+.confession-card {
+  width: 330px;
+  background: #ffffff;
+  padding: ${state.confessCardPadding}px; /* 💡 舒展內艙留白 */
+  border-radius: ${state.confessCardRadius}px; /* 💡 外卡柔和圓角 */
+  box-shadow: ${cardShadowCss};
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: inherit;
+  ${borderTrapCss}
+  ${filterTrapCss}
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sender-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffe4e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.sender-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.sender-tag {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e11d48;
+}
+
+.post-time {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.chat-bubble {
+  position: relative;
+  background: ${state.bubbleBg}; /* 💡 戀愛系溫暖粉嫩氣泡底色 */
+  padding: 16px 18px;
+  border-radius: ${bubbleRadiusCss}
+  border-top-left-radius: 4px;
+  border: 1px solid #fecdd3;
+}
+
+.bubble-text {
+  font-size: 14px;
+  color: #4c0519;
+  line-height: ${state.confessLineHeight}px; /* 💡 舒適告白長文閱讀行距 */
+  margin: 0;
+  ${letterSpacingCss}
+}
+
+.bubble-arrow {
+  display: ${arrowDisplay};
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid ${state.bubbleBg}; /* 💡 純 CSS border 三角形尖角定位 */
+  ${arrowRotate}
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.heart-btn {
+  background: ${state.heartBtnBg}; /* 💡 心動主色 */
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px ${state.heartBtnGlow}px ${hexToRgba(state.heartBtnBg, 0.4)}; /* 💡 心跳立體投影 */
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+${hoverBounceCss}
+
+.reply-hint {
+  font-size: 12px;
+  color: #94a3b8;
+}`;
+  }
+
+  if (missionId === 'mission-9') {
+    const clipVal = state.cyberClipCorner;
+    const clipCss = clipVal > 0
+      ? `clip-path: polygon(0 0, calc(100% - ${clipVal}px) 0, 100% ${clipVal}px, 100% 100%, ${clipVal}px 100%, 0 calc(100% - ${clipVal}px)); /* 💡 多邊形幾何科技切角 */`
+      : 'clip-path: none;';
+
+    const glowCss = state.cyberNeonGlow > 0
+      ? `box-shadow: 0 0 ${state.cyberNeonGlow}px ${hexToRgba(state.cyberNeonColor, 0.5)}, inset 0 0 ${Math.round(state.cyberNeonGlow * 0.7)}px ${hexToRgba(state.cyberNeonColor, 0.2)}; /* 💡 雙重內外霓虹自發光 */`
+      : 'box-shadow: none;';
+
+    const scanlineDisplay = state.cyberScanlineToggle ? 'block' : 'none';
+
+    const titleGlowCss = state.cyberTitleGlow
+      ? `text-shadow: 0 0 10px ${hexToRgba(state.cyberNeonColor, 0.9)}; /* 💡 全像標題文字發光 */`
+      : 'text-shadow: none;';
+
+    const fontTrapCss = state.cyberComicFontTrap ? 'font-family: cursive !important; /* ⚠️ 漫畫手寫字體破壞感 */' : 'font-family: monospace, sans-serif;';
+    const filterTrapCss = state.cyberPassBlurTrap ? 'filter: blur(5px); /* ⚠️ 全像信號嚴重丟失 */' : '';
+    const spinTrapCss = state.cyberCardSpinTrap ? 'transform: rotate(180deg); /* ⚠️ 瘋狂翻滾失重 */' : '';
+    const borderDottedTrap = state.cyberRainbowDottedTrap ? 'border: 3px dotted #ff00ff !important; /* ⚠️ 繽紛點狀小丑邊框 */' : '';
+
+    return `/* 🛠️ 我的賽博龐克全像通行證樣式 */
+@keyframes scanlineAnim {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.cyber-pass {
+  position: relative;
+  width: 320px;
+  background: ${state.cyberWhiteBgTrap ? '#ffffff /* ⚠️ 刺眼日光純白底 */' : state.cyberPassBg}; /* 💡 沉浸深黑碳纖底色 */
+  padding: ${state.cyberPassPadding}px; /* 💡 硬派科技艙體留白 */
+  ${clipCss}
+  border: ${state.cyberBorderWidth}px solid ${state.cyberNeonColor}; /* 💡 科技外骨骼輪廓 */
+  ${glowCss}
+  color: ${state.cyberNeonColor};
+  ${fontTrapCss}
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  ${filterTrapCss}
+  ${spinTrapCss}
+  ${borderDottedTrap}
+}
+
+.cyber-scanline {
+  display: ${scanlineDisplay};
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(180deg, transparent, ${hexToRgba(state.cyberNeonColor, 0.6)}, transparent);
+  animation: scanlineAnim 3s linear infinite;
+  pointer-events: none;
+}
+
+.cyber-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid ${hexToRgba(state.cyberNeonColor, 0.3)};
+  padding-bottom: 8px;
+}
+
+.cyber-badge {
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 800;
+  color: ${state.cyberAccentColor};
+  text-shadow: 0 0 8px ${hexToRgba(state.cyberAccentColor, 0.8)};
+}
+
+.cyber-access {
+  font-size: 10px;
+  background: ${hexToRgba(state.cyberNeonColor, 0.15)};
+  padding: 2px 8px;
+  border: 1px solid ${state.cyberNeonColor};
+}
+
+.cyber-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cyber-avatar {
+  width: 54px;
+  height: 54px;
+  background: ${hexToRgba(state.cyberAccentColor, 0.15)};
+  border: 2px solid ${state.cyberAccentColor};
+  box-shadow: 0 0 ${state.cyberAvatarGlow}px ${hexToRgba(state.cyberAccentColor, 0.6)}; /* 💡 核心晶片外環光暈 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+.cyber-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cyber-name {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #ffffff;
+  ${titleGlowCss}
+  margin: 0;
+}
+
+.cyber-role {
+  font-size: 11px;
+  color: ${state.cyberNeonColor};
+  letter-spacing: 1px;
+  margin: 4px 0 0 0;
+}
+
+.cyber-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid ${hexToRgba(state.cyberNeonColor, 0.2)};
+  padding-top: 12px;
+}
+
+.barcode-lines {
+  font-family: monospace;
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #ffffff;
+}
+
+.barcode-hash {
+  font-size: 9px;
+  color: #64748b;
+}
+
+.cyber-stamp {
+  font-size: 10px;
+  color: ${state.cyberAccentColor};
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: 1px solid ${state.cyberAccentColor};
+  padding: 3px 6px;
+  text-shadow: 0 0 5px ${hexToRgba(state.cyberAccentColor, 0.8)};
+}`;
+  }
+
+  if (missionId === 'mission-10') {
+    const tiltCss = state.prismFlatZeroTrap
+      ? 'transform: none !important; /* ⚠️ 拍扁直角厚紙板 */'
+      : state.prismTilt
+        ? 'transform: rotateX(12deg) rotateY(-12deg); /* 💡 3D 空間透視傾角 */'
+        : 'transform: none;';
+
+    const shadowCss = state.prismShadow > 0
+      ? `-15px 25px ${state.prismShadow}px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.25)`
+      : 'none';
+
+    const auroraDisplay = state.prismAuroraBorder ? 'block' : 'none';
+
+    const titleReflectCss = state.prismTitleReflect
+      ? `background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* 💡 燙金銀白金屬文字裁切 */`
+      : 'color: #ffffff;';
+
+    const borderHighlightCss = state.prismBorderHighlight
+      ? 'border: 1px solid rgba(255, 255, 255, 0.18); /* 💡 0.5px 高折射率晶體外框 */'
+      : 'border: none;';
+
+    const cardRadiusCss = state.prismFlatZeroTrap
+      ? '0px !important; /* ⚠️ 銳利厚紙板直角 */'
+      : `${state.prismRadius}px; /* 💡 24px 晶體切面柔和倒角 */`;
+
+    const bgMuddyTrap = state.prismMuddyGreenTrap ? '#2b3a1a /* ⚠️ 渾濁泥濘草綠底 */' : state.prismGlassBg;
+    const distortScaleTrap = state.prismDistortScaleTrap ? 'transform: scale(1.6, 0.5) !important; /* ⚠️ 壓扁失真比例 */' : '';
+    const pixelBorderTrap = state.prismPixelateBorderTrap ? 'border: 5px ridge #ff0000 !important; /* ⚠️ 粗糙鋸齒紅綠邊框 */' : '';
+    const extremeSkewTrap = state.prismExtremeSkewTrap ? 'transform: skewY(25deg) !important; /* ⚠️ 失速嚴重翻覆 */' : '';
+
+    return `/* 🛠️ 我的 3D 透視炫彩流光稜鏡卡樣式 */
+@keyframes auroraRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.prism-container {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.prism-card {
+  position: relative;
+  width: 330px;
+  height: 200px;
+  border-radius: ${cardRadiusCss}
+  background: ${bgMuddyTrap}; /* 💡 黑曜石奢華底色 */
+  ${tiltCss}
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: ${shadowCss};
+  display: flex;
+  overflow: hidden;
+  ${borderHighlightCss}
+  ${distortScaleTrap}
+  ${pixelBorderTrap}
+  ${extremeSkewTrap}
+}
+
+.prism-card:hover {
+  transform: rotateX(0deg) rotateY(0deg) scale(1.05); /* 💡 Hover 懸浮正視微放大 */
+}
+
+.aurora-glow-rim {
+  display: ${auroraDisplay};
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, #6366f1, #ec4899, #00f2fe, #10b981, #6366f1);
+  animation: auroraRotate 8s linear infinite;
+  opacity: 0.35;
+  filter: blur(20px);
+}
+
+.prism-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: ${state.prismPadding}px; /* 💡 奢華座艙留白 */
+  background: rgba(11, 15, 25, 0.85);
+  ${state.prismBackdropBlur > 0 ? `backdrop-filter: blur(${state.prismBackdropBlur}px); /* 💡 晶體磨砂玻璃折射 */` : ''}
+  border-radius: ${cardRadiusCss}
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.prism-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prism-badge {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #38bdf8;
+}
+
+.crystal-icon {
+  font-size: 18px;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.8));
+}
+
+.prism-middle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prism-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin: 0;
+  ${titleReflectCss}
+}
+
+.prism-subtitle {
+  font-size: 10px;
+  color: #94a3b8;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.prism-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chip-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hologram-chip {
+  width: 32px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+  box-shadow: 0 0 ${state.prismChipGlow}px rgba(251, 191, 36, 0.6); /* 💡 智慧晶片金屬光暈 */
+}
+
+.card-number {
+  font-family: monospace;
+  font-size: 12px;
+  color: #e2e8f0;
+  letter-spacing: 1px;
+}
+
+.vip-grade {
+  font-size: 10px;
+  font-weight: 800;
+  color: #f43f5e;
+  letter-spacing: 1px;
+  background: rgba(244, 63, 94, 0.15);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}`;
+  }
 }
 
 function hexToRgba(hex, alpha = 1) {
@@ -338,33 +1151,58 @@ function hexToRgba(hex, alpha = 1) {
 
 /**
  * CSS 作用域隔離函數：將 CSS 選擇器加上指定 scope 前綴，避免雙畫布樣式互相干擾
+ * 支援 @keyframes、@media 等嵌套成對大括號之正確剖析
  */
 export function scopeCss(css, scopeClass) {
   if (!css) return '';
-  const cleanCss = css.replace(/\/\*[\s\S]*?\*\//g, '');
-  return cleanCss
-    .split('}')
-    .map(block => {
-      const trimmed = block.trim();
-      if (!trimmed) return '';
-      const braceIdx = trimmed.indexOf('{');
-      if (braceIdx === -1) return '';
-      const selectorPart = trimmed.substring(0, braceIdx).trim();
-      const bodyPart = trimmed.substring(braceIdx + 1).trim();
-      if (selectorPart.startsWith('@')) {
-        return `${selectorPart} { ${bodyPart} }`;
-      }
-      const scopedSelectors = selectorPart
+  // 移除多行註解
+  const clean = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const results = [];
+  let i = 0;
+
+  while (i < clean.length) {
+    while (i < clean.length && /\s/.test(clean[i])) i++;
+    if (i >= clean.length) break;
+
+    const openBrace = clean.indexOf('{', i);
+    if (openBrace === -1) break;
+
+    const selector = clean.substring(i, openBrace).trim();
+
+    // 依據括號深度精確比對成對閉合括號（徹底解決 @keyframes 內嵌 0% { } 100% { } 導致提早斷開的問題）
+    let depth = 1;
+    let j = openBrace + 1;
+    while (j < clean.length && depth > 0) {
+      if (clean[j] === '{') depth++;
+      else if (clean[j] === '}') depth--;
+      j++;
+    }
+
+    const body = clean.substring(openBrace + 1, j - 1).trim();
+    i = j;
+
+    if (!selector) continue;
+
+    // 若為 @keyframes (或 -webkit-keyframes)，全域保留其名稱與關鍵幀結構，不加類別前綴
+    if (/^@(-webkit-)?keyframes/i.test(selector)) {
+      results.push(`${selector} {\n  ${body}\n}`);
+    } else if (selector.startsWith('@')) {
+      results.push(`${selector} {\n  ${body}\n}`);
+    } else {
+      // 一般 CSS 選擇器加上作用域隔離前綴
+      const scopedSelectors = selector
         .split(',')
         .map(s => {
           const trimmedS = s.trim();
           if (!trimmedS) return '';
+          if (trimmedS.startsWith(`.${scopeClass}`)) return trimmedS;
           return `.${scopeClass} ${trimmedS}`;
         })
         .filter(Boolean)
         .join(', ');
-      return `${scopedSelectors} {\n  ${bodyPart}\n}`;
-    })
-    .filter(Boolean)
-    .join('\n\n');
+      results.push(`${scopedSelectors} {\n  ${body}\n}`);
+    }
+  }
+
+  return results.join('\n\n');
 }

@@ -1388,6 +1388,1879 @@ export const MISSIONS = [
         desc: '深度懸浮陰影'
       }
     ]
+  },
+  {
+    id: 'mission-6',
+    number: 6,
+    title: '深夜電台黑膠音樂小卡',
+    subtitle: '生活美學：border-radius: 50% 正圓裁切、@keyframes spin 旋轉與發光進度條',
+    client: {
+      name: '浩東（校園午夜電台 DJ）',
+      avatar: '🎧',
+      dialogue: '「午夜節目開播時大家都在滑手機，但我這張音樂卡方方正正像台冷氣遙控器！黑膠唱片不會轉、進度條死黑一片、播放鍵連個光暈都擠不出來... 誰要聽我播歌啊！」'
+    },
+    learningFocus: [
+      '用 border-radius: 50% 打造完美正圓形黑膠唱片',
+      '用 @keyframes spin 製造 6s 平滑無限旋轉動態',
+      '用純黑曜沉浸底色 (#090d16) 烘托午夜孤獨專注氛圍',
+      '用柔和紫藍發光進度條清楚標註音樂播放時間軸',
+      '用立體霓光圓形按鈕確立核心播放控制焦點'
+    ],
+    htmlTemplate: `<div class="music-card">
+  <div class="disc-wrapper">
+    <div class="vinyl-disc">
+      <div class="disc-grooves"></div>
+      <div class="disc-label">
+        <span class="disc-icon">🎵</span>
+      </div>
+    </div>
+  </div>
+  <div class="track-info">
+    <h3 class="track-title">Midnight Tokyo Lofi</h3>
+    <p class="track-artist">ChillHop Radio • 午夜調頻</p>
+  </div>
+  <div class="progress-section">
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    <div class="time-meta">
+      <span class="time-curr">02:45</span>
+      <span class="time-total">03:50</span>
+    </div>
+  </div>
+  <div class="player-controls">
+    <button class="ctrl-btn prev-btn">⏮</button>
+    <button class="ctrl-btn play-btn">▶</button>
+    <button class="ctrl-btn next-btn">⏭</button>
+  </div>
+</div>`,
+    designerTargetCss: `/* 🎯 設計師標準成果 (100分) */
+@keyframes spinDisc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.music-card {
+  width: 320px;
+  background: #090d16;
+  padding: 22px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #f8fafc;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.disc-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl-disc {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1e1b4b 0%, #0f172a 40%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  animation: spinDisc 6s linear infinite;
+  border: 2px solid #334155;
+  position: relative;
+}
+
+.disc-grooves {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.disc-label {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  z-index: 2;
+}
+
+.track-info {
+  text-align: center;
+  width: 100%;
+}
+
+.track-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+}
+
+.track-artist {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.progress-section {
+  width: 100%;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #1e293b;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 68%;
+  height: 100%;
+  background: #818cf8;
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(129, 140, 248, 0.6);
+}
+
+.time-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 6px;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.ctrl-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.ctrl-btn:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.play-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #6366f1;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+  font-size: 16px;
+}`,
+    targetInspector: {
+      colors: [
+        { label: '沉浸黑夜底色', hex: '#090d16', role: 'musicBg' },
+        { label: '進度高亮紫藍', hex: '#818cf8', role: 'progressColor' },
+        { label: '播放核心焦點', hex: '#6366f1', role: 'playBtnBg' },
+        { label: '曲目高亮白色', hex: '#ffffff', role: 'textColor' }
+      ],
+      metrics: [
+        { label: '唱片造型', value: '50% (正圓無限旋轉)' },
+        { label: '音軌厚度', value: '6px (圓潤膠囊)' },
+        { label: '播放主鍵', value: '48px 正圓光暈' },
+        { label: '機身倒角', value: '24px 現代收邊' },
+        { label: '懸浮光影', value: '景深 40px, 沉浸投影' }
+      ],
+      tip: '💡 黑膠唱片必須是 50% 正圓並帶有旋轉動態，搭配高對比深色背景與高光播放按鈕，瞬間散發高級音樂質感！'
+    },
+    tools: [
+      {
+        id: 'discRadius',
+        name: '唱片正圓圓角 (Border Radius)',
+        type: 'slider',
+        unit: '%',
+        min: 0,
+        max: 50,
+        step: 5,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 50,
+        targetRange: [40, 50],
+        isTrap: false,
+        desc: '磨平直角，使黑膠唱片化為 50% 完美正圓'
+      },
+      {
+        id: 'discSpin',
+        name: '黑膠旋轉動態 (Spin Animation)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: '啟動純 CSS 6s 無限旋轉微動態'
+      },
+      {
+        id: 'discSquareTrap',
+        name: '直角鋸齒唱片 (Square Disc Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '直角鋸齒唱片：黑膠唱片必須是正圓形 (50%)，直角會破壞唱片物理真實感。',
+        desc: '強制黑膠唱片為直角死板外框'
+      },
+      {
+        id: 'musicBg',
+        name: '播放器沉浸底色 (Card Background)',
+        type: 'color',
+        defaultValue: '#e2e8f0',
+        cleanValue: '#cbd5e1',
+        targetValue: '#090d16',
+        isTrap: false,
+        desc: '深邃午夜暗黑沉浸背景'
+      },
+      {
+        id: 'musicRadius',
+        name: '機身弧形收邊 (Card Radius)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 36,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 24,
+        targetRange: [18, 28],
+        isTrap: false,
+        desc: '24px 現代收邊柔和倒角'
+      },
+      {
+        id: 'musicPadding',
+        name: '機身內部留白 (Card Padding)',
+        type: 'slider',
+        unit: 'px',
+        min: 4,
+        max: 36,
+        step: 2,
+        defaultValue: 6,
+        cleanValue: 6,
+        targetValue: 22,
+        targetRange: [16, 26],
+        isTrap: false,
+        desc: '撐開播放器呼吸空間，告別緊貼擠壓'
+      },
+      {
+        id: 'trackSkewTrap',
+        name: '文字傾斜失衡 (Track Skew Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '文字傾斜失衡：過度 skew 傾斜文字會破壞排版閱讀穩定性。',
+        desc: '文字傾斜 -15 度造成視覺失衡'
+      },
+      {
+        id: 'progressColor',
+        name: '音軌進度高亮 (Progress Color)',
+        type: 'color',
+        defaultValue: '#000000',
+        cleanValue: '#64748b',
+        targetValue: '#818cf8',
+        isTrap: false,
+        desc: '高亮紫藍發光進度條'
+      },
+      {
+        id: 'progressHeight',
+        name: '進度條厚度 (Progress Height)',
+        type: 'slider',
+        unit: 'px',
+        min: 2,
+        max: 16,
+        step: 1,
+        defaultValue: 2,
+        cleanValue: 2,
+        targetValue: 6,
+        targetRange: [4, 8],
+        isTrap: false,
+        desc: '精緻 6px 膠囊進度條'
+      },
+      {
+        id: 'neonBorderTrap',
+        name: '刺眼霓虹外框 (Neon Border Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '刺眼雙線邊框：過於搶眼的亮粉外框會搶走音樂唱片視覺焦點。',
+        desc: '4px double 粉紅刺眼雙線外框'
+      },
+      {
+        id: 'playBtnBg',
+        name: '播放鍵主色 (Play Button Bg)',
+        type: 'color',
+        defaultValue: '#94a3b8',
+        cleanValue: '#64748b',
+        targetValue: '#6366f1',
+        isTrap: false,
+        desc: '醒目點擊焦點主色'
+      },
+      {
+        id: 'playBtnGlow',
+        name: '播放鍵光暈 (Play Button Glow)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 30,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 16,
+        targetRange: [10, 22],
+        isTrap: false,
+        desc: '懸浮發光深度反饋'
+      },
+      {
+        id: 'progressStripeTrap',
+        name: '晃眼斑馬進度條 (Stripe Progress Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '斑馬斜紋進度條：條紋過於刺眼雜亂，降低進度條精準度。',
+        desc: '黑白斑馬斜紋干擾進度條'
+      },
+      {
+        id: 'musicShadow',
+        name: '機身浮空景深 (Box Shadow)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 40,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 24,
+        targetRange: [16, 32],
+        isTrap: false,
+        desc: '深沉暗影浮動感'
+      },
+      {
+        id: 'controlsScatterTrap',
+        name: '控制按鈕分散脫節 (Scatter Controls Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '控制按鈕脫節：過度寬鬆的按鈕間隔讓播放控制器失去操作重心。',
+        desc: '超寬分散佈局破壞居中按鍵控制'
+      }
+    ]
+  },
+  {
+    id: 'mission-7',
+    number: 7,
+    title: '外送進度追蹤步進卡',
+    subtitle: '即時動態：Flex 步進對齊、連接軌道 ::after、@keyframes pulse 脈動呼吸光',
+    client: {
+      name: '宇軒（飢腸轆轆的宿委會幹部）',
+      avatar: '🛵',
+      dialogue: '「半夜十二點訂了 50 份消夜雞排犒賞宿委，外送平台的追蹤卡卻醜到哭：三個狀態節點死黏在一起、連線斷裂、而且不知道外送員現在騎到哪裡了！大家快暴動了，幫我點亮它！」'
+    },
+    learningFocus: [
+      '用 Flexbox 與 space-between 展開步進節點的完美幾何對齊',
+      '用偽元素 ::after 打造動態連接線軌道 (Track Line)',
+      '用 @keyframes pulse 賦予進行中騎士節點真實呼吸波紋',
+      '用 9999px 膠囊徽章精準提示外送抵達狀態與倒數資訊',
+      '排除破壞動態連續感的中斷雜音樣式'
+    ],
+    htmlTemplate: `<div class="stepper-card">
+  <div class="stepper-header">
+    <div class="order-badge">⚡ 配送中</div>
+    <div class="order-eta">預計 12 分鐘抵達</div>
+  </div>
+  <div class="step-track">
+    <div class="step-progress-line"></div>
+    <div class="step-item step-completed">
+      <div class="step-node">✓</div>
+      <span class="step-label">餐點製作</span>
+    </div>
+    <div class="step-item step-active">
+      <div class="step-node pulse-node">🛵</div>
+      <span class="step-label">外送騎士</span>
+    </div>
+    <div class="step-item step-pending">
+      <div class="step-node">📍</div>
+      <span class="step-label">宿舍大門</span>
+    </div>
+  </div>
+  <div class="driver-bar">
+    <div class="driver-avatar">👨‍🍳</div>
+    <div class="driver-meta">
+      <div class="driver-name">陳騎士 • 三陽 JET SL</div>
+      <div class="driver-rate">★ 4.9 (500+ 送達)</div>
+    </div>
+  </div>
+</div>`,
+    designerTargetCss: `/* 🎯 設計師標準成果 (100分) */
+@keyframes nodePulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.stepper-card {
+  width: 340px;
+  background: #0f172a;
+  padding: 24px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stepper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.order-eta {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.step-track {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+}
+
+.step-progress-line {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  right: 30px;
+  height: 4px;
+  background: #334155;
+  z-index: 1;
+}
+
+.step-progress-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: #10b981;
+}
+
+.step-item {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-node {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 2px solid #334155;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.step-completed .step-node {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.step-active .step-node {
+  background: #0f172a;
+  border-color: #10b981;
+  color: #10b981;
+  animation: nodePulse 2s infinite;
+}
+
+.step-label {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.step-active .step-label {
+  color: #10b981;
+}
+
+.driver-bar {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 12px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.driver-avatar {
+  font-size: 24px;
+}
+
+.driver-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.driver-rate {
+  font-size: 11px;
+  color: #fbbf24;
+}`,
+    targetInspector: {
+      colors: [
+        { label: '進行狀態翡翠綠', hex: '#10b981', role: 'stepActiveColor' },
+        { label: '夜間深藍底色', hex: '#0f172a', role: 'stepCardBg' },
+        { label: '輔助說明灰藍', hex: '#94a3b8', role: 'textColor' },
+        { label: '星等評分金黃', hex: '#fbbf24', role: 'accentColor' }
+      ],
+      metrics: [
+        { label: '節點弧度', value: '50% (正圓節點)' },
+        { label: '脈動波紋', value: '2s 無限擴散呼吸光' },
+        { label: '軌道高度', value: '4px 連續進度條' },
+        { label: '卡片圓角', value: '20px 現代收邊' },
+        { label: '空間呼吸', value: 'Padding 24px 充裕留白' }
+      ],
+      tip: '💡 步進追蹤器講究節點正圓與呼吸脈衝光，搭配清晰的雙色進度線，能讓使用者一眼掌握外送動態！'
+    },
+    tools: [
+      {
+        id: 'stepNodeRadius',
+        name: '節點正圓圓弧 (Node Radius)',
+        type: 'slider',
+        unit: '%',
+        min: 0,
+        max: 50,
+        step: 5,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 50,
+        targetRange: [40, 50],
+        isTrap: false,
+        desc: '50% 正圓形步進狀態節點'
+      },
+      {
+        id: 'stepPulseGlow',
+        name: '脈衝呼吸光 (Pulse Glow)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: '進行中騎士節點動態呼吸光環'
+      },
+      {
+        id: 'stepNodeSquareTrap',
+        name: '生硬方形節點 (Square Node Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '生硬方形節點：步進器節點建議為圓形，方形顯得突兀生硬。',
+        desc: '直角方形打碎步進節點連續感'
+      },
+      {
+        id: 'stepLineHeight',
+        name: '軌道厚度 (Track Line Height)',
+        type: 'slider',
+        unit: 'px',
+        min: 1,
+        max: 10,
+        step: 1,
+        defaultValue: 1,
+        cleanValue: 1,
+        targetValue: 4,
+        targetRange: [3, 6],
+        isTrap: false,
+        desc: '4px 飽滿狀態連接軸線'
+      },
+      {
+        id: 'stepActiveColor',
+        name: '進行中主題色 (Active Color)',
+        type: 'color',
+        defaultValue: '#000000',
+        cleanValue: '#64748b',
+        targetValue: '#10b981',
+        isTrap: false,
+        desc: '清新醒目翡翠綠'
+      },
+      {
+        id: 'stepDashedTrackTrap',
+        name: '虛線折斷軌道 (Dotted Track Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '虛線折斷軌道：點狀虛線會讓外送路徑看起來斷斷續續缺乏連續性。',
+        desc: '點狀虛線連接線破壞進度流暢感'
+      },
+      {
+        id: 'stepCardBg',
+        name: '追蹤卡背景色 (Card Bg)',
+        type: 'color',
+        defaultValue: '#ffffff',
+        cleanValue: '#f8fafc',
+        targetValue: '#0f172a',
+        isTrap: false,
+        desc: '沉浸深藍夜間模式底色'
+      },
+      {
+        id: 'stepCardRadius',
+        name: '追蹤卡大圓角 (Card Radius)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 30,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 20,
+        targetRange: [16, 26],
+        isTrap: false,
+        desc: '20px 現代優雅收邊'
+      },
+      {
+        id: 'stepGlitchInvertTrap',
+        name: '負片色彩倒轉 (Invert Color Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '色彩負片反相：反相濾鏡讓介面色彩失衡刺眼。',
+        desc: '反相 100% 刺眼負片效果'
+      },
+      {
+        id: 'stepCardPadding',
+        name: '空間呼吸留白 (Padding)',
+        type: 'slider',
+        unit: 'px',
+        min: 6,
+        max: 36,
+        step: 2,
+        defaultValue: 6,
+        cleanValue: 6,
+        targetValue: 24,
+        targetRange: [18, 28],
+        isTrap: false,
+        desc: '終結內部壓迫擁擠感'
+      },
+      {
+        id: 'stepNodeSize',
+        name: '節點寬高尺寸 (Node Size)',
+        type: 'slider',
+        unit: 'px',
+        min: 24,
+        max: 54,
+        step: 2,
+        defaultValue: 28,
+        cleanValue: 28,
+        targetValue: 42,
+        targetRange: [36, 46],
+        isTrap: false,
+        desc: '42px 舒適辨識節點大小'
+      },
+      {
+        id: 'stepHeaderShakeTrap',
+        name: '標題歪斜晃動 (Header Tilt Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '標題歪斜晃動：不穩定的旋轉會破壞即時狀態卡的嚴謹信賴感。',
+        desc: '旋轉 -5 度造成標題傾斜'
+      },
+      {
+        id: 'stepBadgeRadius',
+        name: '狀態徽章弧度 (Badge Radius)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 9999,
+        step: 10,
+        hasCapsuleToggle: true,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 9999,
+        targetRange: [12, 9999],
+        isTrap: false,
+        desc: '9999px 膠囊配送狀態徽章'
+      },
+      {
+        id: 'stepBadgeBlurTrap',
+        name: '模糊失焦徽章 (Blur Badge Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '模糊失焦徽章：高斯模糊使重要狀態文字完全無法辨識。',
+        desc: '模糊濾鏡遮蔽重要配送資訊'
+      },
+      {
+        id: 'stepCardShadow',
+        name: '懸浮立體景深 (Box Shadow)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 40,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 20,
+        targetRange: [14, 28],
+        isTrap: false,
+        desc: '浮起卡片階層景深'
+      }
+    ]
+  },
+  {
+    id: 'mission-8',
+    number: 8,
+    title: '告白牆對話氣泡卡',
+    subtitle: '對話微動態：CSS 箭頭三角、Pastel 柔美漸層、:hover 心跳彈跳放大',
+    client: {
+      name: '芷晴（校園匿名告白牆小編）',
+      avatar: '💌',
+      dialogue: '「告白牆是全校流量最高的地方，但現在這篇置頂熱門告白長得像一張死氣沉沉的 Windows 記事本！沒有氣泡箭角、沒有粉嫩氛圍、按讚按鈕像灰色石塊... 請給它心跳動態與精緻對話框！」'
+    },
+    learningFocus: [
+      '用 CSS border 三角技法精準定位對話框指向尖角',
+      '用溫潤戀愛系粉嫩底色 (#fff1f2) 塑造沉浸告白情緒',
+      '用 :hover scale(1.08) 製作充滿生命力的高反饋心跳按鈕',
+      '用 line-height: 1.6 與呼吸留白提升深情長文的可讀性',
+      '避開泛黃老舊與生硬黑框等情感氛圍殺手'
+    ],
+    htmlTemplate: `<div class="confession-card">
+  <div class="post-header">
+    <div class="sender-avatar">🌸</div>
+    <div class="sender-meta">
+      <span class="sender-tag">#告白管院男神 7788</span>
+      <span class="post-time">10 分鐘前 • 匿名</span>
+    </div>
+  </div>
+  <div class="chat-bubble">
+    <p class="bubble-text">「今天在圖書館三樓穿米色毛衣寫演算法的你，陽光灑在你睫毛上的樣子真的太好看了... 明天還能遇到你嗎？🥺」</p>
+    <div class="bubble-arrow"></div>
+  </div>
+  <div class="card-footer">
+    <button class="heart-btn">
+      <span class="heart-icon">💖</span>
+      <span class="heart-count">520 心動</span>
+    </button>
+    <span class="reply-hint">38 則心動回覆</span>
+  </div>
+</div>`,
+    designerTargetCss: `/* 🎯 設計師標準成果 (100分) */
+.confession-card {
+  width: 330px;
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px -5px rgba(244, 63, 94, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: inherit;
+  border: 1px solid rgba(244, 63, 94, 0.12);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sender-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffe4e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.sender-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.sender-tag {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e11d48;
+}
+
+.post-time {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.chat-bubble {
+  position: relative;
+  background: #fff1f2;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border-top-left-radius: 4px;
+  border: 1px solid #fecdd3;
+}
+
+.bubble-text {
+  font-size: 14px;
+  color: #4c0519;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.bubble-arrow {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #fff1f2;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.heart-btn {
+  background: #f43f5e;
+  color: #ffffff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.4);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.heart-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(244, 63, 94, 0.5);
+}
+
+.reply-hint {
+  font-size: 12px;
+  color: #94a3b8;
+}`,
+    targetInspector: {
+      colors: [
+        { label: '柔粉氣泡底色', hex: '#fff1f2', role: 'bubbleBg' },
+        { label: '心動主色熱粉', hex: '#f43f5e', role: 'heartBtnBg' },
+        { label: '標籤重點玫瑰', hex: '#e11d48', role: 'accentColor' },
+        { label: '文字深邃紫紅', hex: '#4c0519', role: 'textColor' }
+      ],
+      metrics: [
+        { label: '氣泡圓角', value: '18px (帶有微倒角尖角)' },
+        { label: '對話箭頭', value: '精準頂端三角定位' },
+        { label: '閱讀行高', value: '1.6 (24px 呼吸行距)' },
+        { label: '懸停反饋', value: '1.08x 心跳彈跳' },
+        { label: '柔霧背光', value: '景深 35px, 浪漫粉光' }
+      ],
+      tip: '💡 對話氣泡的靈魂在於小巧可愛的定位尖角與溫潤粉嫩的底色，搭配愛心 Hover 微彈跳，心動感破表！'
+    },
+    tools: [
+      {
+        id: 'bubbleRadius',
+        name: '氣泡圓潤弧度 (Bubble Radius)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 26,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 18,
+        targetRange: [14, 22],
+        isTrap: false,
+        desc: '18px 柔潤圓角氣泡'
+      },
+      {
+        id: 'bubbleBg',
+        name: '柔粉氣泡底色 (Bubble Bg)',
+        type: 'color',
+        defaultValue: '#e2e8f0',
+        cleanValue: '#cbd5e1',
+        targetValue: '#fff1f2',
+        isTrap: false,
+        desc: '溫暖戀愛系柔粉底色'
+      },
+      {
+        id: 'bubbleSharpTrap',
+        name: '銳利刺手直角 (Sharp Bubble Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '銳利刺手直角：對話氣泡失去圓潤感會顯得冰冷生硬。',
+        desc: '0px 銳利死硬直角'
+      },
+      {
+        id: 'bubbleArrow',
+        name: '對話氣泡尖角 (Bubble Arrow)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: '精準定位對話框朝向尖角'
+      },
+      {
+        id: 'confessCardPadding',
+        name: '卡片內艙留白 (Padding)',
+        type: 'slider',
+        unit: 'px',
+        min: 6,
+        max: 36,
+        step: 2,
+        defaultValue: 6,
+        cleanValue: 6,
+        targetValue: 22,
+        targetRange: [16, 26],
+        isTrap: false,
+        desc: '充裕呼吸排版空間'
+      },
+      {
+        id: 'confessSepiaDarkTrap',
+        name: '泛黃老舊復古濾鏡 (Sepia Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '泛黃復古濾鏡：使原本粉嫩的告白氛圍變得昏暗陳舊。',
+        desc: '90% 復古老舊發黃濾鏡'
+      },
+      {
+        id: 'confessCardRadius',
+        name: '外卡精緻圓角 (Card Radius)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 32,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 20,
+        targetRange: [16, 26],
+        isTrap: false,
+        desc: '20px 現代卡片收邊'
+      },
+      {
+        id: 'heartBtnBg',
+        name: '心動主色 (Heart Button Bg)',
+        type: 'color',
+        defaultValue: '#64748b',
+        cleanValue: '#94a3b8',
+        targetValue: '#f43f5e',
+        isTrap: false,
+        desc: '心動玫瑰熱戀粉紅'
+      },
+      {
+        id: 'confessHeavyBorderTrap',
+        name: '粗重壓抑黑邊框 (Heavy Border Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '粗重黑邊框：生硬粗黑框會破壞浪漫輕柔的心動質感。',
+        desc: '4px 粗重黑框封閉畫面'
+      },
+      {
+        id: 'heartBtnGlow',
+        name: '心動立體光暈 (Heart Glow)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 30,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 16,
+        targetRange: [10, 22],
+        isTrap: false,
+        desc: '立體按鍵柔光投影'
+      },
+      {
+        id: 'heartHoverBounce',
+        name: '心跳懸停放大 (Hover Scale)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: 'Hover 彈力 1.08x 微放大'
+      },
+      {
+        id: 'bubbleArrowDistortTrap',
+        name: '扭曲失控尖角 (Distorted Arrow Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '扭曲尖角：旋轉 45 度使箭角脫離氣泡邊界造成破圖感。',
+        desc: '尖角旋轉 45 度破壞結構'
+      },
+      {
+        id: 'confessLineHeight',
+        name: '文字閱讀行高 (Line Height)',
+        type: 'slider',
+        unit: 'px',
+        min: 16,
+        max: 32,
+        step: 1,
+        defaultValue: 16,
+        cleanValue: 16,
+        targetValue: 24,
+        targetRange: [20, 26],
+        isTrap: false,
+        desc: '24px 舒適情書閱讀行距'
+      },
+      {
+        id: 'confessTextSpacingTrap',
+        name: '鬆散脫節字元間距 (Scattered Text Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '字元過度鬆散：過寬的字距嚴重阻礙真摯告白文句的閱讀流暢性。',
+        desc: '10px 字母過寬間距'
+      },
+      {
+        id: 'confessCardShadow',
+        name: '柔霧粉嫩背光 (Card Shadow)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 40,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 20,
+        targetRange: [14, 26],
+        isTrap: false,
+        desc: '溫潤多層次景深投影'
+      }
+    ]
+  },
+  {
+    id: 'mission-9',
+    number: 9,
+    title: '賽博龐克全像霓虹通行證',
+    subtitle: '炫炮未來：clip-path 科技切角、多重 text-shadow 霓虹發光、動態光束掃描線',
+    client: {
+      name: '凱文（元宇宙黑客松總召）',
+      avatar: '🕶️',
+      dialogue: '「這次黑客松主題是『賽博未來 2077』，但活動報到發的數位 Pass 竟然是一張像便利貼的白紙！完全沒有未來感、沒有霓虹發光、沒有全像掃描線！我要讓選手一打開手機就震撼到掉下巴！」'
+    },
+    learningFocus: [
+      '用 clip-path: polygon() 削出硬派科技多邊形科技切角',
+      '用 text-shadow 與 box-shadow 雙重堆疊極致霓虹光暈',
+      '用純 CSS 漸層與 @keyframes 打造動態全像光束掃描線',
+      '用電路青 (#00f2fe) 與霓虹洋紅 (#ff007f) 營造前衛色彩對沖',
+      '辨別科技硬派視覺與惡意文字字型破壞的邊界'
+    ],
+    htmlTemplate: `<div class="cyber-pass">
+  <div class="cyber-scanline"></div>
+  <div class="cyber-header">
+    <div class="cyber-badge">NEO-TOKYO // 2077</div>
+    <span class="cyber-access">ACCESS: VIP</span>
+  </div>
+  <div class="cyber-body">
+    <div class="cyber-avatar">
+      <span class="cyber-avatar-icon">⚡</span>
+    </div>
+    <div class="cyber-info">
+      <h2 class="cyber-name">CYBER_PHANTOM</h2>
+      <p class="cyber-role">NEURAL PROTOCOL LEAD</p>
+    </div>
+  </div>
+  <div class="cyber-footer">
+    <div class="cyber-barcode">
+      <div class="barcode-lines">||| | |||| | || |||</div>
+      <span class="barcode-hash">0x7F99A_CYBER</span>
+    </div>
+    <div class="cyber-stamp">SYSTEM ACTIVE</div>
+  </div>
+</div>`,
+    designerTargetCss: `/* 🎯 設計師標準成果 (100分) */
+@keyframes scanlineAnim {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.cyber-pass {
+  position: relative;
+  width: 320px;
+  background: #05070f;
+  padding: 24px;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  border: 2px solid #00f2fe;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 242, 254, 0.15);
+  color: #00f2fe;
+  font-family: monospace, sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cyber-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(180deg, transparent, rgba(0, 242, 254, 0.6), transparent);
+  animation: scanlineAnim 3s linear infinite;
+  pointer-events: none;
+}
+
+.cyber-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 242, 254, 0.3);
+  padding-bottom: 8px;
+}
+
+.cyber-badge {
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 800;
+  color: #ff007f;
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.8);
+}
+
+.cyber-access {
+  font-size: 10px;
+  background: rgba(0, 242, 254, 0.15);
+  padding: 2px 8px;
+  border: 1px solid #00f2fe;
+}
+
+.cyber-body {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cyber-avatar {
+  width: 54px;
+  height: 54px;
+  background: rgba(255, 0, 127, 0.15);
+  border: 2px solid #ff007f;
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+
+.cyber-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cyber-name {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.9);
+  margin: 0;
+}
+
+.cyber-role {
+  font-size: 11px;
+  color: #00f2fe;
+  letter-spacing: 1px;
+  margin: 4px 0 0 0;
+}
+
+.cyber-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid rgba(0, 242, 254, 0.2);
+  padding-top: 12px;
+}
+
+.barcode-lines {
+  font-family: monospace;
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #ffffff;
+}
+
+.barcode-hash {
+  font-size: 9px;
+  color: #64748b;
+}
+
+.cyber-stamp {
+  font-size: 10px;
+  color: #ff007f;
+  font-weight: 800;
+  letter-spacing: 1px;
+  border: 1px solid #ff007f;
+  padding: 3px 6px;
+  text-shadow: 0 0 5px rgba(255, 0, 127, 0.8);
+}`,
+    targetInspector: {
+      colors: [
+        { label: '電路青霓虹光', hex: '#00f2fe', role: 'cyberNeonColor' },
+        { label: '賽博洋紅對沖', hex: '#ff007f', role: 'cyberAccentColor' },
+        { label: '碳纖沉浸深黑', hex: '#05070f', role: 'cyberPassBg' },
+        { label: '核心代碼純白', hex: '#ffffff', role: 'textColor' }
+      ],
+      metrics: [
+        { label: '科技切角', value: '18px 多邊形 clip-path' },
+        { label: '雙重光暈', value: '模糊 20px, 霓虹自發光' },
+        { label: '動態掃描', value: '3s 光束掃描線' },
+        { label: '外骨骼邊界', value: '2px 金屬感邊框' },
+        { label: '標題投影', value: '全像文字高光' }
+      ],
+      tip: '💡 賽博龐克風格的關鍵是深黑背景與高飽和自發光的青/紅雙色對比，切角與動態掃描線能瞬間把未來感拉滿！'
+    },
+    tools: [
+      {
+        id: 'cyberClipCorner',
+        name: '科技切角外觀 (Polygon Cut Corner)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 30,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 18,
+        targetRange: [14, 24],
+        isTrap: false,
+        desc: '硬派多邊形切角 clip-path'
+      },
+      {
+        id: 'cyberNeonColor',
+        name: '主霓虹青光 (Neon Cyan Color)',
+        type: 'color',
+        defaultValue: '#64748b',
+        cleanValue: '#475569',
+        targetValue: '#00f2fe',
+        isTrap: false,
+        desc: '賽博未來電路青'
+      },
+      {
+        id: 'cyberWhiteBgTrap',
+        name: '刺眼日光純白底 (White Bg Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '純白背景：白底完全沖淡霓虹自發光效果，失去賽博未來感。',
+        desc: '純白底色沖毀自發光'
+      },
+      {
+        id: 'cyberAccentColor',
+        name: '副霓虹洋紅 (Neon Magenta Color)',
+        type: 'color',
+        defaultValue: '#000000',
+        cleanValue: '#334155',
+        targetValue: '#ff007f',
+        isTrap: false,
+        desc: '衝突高飽和霓虹洋紅'
+      },
+      {
+        id: 'cyberNeonGlow',
+        name: '雙重外光暈 (Neon Glow Blur)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 40,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 20,
+        targetRange: [14, 28],
+        isTrap: false,
+        desc: '極致自發光霓虹雙重投影'
+      },
+      {
+        id: 'cyberComicFontTrap',
+        name: '漫畫手寫字體 (Comic Font Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '手寫漫畫字體：與硬派科技程式碼風格產生嚴重美學衝突。',
+        desc: '手寫字體破壞科技冷硬感'
+      },
+      {
+        id: 'cyberScanlineToggle',
+        name: '全像掃描線束 (Scanline Anim)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: '純 CSS 動態光束掃描線'
+      },
+      {
+        id: 'cyberPassBg',
+        name: '賽博碳纖底色 (Carbon Dark Bg)',
+        type: 'color',
+        defaultValue: '#ffffff',
+        cleanValue: '#e2e8f0',
+        targetValue: '#05070f',
+        isTrap: false,
+        desc: '沉浸深黑碳纖基底'
+      },
+      {
+        id: 'cyberPassBlurTrap',
+        name: '全像信號嚴重丟失 (Blur Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '信號高斯模糊：強烈模糊導致通行證識別碼完全失焦無法辨識。',
+        desc: '5px 高斯模糊遮蔽卡面'
+      },
+      {
+        id: 'cyberPassPadding',
+        name: '機艙邊界留白 (Padding)',
+        type: 'slider',
+        unit: 'px',
+        min: 8,
+        max: 36,
+        step: 2,
+        defaultValue: 8,
+        cleanValue: 8,
+        targetValue: 24,
+        targetRange: [18, 28],
+        isTrap: false,
+        desc: '硬派介面艙體留白'
+      },
+      {
+        id: 'cyberTitleGlow',
+        name: '標題全像投影光 (Title Text Glow)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: 'text-shadow 高強自發光'
+      },
+      {
+        id: 'cyberCardSpinTrap',
+        name: '瘋狂翻滾失重 (Spin Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '顛倒倒置：180度上下顛倒讓整張通行證無法正常閱讀。',
+        desc: '旋轉 180 度上下顛倒'
+      },
+      {
+        id: 'cyberBorderWidth',
+        name: '科技外骨骼 (Cyber Border Width)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 6,
+        step: 1,
+        defaultValue: 1,
+        cleanValue: 1,
+        targetValue: 2,
+        targetRange: [2, 3],
+        isTrap: false,
+        desc: '2px 俐落金屬外輪廓'
+      },
+      {
+        id: 'cyberRainbowDottedTrap',
+        name: '繽紛點狀小丑邊框 (Rainbow Dots Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '小丑點狀邊框：廉價點狀邊框破壞金屬科技流線感。',
+        desc: '點狀廉價彩色外框'
+      },
+      {
+        id: 'cyberAvatarGlow',
+        name: '核心晶片外環光 (Chip Core Glow)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 30,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 16,
+        targetRange: [10, 22],
+        isTrap: false,
+        desc: '洋紅能量核心光暈'
+      }
+    ]
+  },
+  {
+    id: 'mission-10',
+    number: 10,
+    title: '3D 透視炫彩流光稜鏡卡',
+    subtitle: '極致終章：3D perspective 傾角、conic-gradient 極光旋轉邊框與金屬流光',
+    client: {
+      name: '薇拉（數位藝術雙年展策展人）',
+      avatar: '💎',
+      dialogue: '「這是本年度壓軸特展的數位貴賓黑卡！但我現在拿到的版本平得像一張厚紙板，完全沒有晶體稜鏡的折射光、沒有 3D 空間懸浮感、邊框死灰暗淡。這是最後一關了，請為這件作品注入宇宙級的光影魔法！」'
+    },
+    learningFocus: [
+      '用 perspective 與 rotateX/rotateY 構建真 3D 懸浮空間感',
+      '用 conic-gradient 360° 旋轉打造極光彩虹流光邊緣',
+      '用 backdrop-filter: blur(16px) 與黑曜石半透明呈現深邃晶體質感',
+      '用 background-clip: text 打造金屬白銀與天藍反射的燙金文字',
+      '辨別頂級奢華設計與俗氣混亂雜訊的邊界線'
+    ],
+    htmlTemplate: `<div class="prism-container">
+  <div class="prism-card">
+    <div class="aurora-glow-rim"></div>
+    <div class="prism-inner">
+      <div class="prism-top">
+        <div class="prism-badge">AURORA // 2026</div>
+        <span class="crystal-icon">💎</span>
+      </div>
+      <div class="prism-middle">
+        <h1 class="prism-title">PRISM BLACK</h1>
+        <p class="prism-subtitle">INFINITE DIMENSION PASS</p>
+      </div>
+      <div class="prism-bottom">
+        <div class="chip-slot">
+          <div class="hologram-chip"></div>
+          <span class="card-number">•••• 8899</span>
+        </div>
+        <span class="vip-grade">PLATINUM VIP</span>
+      </div>
+    </div>
+  </div>
+</div>`,
+    designerTargetCss: `/* 🎯 設計師標準成果 (100分) */
+@keyframes auroraRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.prism-container {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.prism-card {
+  position: relative;
+  width: 330px;
+  height: 200px;
+  border-radius: 24px;
+  background: #0b0f19;
+  transform: rotateX(12deg) rotateY(-12deg);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: -15px 25px 50px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.2);
+  display: flex;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.prism-card:hover {
+  transform: rotateX(0deg) rotateY(0deg) scale(1.05);
+}
+
+.aurora-glow-rim {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, #6366f1, #ec4899, #00f2fe, #10b981, #6366f1);
+  animation: auroraRotate 8s linear infinite;
+  opacity: 0.35;
+  filter: blur(20px);
+}
+
+.prism-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: 22px;
+  background: rgba(11, 15, 25, 0.85);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.prism-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prism-badge {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #38bdf8;
+}
+
+.crystal-icon {
+  font-size: 18px;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.8));
+}
+
+.prism-middle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prism-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin: 0;
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.prism-subtitle {
+  font-size: 10px;
+  color: #94a3b8;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.prism-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chip-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hologram-chip {
+  width: 32px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.6);
+}
+
+.card-number {
+  font-family: monospace;
+  font-size: 12px;
+  color: #e2e8f0;
+  letter-spacing: 1px;
+}
+
+.vip-grade {
+  font-size: 10px;
+  font-weight: 800;
+  color: #f43f5e;
+  letter-spacing: 1px;
+  background: rgba(244, 63, 94, 0.15);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}`,
+    targetInspector: {
+      colors: [
+        { label: '黑曜半透深黑', hex: '#0b0f19', role: 'prismGlassBg' },
+        { label: '極光青天藍光', hex: '#38bdf8', role: 'accentColor' },
+        { label: '金屬晶片琥珀', hex: '#fbbf24', role: 'chipGlow' },
+        { label: '尊榮紫紅標籤', hex: '#f43f5e', role: 'tagColor' }
+      ],
+      metrics: [
+        { label: '3D 傾角', value: 'rotateX(12deg) rotateY(-12deg)' },
+        { label: '極光光環', value: 'conic-gradient 360° 旋轉' },
+        { label: '磨砂霧面', value: 'backdrop-filter: blur(16px)' },
+        { label: '金屬標題', value: 'background-clip: text 燙金' },
+        { label: '立體投影', value: '深度 50px 3D 浮空光影' }
+      ],
+      tip: '💡 3D 稜鏡卡的核心是透視視角配合旋轉極光光環，加上蘋果風格的磨砂玻璃與金屬漸層字體，展現現代最高階 UI 質感！'
+    },
+    tools: [
+      {
+        id: 'prismTilt',
+        name: '3D 空間透視傾斜 (3D Transform Tilt)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: '3D perspective 透視空間傾角'
+      },
+      {
+        id: 'prismAuroraBorder',
+        name: '極光旋轉動態 (Conic Aurora Rim)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: 'conic-gradient 360° 旋轉彩虹極光'
+      },
+      {
+        id: 'prismFlatZeroTrap',
+        name: '拍扁直角厚紙板 (Flat Board Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '拍扁厚紙板：移除 3D 與圓角讓黑卡失去立體晶體稜鏡感。',
+        desc: '扁平直角失去立體透視'
+      },
+      {
+        id: 'prismGlassBg',
+        name: '磨砂黑曜半透明底 (Obsidian Glass Bg)',
+        type: 'color',
+        defaultValue: '#e2e8f0',
+        cleanValue: '#cbd5e1',
+        targetValue: '#0b0f19',
+        isTrap: false,
+        desc: '深邃高貴黑曜石基底'
+      },
+      {
+        id: 'prismBackdropBlur',
+        name: '晶體折射模糊 (Backdrop Blur)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 30,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 16,
+        targetRange: [10, 22],
+        isTrap: false,
+        desc: '16px 蘋果風半透明折射'
+      },
+      {
+        id: 'prismMuddyGreenTrap',
+        name: '渾濁泥濘草綠底 (Muddy Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '渾濁泥濘色：失去黑曜石深邃奢華，色彩髒污混濁。',
+        desc: '髒污草綠色破壞高級質感'
+      },
+      {
+        id: 'prismRadius',
+        name: '稜鏡切面圓角 (Card Radius)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 36,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 24,
+        targetRange: [18, 28],
+        isTrap: false,
+        desc: '24px 柔潤圓角收邊'
+      },
+      {
+        id: 'prismPadding',
+        name: '機位留白 (Padding)',
+        type: 'slider',
+        unit: 'px',
+        min: 8,
+        max: 40,
+        step: 2,
+        defaultValue: 8,
+        cleanValue: 8,
+        targetValue: 22,
+        targetRange: [16, 26],
+        isTrap: false,
+        desc: '奢華貴賓艙位留白'
+      },
+      {
+        id: 'prismDistortScaleTrap',
+        name: '壓扁失真比例 (Distort Scale Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '壓縮失真：非等比縮放導致卡面字體與晶片嚴重變形。',
+        desc: 'X/Y 不等比壓縮變形'
+      },
+      {
+        id: 'prismShadow',
+        name: '懸浮暗黑深邃陰影 (Box Shadow Depth)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 50,
+        step: 2,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 30,
+        targetRange: [20, 40],
+        isTrap: false,
+        desc: '3D 浮空深邃投影'
+      },
+      {
+        id: 'prismTitleReflect',
+        name: '金屬質感文字漸層 (Metallic Text Clip)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: '燙金銀白流光文字背景裁切'
+      },
+      {
+        id: 'prismPixelateBorderTrap',
+        name: '粗糙鋸齒紅綠邊框 (Pixel Border Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '粗糙凸起紅邊：俗氣邊框樣式徹底毀掉極簡前衛設計。',
+        desc: '5px ridge 凸起俗氣紅框'
+      },
+      {
+        id: 'prismBorderHighlight',
+        name: '高折射晶體邊框 (Crystal Highlight Rim)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: false,
+        targetValue: true,
+        isTrap: false,
+        desc: '極細晶體高光反射邊界'
+      },
+      {
+        id: 'prismExtremeSkewTrap',
+        name: '失速嚴重翻覆 (Skew Trap)',
+        type: 'toggle',
+        defaultValue: false,
+        cleanValue: true,
+        targetValue: false,
+        isTrap: true,
+        trapWarning: '嚴重失速傾斜：傾斜 25 度使卡片飛出視線重心。',
+        desc: '傾斜 25 度劇烈歪斜'
+      },
+      {
+        id: 'prismChipGlow',
+        name: '核心晶片高光反饋 (Chip Glow Blur)',
+        type: 'slider',
+        unit: 'px',
+        min: 0,
+        max: 25,
+        step: 1,
+        defaultValue: 0,
+        cleanValue: 0,
+        targetValue: 14,
+        targetRange: [8, 18],
+        isTrap: false,
+        desc: '金色智慧晶片光暈'
+      }
+    ]
   }
 ];
 
@@ -1473,7 +3346,91 @@ export const TOOL_CSS_MAP = {
   rainbowBorderTrap: 'border-image: linear-gradient',
   descTinyTrap: 'font-size: 9px',
   ghostDashedTrap: 'border-style: dashed',
-  heroBorderHeavyTrap: 'border: 4px solid'
+  heroBorderHeavyTrap: 'border: 4px solid',
+  // mission-6
+  discRadius: 'border-radius (唱片)',
+  discSpin: 'animation: spin',
+  musicBg: 'background',
+  musicRadius: 'border-radius (機身)',
+  musicPadding: 'padding',
+  progressColor: 'background (進度條)',
+  progressHeight: 'height (進度條)',
+  playBtnBg: 'background (播放鍵)',
+  playBtnGlow: 'box-shadow (播放鍵)',
+  musicShadow: 'box-shadow (機身)',
+  discSquareTrap: 'border-radius: 0px',
+  trackSkewTrap: 'transform: skew()',
+  neonBorderTrap: 'border: 4px double',
+  progressStripeTrap: 'repeating-linear-gradient',
+  controlsScatterTrap: 'letter-spacing (間距)',
+
+  // mission-7
+  stepNodeRadius: 'border-radius (節點)',
+  stepPulseGlow: 'animation: pulse',
+  stepLineHeight: 'height (步進軌道)',
+  stepActiveColor: 'color / border-color',
+  stepCardBg: 'background',
+  stepCardRadius: 'border-radius (卡片)',
+  stepCardPadding: 'padding',
+  stepNodeSize: 'width / height (節點)',
+  stepBadgeRadius: 'border-radius (徽章)',
+  stepCardShadow: 'box-shadow',
+  stepNodeSquareTrap: 'border-radius: 0px',
+  stepDashedTrackTrap: 'border-style: dotted',
+  stepGlitchInvertTrap: 'filter: invert()',
+  stepHeaderShakeTrap: 'transform: rotate()',
+  stepBadgeBlurTrap: 'filter: blur()',
+
+  // mission-8
+  bubbleRadius: 'border-radius (氣泡)',
+  bubbleBg: 'background (氣泡)',
+  bubbleArrow: 'border-bottom (尖角)',
+  confessCardPadding: 'padding',
+  confessCardRadius: 'border-radius (外框)',
+  heartBtnBg: 'background (愛心按鈕)',
+  heartBtnGlow: 'box-shadow (愛心光暈)',
+  heartHoverBounce: ':hover { transform: scale }',
+  confessLineHeight: 'line-height (行高)',
+  confessCardShadow: 'box-shadow',
+  bubbleSharpTrap: 'border-radius: 0px',
+  confessSepiaDarkTrap: 'filter: sepia()',
+  confessHeavyBorderTrap: 'border: 4px solid',
+  bubbleArrowDistortTrap: 'transform: rotate()',
+  confessTextSpacingTrap: 'letter-spacing',
+
+  // mission-9
+  cyberClipCorner: 'clip-path: polygon()',
+  cyberNeonColor: 'color / border-color (青光)',
+  cyberAccentColor: 'color / background (洋紅)',
+  cyberNeonGlow: 'box-shadow (霓虹雙重光)',
+  cyberScanlineToggle: 'animation: scanline',
+  cyberPassBg: 'background',
+  cyberPassPadding: 'padding',
+  cyberTitleGlow: 'text-shadow (全像高光)',
+  cyberBorderWidth: 'border-width',
+  cyberAvatarGlow: 'box-shadow (晶片核心)',
+  cyberWhiteBgTrap: 'background: #ffffff',
+  cyberComicFontTrap: 'font-family: cursive',
+  cyberPassBlurTrap: 'filter: blur()',
+  cyberCardSpinTrap: 'transform: rotate(180deg)',
+  cyberRainbowDottedTrap: 'border-style: dotted',
+
+  // mission-10
+  prismTilt: 'transform: rotateX() rotateY()',
+  prismAuroraBorder: 'conic-gradient / animation',
+  prismGlassBg: 'background (黑曜半透明)',
+  prismBackdropBlur: 'backdrop-filter: blur()',
+  prismRadius: 'border-radius (稜鏡)',
+  prismPadding: 'padding',
+  prismShadow: 'box-shadow (深邃暗影)',
+  prismTitleReflect: 'background-clip: text',
+  prismBorderHighlight: 'border: 1px solid',
+  prismChipGlow: 'box-shadow (晶片高光)',
+  prismFlatZeroTrap: 'transform: none',
+  prismMuddyGreenTrap: 'background: #2b3a1a',
+  prismDistortScaleTrap: 'transform: scale()',
+  prismPixelateBorderTrap: 'border: 5px ridge',
+  prismExtremeSkewTrap: 'transform: skewY()'
 };
 
 // 自動為每關的 tools 注入 cssProperty

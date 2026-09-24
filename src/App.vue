@@ -190,24 +190,129 @@ const activeComputedState = computed(() => {
     }
   }
 
-  // mission-5
+  if (mid === 'mission-5') {
+    return {
+      heroPadding: states.heroPadding?.enabled ? states.heroPadding.value : 10,
+      heroRadius: states.heroRadius?.enabled ? states.heroRadius.value : 0,
+      ambientGlow: states.ambientGlowToggle?.enabled,
+      titleGradient: states.titleGradientToggle?.enabled,
+      titleSize: states.titleSize?.enabled ? states.titleSize.value : 20,
+      titleWeight: states.titleWeight?.enabled ? states.titleWeight.value : 400,
+      primaryBtnBg: states.primaryBtnBg?.enabled ? states.primaryBtnBg.value : '#000000',
+      primaryBtnRadius: states.primaryBtnRadius?.enabled ? states.primaryBtnRadius.value : 0,
+      secondaryGhost: states.secondaryGhostToggle?.enabled,
+      heroShadow: states.heroShadow?.enabled ? states.heroShadow.value : 0,
+      // 5 項干擾/陷阱項
+      titleSkewTrap: states.titleSkewTrap?.enabled ? states.titleSkewTrap.value : 0,
+      rainbowBorderTrap: states.rainbowBorderTrap?.enabled,
+      descTinyTrap: states.descTinyTrap?.enabled,
+      ghostDashedTrap: states.ghostDashedTrap?.enabled,
+      heroBorderHeavyTrap: states.heroBorderHeavyTrap?.enabled ? states.heroBorderHeavyTrap.value : 0
+    }
+  }
+
+  if (mid === 'mission-6') {
+    return {
+      discRadius: states.discRadius?.enabled ? states.discRadius.value : 0,
+      discSpin: states.discSpin?.enabled,
+      musicBg: states.musicBg?.enabled ? states.musicBg.value : '#e2e8f0',
+      musicRadius: states.musicRadius?.enabled ? states.musicRadius.value : 0,
+      musicPadding: states.musicPadding?.enabled ? states.musicPadding.value : 6,
+      progressColor: states.progressColor?.enabled ? states.progressColor.value : '#000000',
+      progressHeight: states.progressHeight?.enabled ? states.progressHeight.value : 2,
+      playBtnBg: states.playBtnBg?.enabled ? states.playBtnBg.value : '#94a3b8',
+      playBtnGlow: states.playBtnGlow?.enabled ? states.playBtnGlow.value : 0,
+      musicShadow: states.musicShadow?.enabled ? states.musicShadow.value : 0,
+      // 5 項干擾/陷阱項
+      discSquareTrap: states.discSquareTrap?.enabled,
+      trackSkewTrap: states.trackSkewTrap?.enabled,
+      neonBorderTrap: states.neonBorderTrap?.enabled,
+      progressStripeTrap: states.progressStripeTrap?.enabled,
+      controlsScatterTrap: states.controlsScatterTrap?.enabled
+    }
+  }
+
+  if (mid === 'mission-7') {
+    return {
+      stepNodeRadius: states.stepNodeRadius?.enabled ? states.stepNodeRadius.value : 0,
+      stepPulseGlow: states.stepPulseGlow?.enabled,
+      stepLineHeight: states.stepLineHeight?.enabled ? states.stepLineHeight.value : 1,
+      stepActiveColor: states.stepActiveColor?.enabled ? states.stepActiveColor.value : '#000000',
+      stepCardBg: states.stepCardBg?.enabled ? states.stepCardBg.value : '#ffffff',
+      stepCardRadius: states.stepCardRadius?.enabled ? states.stepCardRadius.value : 0,
+      stepCardPadding: states.stepCardPadding?.enabled ? states.stepCardPadding.value : 6,
+      stepNodeSize: states.stepNodeSize?.enabled ? states.stepNodeSize.value : 28,
+      stepBadgeRadius: states.stepBadgeRadius?.enabled ? states.stepBadgeRadius.value : 0,
+      stepCardShadow: states.stepCardShadow?.enabled ? states.stepCardShadow.value : 0,
+      // 5 項干擾/陷阱項
+      stepNodeSquareTrap: states.stepNodeSquareTrap?.enabled,
+      stepDashedTrackTrap: states.stepDashedTrackTrap?.enabled,
+      stepGlitchInvertTrap: states.stepGlitchInvertTrap?.enabled,
+      stepHeaderShakeTrap: states.stepHeaderShakeTrap?.enabled,
+      stepBadgeBlurTrap: states.stepBadgeBlurTrap?.enabled
+    }
+  }
+
+  if (mid === 'mission-8') {
+    return {
+      bubbleRadius: states.bubbleRadius?.enabled ? states.bubbleRadius.value : 0,
+      bubbleBg: states.bubbleBg?.enabled ? states.bubbleBg.value : '#e2e8f0',
+      bubbleArrow: states.bubbleArrow?.enabled,
+      confessCardPadding: states.confessCardPadding?.enabled ? states.confessCardPadding.value : 6,
+      confessCardRadius: states.confessCardRadius?.enabled ? states.confessCardRadius.value : 0,
+      heartBtnBg: states.heartBtnBg?.enabled ? states.heartBtnBg.value : '#64748b',
+      heartBtnGlow: states.heartBtnGlow?.enabled ? states.heartBtnGlow.value : 0,
+      heartHoverBounce: states.heartHoverBounce?.enabled,
+      confessLineHeight: states.confessLineHeight?.enabled ? states.confessLineHeight.value : 16,
+      confessCardShadow: states.confessCardShadow?.enabled ? states.confessCardShadow.value : 0,
+      // 5 項干擾/陷阱項
+      bubbleSharpTrap: states.bubbleSharpTrap?.enabled,
+      confessSepiaDarkTrap: states.confessSepiaDarkTrap?.enabled,
+      confessHeavyBorderTrap: states.confessHeavyBorderTrap?.enabled,
+      bubbleArrowDistortTrap: states.bubbleArrowDistortTrap?.enabled,
+      confessTextSpacingTrap: states.confessTextSpacingTrap?.enabled
+    }
+  }
+
+  if (mid === 'mission-9') {
+    return {
+      cyberClipCorner: states.cyberClipCorner?.enabled ? states.cyberClipCorner.value : 0,
+      cyberNeonColor: states.cyberNeonColor?.enabled ? states.cyberNeonColor.value : '#64748b',
+      cyberAccentColor: states.cyberAccentColor?.enabled ? states.cyberAccentColor.value : '#000000',
+      cyberNeonGlow: states.cyberNeonGlow?.enabled ? states.cyberNeonGlow.value : 0,
+      cyberScanlineToggle: states.cyberScanlineToggle?.enabled,
+      cyberPassBg: states.cyberPassBg?.enabled ? states.cyberPassBg.value : '#ffffff',
+      cyberPassPadding: states.cyberPassPadding?.enabled ? states.cyberPassPadding.value : 8,
+      cyberTitleGlow: states.cyberTitleGlow?.enabled,
+      cyberBorderWidth: states.cyberBorderWidth?.enabled ? states.cyberBorderWidth.value : 1,
+      cyberAvatarGlow: states.cyberAvatarGlow?.enabled ? states.cyberAvatarGlow.value : 0,
+      // 5 項干擾/陷阱項
+      cyberWhiteBgTrap: states.cyberWhiteBgTrap?.enabled,
+      cyberComicFontTrap: states.cyberComicFontTrap?.enabled,
+      cyberPassBlurTrap: states.cyberPassBlurTrap?.enabled,
+      cyberCardSpinTrap: states.cyberCardSpinTrap?.enabled,
+      cyberRainbowDottedTrap: states.cyberRainbowDottedTrap?.enabled
+    }
+  }
+
+  // mission-10
   return {
-    heroPadding: states.heroPadding?.enabled ? states.heroPadding.value : 10,
-    heroRadius: states.heroRadius?.enabled ? states.heroRadius.value : 0,
-    ambientGlow: states.ambientGlowToggle?.enabled,
-    titleGradient: states.titleGradientToggle?.enabled,
-    titleSize: states.titleSize?.enabled ? states.titleSize.value : 20,
-    titleWeight: states.titleWeight?.enabled ? states.titleWeight.value : 400,
-    primaryBtnBg: states.primaryBtnBg?.enabled ? states.primaryBtnBg.value : '#000000',
-    primaryBtnRadius: states.primaryBtnRadius?.enabled ? states.primaryBtnRadius.value : 0,
-    secondaryGhost: states.secondaryGhostToggle?.enabled,
-    heroShadow: states.heroShadow?.enabled ? states.heroShadow.value : 0,
+    prismTilt: states.prismTilt?.enabled,
+    prismAuroraBorder: states.prismAuroraBorder?.enabled,
+    prismGlassBg: states.prismGlassBg?.enabled ? states.prismGlassBg.value : '#e2e8f0',
+    prismBackdropBlur: states.prismBackdropBlur?.enabled ? states.prismBackdropBlur.value : 0,
+    prismRadius: states.prismRadius?.enabled ? states.prismRadius.value : 0,
+    prismPadding: states.prismPadding?.enabled ? states.prismPadding.value : 8,
+    prismShadow: states.prismShadow?.enabled ? states.prismShadow.value : 0,
+    prismTitleReflect: states.prismTitleReflect?.enabled,
+    prismBorderHighlight: states.prismBorderHighlight?.enabled,
+    prismChipGlow: states.prismChipGlow?.enabled ? states.prismChipGlow.value : 0,
     // 5 項干擾/陷阱項
-    titleSkewTrap: states.titleSkewTrap?.enabled ? states.titleSkewTrap.value : 0,
-    rainbowBorderTrap: states.rainbowBorderTrap?.enabled,
-    descTinyTrap: states.descTinyTrap?.enabled,
-    ghostDashedTrap: states.ghostDashedTrap?.enabled,
-    heroBorderHeavyTrap: states.heroBorderHeavyTrap?.enabled ? states.heroBorderHeavyTrap.value : 0
+    prismFlatZeroTrap: states.prismFlatZeroTrap?.enabled,
+    prismMuddyGreenTrap: states.prismMuddyGreenTrap?.enabled,
+    prismDistortScaleTrap: states.prismDistortScaleTrap?.enabled,
+    prismPixelateBorderTrap: states.prismPixelateBorderTrap?.enabled,
+    prismExtremeSkewTrap: states.prismExtremeSkewTrap?.enabled
   }
 })
 

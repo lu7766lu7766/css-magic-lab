@@ -11,7 +11,12 @@ import {
   Crown, 
   Wand2, 
   Trophy, 
-  Lock 
+  Lock,
+  Disc,
+  Navigation,
+  Heart,
+  Terminal,
+  Gem
 } from 'lucide-vue-next'
 import { BADGES, TITLE_RANKS, getRankByExp } from '../../data/badges.js'
 
@@ -32,7 +37,12 @@ const iconMap = {
   ShieldCheck,
   Crown,
   Wand2,
-  Trophy
+  Trophy,
+  Disc,
+  Navigation,
+  Heart,
+  Terminal,
+  Gem
 }
 
 function getIcon(name) {
