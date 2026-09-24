@@ -37,7 +37,9 @@ function handlePillClick(tool) {
   emit('toggleTool', {
     toolId: tool.id,
     enabled: newEnabled,
-    value: newEnabled ? (tool.cleanValue !== undefined ? tool.cleanValue : tool.defaultValue) : tool.defaultValue
+    value: newEnabled
+      ? (tool.type === 'toggle' ? true : (tool.cleanValue !== undefined ? tool.cleanValue : tool.defaultValue))
+      : (tool.type === 'toggle' ? false : tool.defaultValue)
   })
 
   if (newEnabled) {

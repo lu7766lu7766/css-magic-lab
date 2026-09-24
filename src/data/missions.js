@@ -1614,7 +1614,7 @@ export const MISSIONS = [
         name: '黑膠旋轉動態 (Spin Animation)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: '啟動純 CSS 6s 無限旋轉微動態'
@@ -2004,7 +2004,7 @@ export const MISSIONS = [
         name: '脈衝呼吸光 (Pulse Glow)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: '進行中騎士節點動態呼吸光環'
@@ -2377,7 +2377,7 @@ export const MISSIONS = [
         name: '對話氣泡尖角 (Bubble Arrow)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: '精準定位對話框朝向尖角'
@@ -2464,7 +2464,7 @@ export const MISSIONS = [
         name: '心跳懸停放大 (Hover Scale)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: 'Hover 彈力 1.08x 微放大'
@@ -2782,7 +2782,7 @@ export const MISSIONS = [
         name: '全像掃描線束 (Scanline Anim)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: '純 CSS 動態光束掃描線'
@@ -2828,7 +2828,7 @@ export const MISSIONS = [
         name: '標題全像投影光 (Title Text Glow)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: 'text-shadow 高強自發光'
@@ -3085,7 +3085,7 @@ export const MISSIONS = [
         name: '3D 空間透視傾斜 (3D Transform Tilt)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: '3D perspective 透視空間傾角'
@@ -3095,7 +3095,7 @@ export const MISSIONS = [
         name: '極光旋轉動態 (Conic Aurora Rim)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: 'conic-gradient 360° 旋轉彩虹極光'
@@ -3208,7 +3208,7 @@ export const MISSIONS = [
         name: '金屬質感文字漸層 (Metallic Text Clip)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: '燙金銀白流光文字背景裁切'
@@ -3229,7 +3229,7 @@ export const MISSIONS = [
         name: '高折射晶體邊框 (Crystal Highlight Rim)',
         type: 'toggle',
         defaultValue: false,
-        cleanValue: false,
+        cleanValue: true,
         targetValue: true,
         isTrap: false,
         desc: '極細晶體高光反射邊界'

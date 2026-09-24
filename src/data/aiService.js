@@ -334,9 +334,10 @@ const MISSION_TOOL_DIMENSIONS = {
 function calculateToolScore(tool, state) {
   if (!state || !state.enabled) return 0;
 
-  // 1. Toggle 類型
+  // 1. Toggle 類型（啟用即代表生效開啟）
   if (tool.type === 'toggle') {
-    return (tool.targetValue === true && state.value === true) ? 1.0 : 0.5;
+    const isValTrue = Boolean(state.enabled);
+    return (tool.targetValue === isValTrue) ? 1.0 : 0.5;
   }
 
   // 2. Select 類型
