@@ -44,19 +44,58 @@ watch(currentMissionIndex, (newIdx) => {
   }
 })
 
-// 每關十項工具的開關與數值狀態字典
-const missionToolStates = reactive({})
-
-// 初始化各關的 10 項工具狀態
-MISSIONS.forEach(m => {
-  missionToolStates[m.id] = {}
-  m.tools.forEach(tool => {
-    missionToolStates[m.id][tool.id] = {
-      enabled: false,
-      value: tool.defaultValue
-    }
+// 初始工具狀態載入：深層合併預設值與 localStorage，確保每關記憶萬無一失
+function getInitialToolStates() {
+  const states = {}
+  // 1. 各關預設值
+  MISSIONS.forEach(m => {
+    states[m.id] = {}
+    m.tools.forEach(tool => {
+      states[m.id][tool.id] = {
+        enabled: false,
+        value: tool.defaultValue
+      }
+    })
   })
-})
+  // 2. 從 localStorage 讀取並深層合併
+  try {
+    const saved = localStorage.getItem('css_lab_tool_states')
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      Object.keys(parsed).forEach(mid => {
+        if (states[mid] && parsed[mid]) {
+          Object.keys(parsed[mid]).forEach(toolId => {
+            if (states[mid][toolId] && parsed[mid][toolId] !== undefined) {
+              states[mid][toolId] = {
+                enabled: Boolean(parsed[mid][toolId].enabled),
+                value: parsed[mid][toolId].value !== undefined ? parsed[mid][toolId].value : states[mid][toolId].value
+              }
+            }
+          })
+        }
+      })
+    }
+  } catch (e) {
+    console.error('Failed to load saved tool states:', e)
+  }
+  return states
+}
+
+// 每關工具的開關與數值狀態字典（支援跨關切換與重新整理記憶）
+const missionToolStates = reactive(getInitialToolStates())
+
+// 深度監聽：任一關卡、任一工具狀態變更即時持久化至 localStorage
+watch(
+  missionToolStates,
+  (newVal) => {
+    try {
+      localStorage.setItem('css_lab_tool_states', JSON.stringify(newVal))
+    } catch (e) {
+      console.error('Failed to save tool states:', e)
+    }
+  },
+  { deep: true }
+)
 
 // 根據當前關卡的工具開關狀態，轉換為 CSS 產生器所需的資料模型
 const activeComputedState = computed(() => {
@@ -197,27 +236,19 @@ const isTargetModalOpen = ref(false)
 const isBadgeModalOpen = ref(false)
 const currentEvalResult = ref(null)
 
-// 深淺色模式
-const isDark = ref(true)
+// 深淺色模式（依據使用者明確需求：預設為亮色系）
+function getInitialTheme() {
+  const savedTheme = localStorage.getItem('css_lab_theme_v2')
+  if (savedTheme !== null) {
+    return savedTheme === 'dark'
+  }
+  return false // 預設亮色系
+}
+
+const isDark = ref(getInitialTheme())
 
 function saveToolStates() {
   localStorage.setItem('css_lab_tool_states', JSON.stringify(missionToolStates))
-}
-
-function loadToolStates() {
-  const saved = localStorage.getItem('css_lab_tool_states')
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved)
-      Object.keys(parsed).forEach(mid => {
-        if (missionToolStates[mid]) {
-          Object.assign(missionToolStates[mid], parsed[mid])
-        }
-      })
-    } catch {
-      // 略過
-    }
-  }
 }
 
 function handleHashChange() {
@@ -231,10 +262,6 @@ function handleHashChange() {
 }
 
 onMounted(() => {
-  const savedDark = localStorage.getItem('css_lab_theme')
-  if (savedDark !== null) {
-    isDark.value = savedDark === 'dark'
-  }
   updateThemeClass()
 
   const savedStats = localStorage.getItem('css_lab_stats_v2')
@@ -248,8 +275,7 @@ onMounted(() => {
   }
   checkAndUnlockBadges()
 
-  // 載入工具保存進度並監聽 Hash
-  loadToolStates()
+  // 監聽 Hash 變更
   window.addEventListener('hashchange', handleHashChange)
   if (!window.location.hash) {
     history.replaceState(null, '', `#${MISSIONS[currentMissionIndex.value].id}`)
@@ -262,7 +288,7 @@ onUnmounted(() => {
 
 function toggleDark() {
   isDark.value = !isDark.value
-  localStorage.setItem('css_lab_theme', isDark.value ? 'dark' : 'light')
+  localStorage.setItem('css_lab_theme_v2', isDark.value ? 'dark' : 'light')
   updateThemeClass()
 }
 

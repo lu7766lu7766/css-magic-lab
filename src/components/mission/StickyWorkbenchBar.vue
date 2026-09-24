@@ -136,14 +136,17 @@ function copyColor(hex) {
         </div>
       </div>
 
-      <!-- 雙畫布並排對照區 (當未收折時顯示，高度收斂為 140px，寬度滿版無折行) -->
+      <!-- 雙畫布並排對照區 (當未收折時顯示，高度提升為 208px~224px，標籤獨立為頂部列絕不遮擋物件) -->
       <div v-show="!isCollapsed" class="grid grid-cols-1 md:grid-cols-2 gap-3 transition-all duration-300">
         <!-- 左欄：🛠️ 我的當前樣式 (即時連動使用者調整) -->
-        <div class="relative flex flex-col rounded-xl border border-purple-200 dark:border-purple-900/60 bg-slate-50/70 dark:bg-slate-950/70 overflow-hidden h-[130px] sm:h-[145px]">
-          <!-- 標籤徽章 -->
-          <div class="absolute top-1.5 left-2.5 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/90 dark:bg-slate-900/90 border border-purple-200 dark:border-purple-800/80 text-[10px] font-bold text-purple-700 dark:text-purple-300 shadow-xs">
-            <span class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></span>
-            <span>🛠️ 我的當前樣式 (即時連動)</span>
+        <div class="flex flex-col rounded-xl border border-purple-200 dark:border-purple-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs h-52 sm:h-56">
+          <!-- 獨立頂部標籤列（非 absolute 覆蓋，徹底避免遮蔽畫面物件） -->
+          <div class="px-3 py-1.5 bg-purple-50/90 dark:bg-purple-950/60 border-b border-purple-100 dark:border-purple-900/50 flex items-center justify-between text-[11px] font-bold text-purple-700 dark:text-purple-300 shrink-0">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+              <span>🛠️ 我的當前樣式 (即時連動)</span>
+            </div>
+            <span class="text-[10px] font-medium text-purple-500/80 dark:text-purple-400/80">即時效果</span>
           </div>
 
           <!-- 樣式隔離注入 -->
@@ -151,9 +154,9 @@ function copyColor(hex) {
             {{ scopedUserCss }}
           </component>
 
-          <!-- 畫布內容區 (寬度完整，無擠壓) -->
+          <!-- 畫布內容區 (寬度完整，置中顯示，無遮擋) -->
           <div
-            class="flex-1 w-full flex items-center justify-center p-3 overflow-auto"
+            class="flex-1 w-full flex items-center justify-center p-3 overflow-auto bg-slate-50/60 dark:bg-slate-950/60"
             style="background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px); background-size: 14px 14px;"
           >
             <div class="sticky-user-scope w-full flex justify-center scale-90 sm:scale-95 origin-center">
@@ -163,11 +166,14 @@ function copyColor(hex) {
         </div>
 
         <!-- 右欄：🎯 設計師目標樣式 (滿分標準參考) -->
-        <div class="relative flex flex-col rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-slate-50/70 dark:bg-slate-950/70 overflow-hidden h-[130px] sm:h-[145px]">
-          <!-- 標籤徽章 -->
-          <div class="absolute top-1.5 left-2.5 z-10 flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/90 dark:bg-slate-900/90 border border-emerald-200 dark:border-emerald-800/80 text-[10px] font-bold text-emerald-700 dark:text-emerald-300 shadow-xs">
-            <Target class="w-3 h-3 text-emerald-500" />
-            <span>🎯 設計師目標樣式 (滿分解)</span>
+        <div class="flex flex-col rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs h-52 sm:h-56">
+          <!-- 獨立頂部標籤列（非 absolute 覆蓋，徹底避免遮蔽畫面物件） -->
+          <div class="px-3 py-1.5 bg-emerald-50/90 dark:bg-emerald-950/60 border-b border-emerald-100 dark:border-emerald-900/50 flex items-center justify-between text-[11px] font-bold text-emerald-700 dark:text-emerald-300 shrink-0">
+            <div class="flex items-center gap-1.5">
+              <Target class="w-3.5 h-3.5 text-emerald-500" />
+              <span>🎯 設計師目標樣式 (滿分解)</span>
+            </div>
+            <span class="text-[10px] font-medium text-emerald-600/80 dark:text-emerald-400/80">滿分參考</span>
           </div>
 
           <!-- 目標樣式隔離注入 -->
@@ -175,9 +181,9 @@ function copyColor(hex) {
             {{ scopedTargetCss }}
           </component>
 
-          <!-- 畫布內容區 (寬度完整，無擠壓) -->
+          <!-- 畫布內容區 (寬度完整，置中顯示，無遮擋) -->
           <div
-            class="flex-1 w-full flex items-center justify-center p-3 overflow-auto"
+            class="flex-1 w-full flex items-center justify-center p-3 overflow-auto bg-slate-50/60 dark:bg-slate-950/60"
             style="background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px); background-size: 14px 14px;"
           >
             <div class="sticky-target-scope w-full flex justify-center scale-90 sm:scale-95 origin-center">
