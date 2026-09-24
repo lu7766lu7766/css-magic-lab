@@ -2535,38 +2535,44 @@ export const MISSIONS = [
     },
     learningFocus: [
       '用 clip-path: polygon() 削出硬派科技多邊形科技切角',
-      '用 text-shadow 與 box-shadow 雙重堆疊極致霓虹光暈',
+      '用 filter: drop-shadow 穿透切角，搭配 inset 堆疊極致霓虹光暈',
       '用純 CSS 漸層與 @keyframes 打造動態全像光束掃描線',
       '用電路青 (#00f2fe) 與霓虹洋紅 (#ff007f) 營造前衛色彩對沖',
       '辨別科技硬派視覺與惡意文字字型破壞的邊界'
     ],
-    htmlTemplate: `<div class="cyber-pass">
-  <div class="cyber-scanline"></div>
-  <div class="cyber-header">
-    <div class="cyber-badge">NEO-TOKYO // 2077</div>
-    <span class="cyber-access">ACCESS: VIP</span>
-  </div>
-  <div class="cyber-body">
-    <div class="cyber-avatar">
-      <span class="cyber-avatar-icon">⚡</span>
+    htmlTemplate: `<div class="cyber-pass-wrapper">
+  <div class="cyber-pass">
+    <div class="cyber-scanline"></div>
+    <div class="cyber-header">
+      <div class="cyber-badge">NEO-TOKYO // 2077</div>
+      <span class="cyber-access">ACCESS: VIP</span>
     </div>
-    <div class="cyber-info">
-      <h2 class="cyber-name">CYBER_PHANTOM</h2>
-      <p class="cyber-role">NEURAL PROTOCOL LEAD</p>
+    <div class="cyber-body">
+      <div class="cyber-avatar">
+        <span class="cyber-avatar-icon">⚡</span>
+      </div>
+      <div class="cyber-info">
+        <h2 class="cyber-name">CYBER_PHANTOM</h2>
+        <p class="cyber-role">NEURAL PROTOCOL LEAD</p>
+      </div>
     </div>
-  </div>
-  <div class="cyber-footer">
-    <div class="cyber-barcode">
-      <div class="barcode-lines">||| | |||| | || |||</div>
-      <span class="barcode-hash">0x7F99A_CYBER</span>
+    <div class="cyber-footer">
+      <div class="cyber-barcode">
+        <div class="barcode-lines">||| | |||| | || |||</div>
+        <span class="barcode-hash">0x7F99A_CYBER</span>
+      </div>
+      <div class="cyber-stamp">SYSTEM ACTIVE</div>
     </div>
-    <div class="cyber-stamp">SYSTEM ACTIVE</div>
   </div>
 </div>`,
     designerTargetCss: `/* 🎯 設計師標準成果 (100分) */
 @keyframes scanlineAnim {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(1000%); }
+}
+
+.cyber-pass-wrapper {
+  filter: drop-shadow(0 0 20px rgba(0, 242, 254, 0.65));
 }
 
 .cyber-pass {
@@ -2576,7 +2582,7 @@ export const MISSIONS = [
   padding: 24px;
   clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
   border: 2px solid #00f2fe;
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 242, 254, 0.15);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 242, 254, 0.35);
   color: #00f2fe;
   font-family: monospace, sans-serif;
   overflow: hidden;
@@ -2697,12 +2703,12 @@ export const MISSIONS = [
       ],
       metrics: [
         { label: '科技切角', value: '18px 多邊形 clip-path' },
-        { label: '雙重光暈', value: '模糊 20px, 霓虹自發光' },
+        { label: '雙重光暈', value: '外層 drop-shadow 20px + 內層 inset 20px' },
         { label: '動態掃描', value: '3s 光束掃描線' },
         { label: '外骨骼邊界', value: '2px 金屬感邊框' },
         { label: '標題投影', value: '全像文字高光' }
       ],
-      tip: '💡 賽博龐克風格的關鍵是深黑背景與高飽和自發光的青/紅雙色對比，切角與動態掃描線能瞬間把未來感拉滿！'
+      tip: '💡 核心秘訣：clip-path 會將外層 box-shadow 裁切掉，因此外光暈由父容器的 drop-shadow 穿透切角，內光暈由 inset 提供，霓虹質感瞬間爆棚！'
     },
     tools: [
       {

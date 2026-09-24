@@ -819,8 +819,12 @@ ${hoverBounceCss}
       ? `clip-path: polygon(0 0, calc(100% - ${clipVal}px) 0, 100% ${clipVal}px, 100% 100%, ${clipVal}px 100%, 0 calc(100% - ${clipVal}px)); /* 💡 多邊形幾何科技切角 */`
       : 'clip-path: none;';
 
+    const wrapperGlowCss = state.cyberNeonGlow > 0
+      ? `.cyber-pass-wrapper {\n  filter: drop-shadow(0 0 ${state.cyberNeonGlow}px ${hexToRgba(state.cyberNeonColor, 0.65)});\n}\n\n`
+      : '';
+
     const glowCss = state.cyberNeonGlow > 0
-      ? `box-shadow: 0 0 ${state.cyberNeonGlow}px ${hexToRgba(state.cyberNeonColor, 0.5)}, inset 0 0 ${Math.round(state.cyberNeonGlow * 0.7)}px ${hexToRgba(state.cyberNeonColor, 0.2)}; /* 💡 雙重內外霓虹自發光 */`
+      ? `box-shadow: 0 0 ${state.cyberNeonGlow}px ${hexToRgba(state.cyberNeonColor, 0.4)}, inset 0 0 ${Math.max(10, Math.round(state.cyberNeonGlow * 0.9))}px ${hexToRgba(state.cyberNeonColor, 0.35)}; /* 💡 雙重內外霓虹自發光 */`
       : 'box-shadow: none;';
 
     const scanlineDisplay = state.cyberScanlineToggle ? 'block' : 'none';
@@ -840,7 +844,7 @@ ${hoverBounceCss}
   100% { transform: translateY(1000%); }
 }
 
-.cyber-pass {
+${wrapperGlowCss}.cyber-pass {
   position: relative;
   width: 320px;
   background: ${state.cyberWhiteBgTrap ? '#ffffff /* ⚠️ 刺眼日光純白底 */' : state.cyberPassBg}; /* 💡 沉浸深黑碳纖底色 */
