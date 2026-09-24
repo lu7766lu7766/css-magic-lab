@@ -106,7 +106,7 @@ const formattedLines = computed(() => {
     <div class="grid grid-cols-1 gap-4 items-stretch" :class="layoutMode === 'split' ? 'xl:grid-cols-2' : 'xl:grid-cols-12'">
       <!-- ==================== 左側：當前樣式（我的作品） ==================== -->
       <div
-        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden h-85 sm:h-90"
+        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[460px] sm:min-h-[490px]"
         :class="layoutMode === 'split' ? 'w-full' : 'xl:col-span-4'"
       >
         <!-- 頂部標籤與設備切換 -->
@@ -139,9 +139,9 @@ const formattedLines = computed(() => {
           </div>
         </div>
 
-        <!-- 渲染畫布容器 (定高且內容置中) -->
+        <!-- 渲染畫布容器 (充裕空間，內容完整置中，無滾動條) -->
         <div
-          class="flex-1 p-4 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 overflow-auto relative"
+          class="flex-1 p-5 sm:p-6 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 relative overflow-hidden no-scrollbar"
           style="background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px); background-size: 16px 16px;"
         >
           <!-- 注入使用者目前的 CSS (使用 user-workbench-canvas 作用域隔離) -->
@@ -170,7 +170,7 @@ const formattedLines = computed(() => {
       <!-- ==================== 中間：CSS 即時檢閱 (三欄模式下顯示在中央) ==================== -->
       <div
         v-if="layoutMode === 'triple'"
-        class="xl:col-span-4 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm overflow-hidden font-mono text-xs h-85 sm:h-90"
+        class="xl:col-span-4 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm overflow-hidden font-mono text-xs min-h-[460px] sm:min-h-[490px]"
       >
         <!-- 頂部工具列 -->
         <div class="px-3.5 py-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between shrink-0">
@@ -191,8 +191,8 @@ const formattedLines = computed(() => {
           </button>
         </div>
 
-        <!-- 代碼與生活化註解清單 -->
-        <div class="flex-1 p-3 overflow-y-auto overflow-x-auto space-y-1 bg-slate-950/90 leading-relaxed select-text">
+        <!-- 代碼與生活化註解清單 (自適應且無滾動條) -->
+        <div class="flex-1 p-3 overflow-y-auto overflow-x-auto no-scrollbar space-y-1 bg-slate-950/90 leading-relaxed select-text">
           <div
             v-for="item in formattedLines"
             :key="item.lineNumber"
@@ -232,7 +232,7 @@ const formattedLines = computed(() => {
 
       <!-- ==================== 右側：目標樣式（設計師樣板） ==================== -->
       <div
-        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden h-85 sm:h-90"
+        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[460px] sm:min-h-[490px]"
         :class="layoutMode === 'split' ? 'w-full' : 'xl:col-span-4'"
       >
         <!-- 頂部標題 -->
@@ -249,9 +249,9 @@ const formattedLines = computed(() => {
           </span>
         </div>
 
-        <!-- 渲染目標成品畫布 -->
+        <!-- 渲染目標成品畫布 (充裕空間，內容完整置中，無滾動條) -->
         <div
-          class="flex-1 p-4 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 overflow-auto relative"
+          class="flex-1 p-5 sm:p-6 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 relative overflow-hidden no-scrollbar"
           style="background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px); background-size: 16px 16px;"
         >
           <!-- 注入設計師 Target CSS (使用 target-workbench-canvas 命名空間隔離) -->

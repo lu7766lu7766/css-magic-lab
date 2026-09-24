@@ -136,10 +136,10 @@ function copyColor(hex) {
         </div>
       </div>
 
-      <!-- 雙畫布並排對照區 (當未收折時顯示，高度提升為 208px~224px，標籤獨立為頂部列絕不遮擋物件) -->
+      <!-- 雙畫布並排對照區 (當未收折時顯示，高度提升為 256px~288px，標籤獨立且完全無滾動條，卡片全覽一眼看清) -->
       <div v-show="!isCollapsed" class="grid grid-cols-1 md:grid-cols-2 gap-3 transition-all duration-300">
         <!-- 左欄：🛠️ 我的當前樣式 (即時連動使用者調整) -->
-        <div class="flex flex-col rounded-xl border border-purple-200 dark:border-purple-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs h-52 sm:h-56">
+        <div class="flex flex-col rounded-xl border border-purple-200 dark:border-purple-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs h-64 sm:h-72">
           <!-- 獨立頂部標籤列（非 absolute 覆蓋，徹底避免遮蔽畫面物件） -->
           <div class="px-3 py-1.5 bg-purple-50/90 dark:bg-purple-950/60 border-b border-purple-100 dark:border-purple-900/50 flex items-center justify-between text-[11px] font-bold text-purple-700 dark:text-purple-300 shrink-0">
             <div class="flex items-center gap-1.5">
@@ -154,19 +154,19 @@ function copyColor(hex) {
             {{ scopedUserCss }}
           </component>
 
-          <!-- 畫布內容區 (寬度完整，置中顯示，無遮擋) -->
+          <!-- 畫布內容區 (置中縮放，徹底無滾動條，整件物件一覽無遺) -->
           <div
-            class="flex-1 w-full flex items-center justify-center p-3 overflow-auto bg-slate-50/60 dark:bg-slate-950/60"
+            class="flex-1 w-full flex items-center justify-center p-2.5 overflow-hidden no-scrollbar bg-slate-50/60 dark:bg-slate-950/60"
             style="background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px); background-size: 14px 14px;"
           >
-            <div class="sticky-user-scope w-full flex justify-center scale-90 sm:scale-95 origin-center">
+            <div class="sticky-user-scope w-full flex justify-center scale-75 sm:scale-80 md:scale-85 origin-center shrink-0">
               <div v-html="mission.htmlTemplate"></div>
             </div>
           </div>
         </div>
 
         <!-- 右欄：🎯 設計師目標樣式 (滿分標準參考) -->
-        <div class="flex flex-col rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs h-52 sm:h-56">
+        <div class="flex flex-col rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs h-64 sm:h-72">
           <!-- 獨立頂部標籤列（非 absolute 覆蓋，徹底避免遮蔽畫面物件） -->
           <div class="px-3 py-1.5 bg-emerald-50/90 dark:bg-emerald-950/60 border-b border-emerald-100 dark:border-emerald-900/50 flex items-center justify-between text-[11px] font-bold text-emerald-700 dark:text-emerald-300 shrink-0">
             <div class="flex items-center gap-1.5">
@@ -181,12 +181,12 @@ function copyColor(hex) {
             {{ scopedTargetCss }}
           </component>
 
-          <!-- 畫布內容區 (寬度完整，置中顯示，無遮擋) -->
+          <!-- 畫布內容區 (置中縮放，徹底無滾動條，整件物件一覽無遺) -->
           <div
-            class="flex-1 w-full flex items-center justify-center p-3 overflow-auto bg-slate-50/60 dark:bg-slate-950/60"
+            class="flex-1 w-full flex items-center justify-center p-2.5 overflow-hidden no-scrollbar bg-slate-50/60 dark:bg-slate-950/60"
             style="background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px); background-size: 14px 14px;"
           >
-            <div class="sticky-target-scope w-full flex justify-center scale-90 sm:scale-95 origin-center">
+            <div class="sticky-target-scope w-full flex justify-center scale-75 sm:scale-80 md:scale-85 origin-center shrink-0">
               <div v-html="mission.htmlTemplate"></div>
             </div>
           </div>

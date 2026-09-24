@@ -25,8 +25,8 @@ function copyTargetCss() {
     <!-- 背景遮罩 -->
     <div @click="emit('close')" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
 
-    <!-- 彈窗內容 -->
-    <div class="relative w-full max-w-2xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 overflow-hidden z-10 max-h-[85vh] flex flex-col animate-scale-up">
+    <!-- 彈窗內容 (更寬敞、排版舒展、無滾動條，一覽無遺) -->
+    <div class="relative w-full max-w-4xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 overflow-hidden z-10 max-h-[90vh] flex flex-col animate-scale-up">
       <!-- 關閉按鈕 -->
       <button
         @click="emit('close')"
@@ -36,8 +36,8 @@ function copyTargetCss() {
       </button>
 
       <!-- 標題 -->
-      <div class="flex items-center gap-3 mb-5">
-        <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 flex items-center justify-center">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950/80 text-purple-600 dark:text-purple-300 flex items-center justify-center shrink-0">
           <BookOpenCheck class="w-5 h-5" />
         </div>
         <div>
@@ -50,28 +50,31 @@ function copyTargetCss() {
         </div>
       </div>
 
-      <!-- 滾動內容 -->
-      <div class="flex-1 overflow-y-auto space-y-5 pr-1">
-        <!-- 設計標準清單 -->
-        <div class="p-4 rounded-2xl bg-purple-50/60 dark:bg-purple-950/30 border border-purple-200/80 dark:border-purple-800/80 space-y-2">
-          <div class="flex items-center gap-1.5 text-xs font-bold text-purple-700 dark:text-purple-300 mb-1">
-            <Target class="w-4 h-4" />
-            <span>AI 吻合度比對的核心設計指標：</span>
+      <!-- 內容區 (寬版平鋪，徹底移除滾動條，一覽無遺) -->
+      <div class="flex-1 overflow-y-auto no-scrollbar space-y-4 pr-1">
+        <!-- 設計標準清單 (3 欄平鋪整齊呈現，一眼了然) -->
+        <div v-if="mission.targetInspector?.metrics" class="p-4 rounded-2xl bg-purple-50/60 dark:bg-purple-950/30 border border-purple-200/80 dark:border-purple-800/80 space-y-2">
+          <div class="flex items-center justify-between text-xs font-bold text-purple-700 dark:text-purple-300 mb-1">
+            <div class="flex items-center gap-1.5">
+              <Target class="w-4 h-4" />
+              <span>現代 UI 黃金規格關鍵指標：</span>
+            </div>
+            <span v-if="mission.targetInspector.tip" class="text-[11px] font-normal text-purple-600/90 dark:text-purple-400/90 hidden sm:inline">{{ mission.targetInspector.tip }}</span>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
             <div
-              v-for="(crit, key) in mission.targetCriteria"
+              v-for="(item, key) in mission.targetInspector.metrics"
               :key="key"
-              class="flex items-center justify-between p-2 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-purple-100 dark:border-purple-900/50"
+              class="flex items-center justify-between p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-purple-100 dark:border-purple-900/50"
             >
-              <span class="text-slate-700 dark:text-slate-300 font-medium">{{ crit.desc }}</span>
-              <span class="text-purple-600 dark:text-purple-400 font-black text-[11px]">{{ crit.weight }}%</span>
+              <span class="text-slate-700 dark:text-slate-300 font-medium">{{ item.label }}</span>
+              <span class="text-purple-600 dark:text-purple-400 font-bold text-[11px] font-mono">{{ item.value }}</span>
             </div>
           </div>
         </div>
 
-        <!-- 設計師標準 CSS 程式碼 -->
-        <div class="rounded-2xl border border-slate-800 bg-slate-950 text-slate-100 p-4 font-mono text-xs overflow-x-auto space-y-2">
+        <!-- 設計師標準 CSS 程式碼 (自動換行，無水平滾動條) -->
+        <div class="rounded-2xl border border-slate-800 bg-slate-950 text-slate-100 p-4 font-mono text-xs no-scrollbar space-y-2">
           <div class="flex items-center justify-between pb-2 border-b border-slate-800 text-slate-400">
             <span>設計師驗證通過之完成品 CSS</span>
             <button
@@ -83,7 +86,7 @@ function copyTargetCss() {
               <span>{{ isCopied ? '已複製' : '複製祕笈' }}</span>
             </button>
           </div>
-          <pre class="text-purple-300 leading-relaxed">{{ mission.designerTargetCss }}</pre>
+          <pre class="text-purple-300 leading-relaxed whitespace-pre-wrap select-text">{{ mission.designerTargetCss }}</pre>
         </div>
       </div>
 

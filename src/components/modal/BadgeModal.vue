@@ -59,8 +59,8 @@ const unlockedCount = computed(() => {
     <!-- 背景遮罩 -->
     <div @click="emit('close')" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
 
-    <!-- 彈窗內容 -->
-    <div class="relative w-full max-w-2xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 overflow-hidden z-10 max-h-[85vh] flex flex-col animate-scale-up">
+    <!-- 彈窗內容 (寬版 3 欄平鋪，無滾動條，一覽無遺) -->
+    <div class="relative w-full max-w-4xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 overflow-hidden z-10 max-h-[90vh] flex flex-col animate-scale-up">
       <!-- 關閉按鈕 -->
       <button
         @click="emit('close')"
@@ -70,8 +70,8 @@ const unlockedCount = computed(() => {
       </button>
 
       <!-- 標題與當前段位資訊 -->
-      <div class="flex items-center gap-3 mb-6">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0">
           <Trophy class="w-6 h-6" />
         </div>
         <div>
@@ -89,8 +89,8 @@ const unlockedCount = computed(() => {
         </div>
       </div>
 
-      <!-- 徽章網格列表 -->
-      <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <!-- 徽章網格列表 (3 欄整齊排列，無滾動條) -->
+      <div class="flex-1 overflow-y-auto no-scrollbar pr-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         <div
           v-for="badge in evaluatedBadges"
           :key="badge.id"

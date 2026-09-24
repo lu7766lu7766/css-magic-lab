@@ -97,3 +97,14 @@
 :where(.dark, .dark *) ::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.8);
 }
+
+/* 隱藏滾動條專用 utility (保持功能但視覺隱形，避免干擾畫面美感) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}

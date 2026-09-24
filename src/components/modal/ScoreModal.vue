@@ -34,8 +34,8 @@ function triggerConfetti() {
     <!-- 背景遮罩 -->
     <div @click="emit('close')" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
 
-    <!-- 評分彈窗核心容器 -->
-    <div class="relative w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 overflow-hidden z-10 animate-scale-up">
+    <!-- 評分彈窗核心容器 (自適應高、緊緻優雅、無滾動條) -->
+    <div class="relative w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-5 sm:p-7 overflow-y-auto no-scrollbar max-h-[92vh] z-10 animate-scale-up">
       <!-- 頂部光芒裝飾 -->
       <div
         class="absolute -top-20 -left-20 w-52 h-52 rounded-full blur-3xl pointer-events-none"
