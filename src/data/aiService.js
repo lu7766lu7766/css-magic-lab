@@ -265,215 +265,95 @@ export async function parseNaturalLanguageIntent(userPrompt, mission, currentCss
   };
 }
 
+const MISSION_TOOL_DIMENSIONS = {
+  'mission-1': {
+    colorHarmony: ['bgColor', 'gradientToggle', 'gradientColor', 'textColor'],
+    whitespace: ['paddingY', 'paddingX'],
+    elevation: ['borderRadius', 'shadowBlur'],
+    hierarchy: ['fontWeight', 'hoverY']
+  },
+  'mission-2': {
+    colorHarmony: ['cardBg', 'avatarRingColor', 'userRoleColor'],
+    whitespace: ['cardPadding'],
+    elevation: ['cardRadius', 'avatarRadius', 'cardShadow', 'backdropBlur'],
+    hierarchy: ['userNameSize', 'userNameWeight']
+  },
+  'mission-3': {
+    colorHarmony: ['cardBg', 'badgeBg', 'priceColor'],
+    whitespace: ['overflowToggle', 'foodImgFit'],
+    elevation: ['cardRadius', 'cardShadow'],
+    hierarchy: ['badgePosition', 'badgeTop', 'priceSize']
+  },
+  'mission-4': {
+    colorHarmony: ['focusColor', 'submitBtnBg'],
+    whitespace: ['formGap', 'formPadding', 'inputPadding'],
+    elevation: ['inputRadius', 'formRadius', 'submitRadius', 'formShadow'],
+    hierarchy: ['focusGlowToggle']
+  },
+  'mission-5': {
+    colorHarmony: ['ambientGlowToggle', 'primaryBtnBg', 'secondaryGhostToggle'],
+    whitespace: ['heroPadding'],
+    elevation: ['heroRadius', 'primaryBtnRadius', 'heroShadow'],
+    hierarchy: ['titleGradientToggle', 'titleSize', 'titleWeight']
+  }
+};
+
+/**
+ * 依據連續漸進比例制計算單一工具得分 (0 ~ 1.0)
+ */
+function calculateToolScore(tool, state) {
+  if (!state || !state.enabled) return 0;
+
+  // 1. Toggle 類型
+  if (tool.type === 'toggle') {
+    return (tool.targetValue === true && state.value === true) ? 1.0 : 0.5;
+  }
+
+  // 2. Select 類型
+  if (tool.type === 'select') {
+    return (String(state.value) === String(tool.targetValue)) ? 1.0 : 0.5;
+  }
+
+  // 3. Color 類型
+  if (tool.type === 'color') {
+    const valHex = String(state.value || '').toLowerCase();
+    const targetHex = String(tool.targetValue || '').toLowerCase();
+    if (valHex === targetHex) return 1.0;
+    return 0.7; // 使用者選擇了自訂色彩
+  }
+
+  // 4. Slider 類型（連續漸進比例制）
+  if (tool.type === 'slider') {
+    const val = Number(state.value);
+    // 精準落在設計師目標區間或目標值
+    if (tool.targetRange && val >= tool.targetRange[0] && val <= tool.targetRange[1]) {
+      return 1.0;
+    }
+    if (val === tool.targetValue) return 1.0;
+
+    // 計算連續漸進距離比率 (離目標越近分數越高)
+    const targetMid = tool.targetRange
+      ? (tool.targetRange[0] + tool.targetRange[1]) / 2
+      : tool.targetValue;
+    const span = Math.max(1, (tool.max - tool.min));
+    const dist = Math.abs(val - targetMid);
+    return Math.max(0.1, 1 - (dist / span));
+  }
+
+  return 0.5;
+}
+
 /**
  * 目標範例吻合度評分引擎
  * 評估 4 大維度：色彩調和、空間呼吸、光影層次、文字結構
  */
 export function evaluateMission(mission, currentCss, currentToolStates = {}) {
-  const css = currentCss.toLowerCase();
-
-  let colorScore = 40;
-  let whitespaceScore = 30;
-  let elevationScore = 30;
-  let hierarchyScore = 40;
-
+  const css = currentCss ? currentCss.toLowerCase() : '';
   const mid = mission?.id;
 
-  // 1. 色彩調和 (Color Harmony) - 滿分 100
-  if (mid === 'mission-1') {
-    if (css.includes('gradient') || css.includes('#6366f1') || css.includes('#a855f7')) {
-      colorScore += 35;
-    }
-    if (css.includes('color: #ffffff') || css.includes('color: #fff') || css.includes('color: white')) {
-      colorScore += 25;
-    }
-  } else if (mid === 'mission-2') {
-    if (css.includes('#0f172a') || css.includes('rgba(15, 23, 42') || css.includes('#38bdf8')) {
-      colorScore += 35;
-    }
-    if (css.includes('color: #f8fafc') || css.includes('color: #ffffff') || css.includes('#38bdf8')) {
-      colorScore += 25;
-    }
-  } else if (mid === 'mission-3') {
-    if (css.includes('#1e293b') || css.includes('gradient') || css.includes('#f59e0b') || css.includes('#ef4444')) {
-      colorScore += 35;
-    }
-    if (css.includes('#f59e0b') || css.includes('#ffffff') || css.includes('color: #')) {
-      colorScore += 25;
-    }
-  } else if (mid === 'mission-4') {
-    if (css.includes('#38bdf8') || css.includes('#0ea5e9') || css.includes('gradient') || css.includes('#3b82f6')) {
-      colorScore += 35;
-    }
-    if (css.includes('#0f172a') || css.includes('#1e293b') || css.includes('#ffffff')) {
-      colorScore += 25;
-    }
-  } else if (mid === 'mission-5') {
-    if (css.includes('radial-gradient') || css.includes('linear-gradient') || css.includes('#7c3aed') || css.includes('#8b5cf6') || css.includes('#ec4899')) {
-      colorScore += 35;
-    }
-    if (css.includes('background-clip: text') || css.includes('#ffffff') || css.includes('#f1f5f9')) {
-      colorScore += 25;
-    }
-  } else {
-    if (css.includes('gradient') || css.includes('#6366f1') || css.includes('#38bdf8') || css.includes('#0ea5e9') || css.includes('rgba(')) {
-      colorScore += 35;
-    }
-    if (css.includes('color: #ffffff') || css.includes('color: #f8fafc') || css.includes('color: #f43f5e')) {
-      colorScore += 25;
-    }
-  }
-
-  // 2. 空間呼吸 (Whitespace & Padding) - 滿分 100
-  if (mid === 'mission-1') {
-    const padMatch = css.match(/padding:\s*(\d+)px\s*(\d+)px/);
-    if (padMatch) {
-      const py = parseInt(padMatch[1], 10);
-      const px = parseInt(padMatch[2], 10);
-      if (py >= 10 && py <= 22) whitespaceScore += 45;
-      if (px >= 20 && px <= 44) whitespaceScore += 25;
-    } else if (css.includes('padding: 14px') || css.includes('padding: 32px') || css.includes('padding: 30px')) {
-      whitespaceScore += 45;
-      if (css.includes('padding:') && !css.includes('padding: 4px')) whitespaceScore += 25;
-    } else if (css.includes('padding:') && !css.includes('padding: 4px')) {
-      whitespaceScore += 40;
-    }
-  } else if (mid === 'mission-2') {
-    if (css.includes('padding: 28px') || /padding:\s*(2[0-9]|3[0-6])px/.test(css)) {
-      whitespaceScore += 45;
-    } else if (css.includes('padding:') && !css.includes('padding: 4px')) {
-      whitespaceScore += 25;
-    }
-    if (css.includes('padding:') && !css.includes('padding: 4px') && !css.includes('padding: 2px')) {
-      whitespaceScore += 25;
-    }
-  } else if (mid === 'mission-3') {
-    if (css.includes('overflow: hidden') || css.includes('object-fit: cover')) {
-      whitespaceScore += 45;
-    }
-    if (css.includes('top: 14px') || css.includes('padding:') || css.includes('gap:')) {
-      whitespaceScore += 25;
-    }
-  } else if (mid === 'mission-4') {
-    if (css.includes('gap: 20px') || /gap:\s*(1[6-9]|2[0-8])px/.test(css) || css.includes('gap:')) {
-      whitespaceScore += 45;
-    }
-    if (css.includes('padding: 32px') || /padding:\s*(2[4-9]|3[0-8])px/.test(css) || (css.includes('padding:') && !css.includes('padding: 4px'))) {
-      whitespaceScore += 25;
-    }
-  } else if (mid === 'mission-5') {
-    if (css.includes('padding: 44px') || /padding:\s*(3[6-9]|4[0-8])px/.test(css)) {
-      whitespaceScore += 45;
-    }
-    if (css.includes('gap: 20px') || css.includes('display: flex') || css.includes('gap:')) {
-      whitespaceScore += 25;
-    }
-  } else {
-    if (css.includes('padding: 14px') || css.includes('padding: 28px') || css.includes('padding: 32px') || css.includes('padding: 44px') || css.includes('gap:')) {
-      whitespaceScore += 45;
-    }
-    if (css.includes('padding:') && !css.includes('padding: 4px') && !css.includes('padding: 2px')) {
-      whitespaceScore += 25;
-    }
-  }
-
-  // 3. 邊界與光影 (Border & Elevation) - 滿分 100
-  if (mid === 'mission-1') {
-    if (css.includes('border-radius: 9999px') || /border-radius:\s*(?:9999px|[2-9]\d{2,}px)/.test(css)) {
-      elevationScore += 35;
-    } else if (css.includes('border-radius:')) {
-      elevationScore += 20;
-    }
-    if (css.includes('box-shadow:') && !css.includes('box-shadow: none')) {
-      elevationScore += 35;
-    }
-  } else if (mid === 'mission-2') {
-    if (css.includes('border-radius: 50%') || css.includes('border-radius: 24px') || css.includes('border-radius: 20px')) {
-      elevationScore += 35;
-    }
-    if (css.includes('box-shadow:') && !css.includes('box-shadow: none')) {
-      elevationScore += 35;
-    }
-  } else if (mid === 'mission-3') {
-    if (css.includes('border-radius: 20px') || css.includes('border-radius: 9999px') || css.includes('border-radius: 24px') || css.includes('border-radius: 16px')) {
-      elevationScore += 35;
-    }
-    if (css.includes('box-shadow:') && !css.includes('box-shadow: none')) {
-      elevationScore += 35;
-    }
-  } else if (mid === 'mission-4') {
-    if (css.includes('border-radius: 24px') || css.includes('border-radius: 12px') || /border-radius:\s*(?:1[2-9]|2[0-8])px/.test(css)) {
-      elevationScore += 35;
-    }
-    if (css.includes('box-shadow:') && !css.includes('box-shadow: none')) {
-      elevationScore += 35;
-    }
-  } else if (mid === 'mission-5') {
-    if (css.includes('border-radius: 28px') || css.includes('border-radius: 9999px') || /border-radius:\s*(?:2[4-9]|3[0-2])px/.test(css)) {
-      elevationScore += 35;
-    }
-    if (css.includes('box-shadow:') && !css.includes('box-shadow: none')) {
-      elevationScore += 35;
-    }
-  } else {
-    if (css.includes('border-radius: 9999px') || css.includes('border-radius: 50%') || css.includes('border-radius: 20px') || css.includes('border-radius: 24px') || css.includes('border-radius: 12px')) {
-      elevationScore += 35;
-    }
-    if (css.includes('box-shadow:') && !css.includes('box-shadow: none')) {
-      elevationScore += 35;
-    }
-  }
-
-  // 4. 文字結構與動態互動 (Hierarchy & Interaction) - 滿分 100
-  if (mid === 'mission-1') {
-    if (css.includes('font-weight: 700') || css.includes('font-weight: 800')) {
-      hierarchyScore += 30;
-    }
-    if (css.includes(':hover') || css.includes('translatey') || css.includes('cursor: pointer') || css.includes('transition:')) {
-      hierarchyScore += 30;
-    }
-  } else if (mid === 'mission-2') {
-    if (css.includes('font-weight: 800') || css.includes('font-size: 20px') || css.includes('font-weight: 700')) {
-      hierarchyScore += 30;
-    }
-    if (css.includes('backdrop-filter') || css.includes('user-role') || css.includes('letter-spacing')) {
-      hierarchyScore += 30;
-    }
-  } else if (mid === 'mission-3') {
-    if (css.includes('position: absolute') || css.includes('position: relative')) {
-      hierarchyScore += 30;
-    }
-    if (css.includes('font-weight: 800') || css.includes('font-weight: 700') || css.includes('font-size: 18px')) {
-      hierarchyScore += 30;
-    }
-  } else if (mid === 'mission-4') {
-    if (css.includes(':focus') || css.includes('outline: none')) {
-      hierarchyScore += 30;
-    }
-    if (css.includes('font-weight: 700') || css.includes('cursor: pointer')) {
-      hierarchyScore += 30;
-    }
-  } else if (mid === 'mission-5') {
-    if (css.includes('font-size: 32px') || css.includes('font-weight: 800')) {
-      hierarchyScore += 30;
-    }
-    if (css.includes('background-clip: text') || css.includes('cta-primary') || css.includes('cta-secondary')) {
-      hierarchyScore += 30;
-    }
-  } else {
-    if (css.includes('font-weight: 700') || css.includes('font-weight: 800') || css.includes('font-size: 20px') || css.includes('font-size: 22px') || css.includes('font-size: 32px')) {
-      hierarchyScore += 30;
-    }
-    if (css.includes('overflow: hidden') || css.includes(':focus') || css.includes('background-clip: text') || css.includes('position: absolute') || css.includes('translatey') || css.includes(':hover')) {
-      hierarchyScore += 30;
-    }
-  }
-
-  // 檢查是否誤觸干擾項 (Traps)
+  // 檢查干擾陷阱項 (Traps)
   let trapPenalty = 0;
   const trapWarnings = [];
-
-  // 1. 若有工具狀態字典，依據 mission.tools 精確比對
   if (mission?.tools && Array.isArray(mission.tools)) {
     mission.tools.forEach(tool => {
       if (tool.isTrap && currentToolStates[tool.id]?.enabled) {
@@ -487,43 +367,46 @@ export function evaluateMission(mission, currentCss, currentToolStates = {}) {
     });
   }
 
-  // 2. 作為後備相容機制（若未傳入 toolStates 則比對 CSS 字串）
-  if (trapWarnings.length === 0 && (!currentToolStates || Object.keys(currentToolStates).length === 0)) {
-    if (css.includes('grayscale(100%)')) {
-      trapPenalty += 15;
-      trapWarnings.push({ name: '灰階去色濾鏡', warning: '灰階去色會使按鈕或卡片失去色彩主導權與活力。' });
-    }
-    if (css.includes('rotate(')) {
-      trapPenalty += 15;
-      trapWarnings.push({ name: '平面旋轉角度', warning: '旋轉會破壞網頁標準排版的對齊與秩序感。' });
-    }
-    if (css.includes('sepia(100%)')) {
-      trapPenalty += 15;
-      trapWarnings.push({ name: '復古泛黃濾鏡', warning: '泛黃色調會讓美食照片看起來像隔夜菜，破壞食慾。' });
-    }
-    if (css.includes('border-style: dotted') || css.includes('double') || css.includes('dashed')) {
-      trapPenalty += 15;
-      trapWarnings.push({ name: '虛線/雙層邊框', warning: '不規則或雙層邊框容易產生雜亂老舊的視覺感。' });
-    }
-    if (css.includes('text-shadow:')) {
-      trapPenalty += 15;
-      trapWarnings.push({ name: '刻痕文字陰影', warning: '早期的凹凸文字陰影在現代極簡 UI 中容易影響易讀性。' });
-    }
-    if (css.includes('skewx(')) {
-      trapPenalty += 15;
-      trapWarnings.push({ name: '透視歪斜變形', warning: '容器歪斜會讓內文難以閱讀，破壞介面結構。' });
-    }
-    if (css.includes('粗黑外邊框') || css.includes('實線深黑外框') || css.includes('粗糙深黑邊框')) {
-      trapPenalty += 15;
-      trapWarnings.push({ name: '粗黑外邊框', warning: '粗硬的黑邊框會破壞層次留白與光芒質感。' });
-    }
+  const enabledNonTraps = (mission?.tools || []).filter(t => !t.isTrap && currentToolStates[t.id]?.enabled);
+  const dimMap = MISSION_TOOL_DIMENSIONS[mid];
+
+  let colorScore = 15;
+  let whitespaceScore = 15;
+  let elevationScore = 15;
+  let hierarchyScore = 15;
+
+  // 若使用者完全尚未啟用任何非陷阱工具（初始陽春狀態）
+  const isZeroState = enabledNonTraps.length === 0;
+
+  if (isZeroState) {
+    colorScore = 15;
+    whitespaceScore = 15;
+    elevationScore = 15;
+    hierarchyScore = 15;
+  } else if (dimMap && mission?.tools) {
+    const toolsById = {};
+    mission.tools.forEach(t => { toolsById[t.id] = t; });
+
+    const evalDimension = (toolIds) => {
+      if (!toolIds || toolIds.length === 0) return 100;
+      const sum = toolIds.reduce((acc, tid) => {
+        const t = toolsById[tid];
+        return acc + (t ? calculateToolScore(t, currentToolStates[tid]) : 0);
+      }, 0);
+      return Math.round(15 + 85 * (sum / toolIds.length));
+    };
+
+    colorScore = evalDimension(dimMap.colorHarmony);
+    whitespaceScore = evalDimension(dimMap.whitespace);
+    elevationScore = evalDimension(dimMap.elevation);
+    hierarchyScore = evalDimension(dimMap.hierarchy);
   }
 
   // 限制各維度在 10 ~ 100
-  colorScore = Math.min(100, Math.max(15, colorScore));
-  whitespaceScore = Math.min(100, Math.max(15, whitespaceScore));
-  elevationScore = Math.min(100, Math.max(15, elevationScore));
-  hierarchyScore = Math.min(100, Math.max(15, hierarchyScore));
+  colorScore = Math.min(100, Math.max(10, colorScore));
+  whitespaceScore = Math.min(100, Math.max(10, whitespaceScore));
+  elevationScore = Math.min(100, Math.max(10, elevationScore));
+  hierarchyScore = Math.min(100, Math.max(10, hierarchyScore));
 
   // 計算加權總分 (扣除干擾項懲罰)
   let totalScore = Math.round(
@@ -541,11 +424,24 @@ export function evaluateMission(mission, currentCss, currentToolStates = {}) {
   else if (totalScore >= 80) stars = 2;
   else if (totalScore >= 70) stars = 1;
 
-  // 判定救命錦囊（未滿 70 分時精準指引）
+  // 救命錦囊與設計師短評
+  let critique = '';
   let rescueHint = null;
-  if (trapWarnings.length > 0) {
+
+  if (isZeroState) {
+    critique = '元件處於初始陽春狀態，四大美學指標均未達標。請參考學習重點啟用相應 CSS 控制項。';
+    rescueHint = `💡 第一步指引：${mission?.learningFocus?.[0] || '試著點擊開啟留白或色彩工具！'}`;
+  } else if (trapWarnings.length > 0) {
+    critique = `注意！你開啟了 ${trapWarnings.length} 項干擾屬性，導致評分受到扣分。請參考下方的警示說明將它們關閉！`;
     rescueHint = `⚠️ 提醒：你開啟了 ${trapWarnings.length} 項不推薦的干擾屬性【${trapWarnings.map(t => t.name).join('、')}】！請在下方工具箱找到該按鈕「再點一下」關閉還原，分數即可回升！`;
-  } else if (totalScore < 70) {
+  } else if (totalScore >= 90) {
+    critique = `太不可思議了！完美的比例、細膩的留白與光影層次，成功避開了所有干擾項，完全達到了設計師的高階水準！${mission?.client?.name || ''} 對你五體投地！`;
+  } else if (totalScore >= 80) {
+    critique = '非常出色！現代感大幅提升，已掌握了 80% 以上的核心設計法則，只要再微調一點點細節就能達到大師境界！';
+  } else if (totalScore >= 70) {
+    critique = '恭喜合格過關！成功擺脫了陽春破版的噩夢，視覺已經具備現代 UI 的基本質感！';
+  } else {
+    critique = '還差一點點就能及格（70分）！目前的修改已經朝著正確方向前進，請參考下方的救命錦囊補強最弱項！';
     const scores = [
       { name: '空間呼吸 (Padding/Gap)', score: whitespaceScore, hint: '文字和內容緊貼著外框毫無留白！試著開啟「內留白」或「間距」工具並拖動滑桿，分數就能大幅躍升！' },
       { name: '邊界與光影 (Radius/Shadow)', score: elevationScore, hint: '元件邊角太銳利且沒有陰影層次，看起來很扁平！試著開啟「圓角修飾」或「立體陰影」並拉大數值！' },
@@ -554,20 +450,6 @@ export function evaluateMission(mission, currentCss, currentToolStates = {}) {
     ];
     scores.sort((a, b) => a.score - b.score);
     rescueHint = scores[0].hint;
-  }
-
-  // 設計師短評
-  let critique = '';
-  if (totalScore >= 90) {
-    critique = `太不可思議了！完美的比例、細膩的留白與光影層次，成功避開了所有干擾項，完全達到了設計師的高階水準！${mission.client.name} 對你五體投地！`;
-  } else if (totalScore >= 80) {
-    critique = `非常出色！現代感大幅提升，已掌握了 80% 以上的核心設計法則，只要再微調一點點細節就能達到大師境界！`;
-  } else if (totalScore >= 70) {
-    critique = `恭喜合格過關！成功擺脫了陽春破版的噩夢，視覺已經具備現代 UI 的基本質感！`;
-  } else if (trapWarnings.length > 0) {
-    critique = `注意！你開啟了 ${trapWarnings.length} 項干擾屬性，導致評分受到扣分。請參考下方的警示說明將它們關閉！`;
-  } else {
-    critique = `還差一點點就能及格（70分）！目前的修改已經朝著正確方向前進，請參考下方的救命錦囊補強最弱項！`;
   }
 
   return {
