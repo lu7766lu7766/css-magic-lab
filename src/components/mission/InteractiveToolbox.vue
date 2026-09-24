@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 import { 
   Sliders, 
   Sparkles, 
-  Pipette, 
   RotateCcw, 
   Check, 
   AlertTriangle,
@@ -85,24 +84,6 @@ function applyEyedropper(toolId, hex) {
           <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
             🎯 點一下開啟控制項（從乾淨預設值起步），再次點擊可關閉還原；請對照設計師目標成品，挑選真正需要的關鍵屬性！
           </p>
-        </div>
-      </div>
-
-      <!-- 快速吸取目標色提示列 -->
-      <div v-if="targetColors.length > 0" class="flex items-center gap-1.5 text-xs text-slate-500 bg-slate-50 dark:bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-800">
-        <Pipette class="w-3.5 h-3.5 text-purple-500" />
-        <span class="hidden sm:inline font-medium">目標色碼吸管：</span>
-        <div class="flex items-center gap-1.5">
-          <button
-            v-for="tc in targetColors"
-            :key="tc.hex"
-            @click="expandedToolId ? applyEyedropper(expandedToolId, tc.hex) : null"
-            class="group relative w-5 h-5 rounded-md border border-slate-300 dark:border-slate-700 transition-transform hover:scale-125 cursor-pointer"
-            :style="{ background: tc.hex }"
-            :title="`吸取 ${tc.label}: ${tc.hex}`"
-          >
-            <span class="sr-only">{{ tc.label }}</span>
-          </button>
         </div>
       </div>
     </div>
@@ -220,9 +201,9 @@ function applyEyedropper(toolId, hex) {
                 placeholder="#xxxxxx"
               />
             </div>
-            <!-- 目標顏色快捷吸取按鈕 -->
+            <!-- 目標顏色快捷色票 -->
             <div v-if="targetColors.length > 0" class="flex items-center gap-1 pt-0.5">
-              <span class="text-[9px] text-slate-400">吸色:</span>
+              <span class="text-[9px] text-slate-400">色票:</span>
               <button
                 v-for="tc in targetColors.slice(0, 4)"
                 :key="tc.hex"
@@ -230,7 +211,7 @@ function applyEyedropper(toolId, hex) {
                 @click="applyEyedropper(tool.id, tc.hex)"
                 class="w-3.5 h-3.5 rounded border border-slate-300 dark:border-slate-600 hover:scale-125 transition-transform"
                 :style="{ background: tc.hex }"
-                :title="`吸取 ${tc.label} (${tc.hex})`"
+                :title="`帶入 ${tc.label} (${tc.hex})`"
               ></button>
             </div>
           </div>

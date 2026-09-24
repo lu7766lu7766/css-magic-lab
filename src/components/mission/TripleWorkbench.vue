@@ -6,7 +6,7 @@ import {
   Copy, 
   Check, 
   Sparkles, 
-  Pipette, 
+  Palette, 
   Code2, 
   Target, 
   AlertCircle,
@@ -264,19 +264,19 @@ const formattedLines = computed(() => {
 
         <!-- 目標情報卡（色碼滴管 + 關鍵尺寸） -->
         <div class="p-2.5 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 space-y-1.5 text-xs shrink-0">
-          <!-- 色彩滴管列表 -->
+          <!-- 色彩參考清單 -->
           <div v-if="mission.targetInspector?.colors" class="flex flex-wrap items-center gap-1.5">
             <div class="flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-300">
-              <Pipette class="w-3 h-3 text-purple-500" />
-              <span class="text-[10px]">目標吸管：</span>
+              <Palette class="w-3 h-3 text-purple-500" />
+              <span class="text-[10px]">目標色碼：</span>
             </div>
             <button
               v-for="c in mission.targetInspector.colors.slice(0, 3)"
               :key="c.hex"
               type="button"
               @click="handleCopyColor(c.hex)"
-              class="flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-purple-400 transition-all text-[10px] font-mono"
-              :title="`點擊吸取 ${c.label}`"
+              class="flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-purple-400 transition-all text-[10px] font-mono cursor-pointer"
+              :title="`點擊複製 ${c.label} 色碼 (${c.hex})`"
             >
               <span class="w-2.5 h-2.5 rounded-full" :style="{ background: c.hex }"></span>
               <span class="font-bold text-slate-700 dark:text-slate-300">{{ c.hex }}</span>
