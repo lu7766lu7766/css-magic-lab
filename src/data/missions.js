@@ -2548,8 +2548,10 @@ export const MISSIONS = [
       <span class="cyber-access">ACCESS: VIP</span>
     </div>
     <div class="cyber-body">
-      <div class="cyber-avatar">
-        <span class="cyber-avatar-icon">⚡</span>
+      <div class="cyber-avatar-wrapper">
+        <div class="cyber-avatar">
+          <span class="cyber-avatar-icon">⚡</span>
+        </div>
       </div>
       <div class="cyber-info">
         <h2 class="cyber-name">CYBER_PHANTOM</h2>
@@ -2631,12 +2633,16 @@ export const MISSIONS = [
   gap: 16px;
 }
 
+.cyber-avatar-wrapper {
+  filter: drop-shadow(0 0 16px rgba(255, 0, 127, 0.7));
+}
+
 .cyber-avatar {
   width: 54px;
   height: 54px;
   background: rgba(255, 0, 127, 0.15);
   border: 2px solid #ff007f;
-  box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+  box-shadow: inset 0 0 12px rgba(255, 0, 127, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;

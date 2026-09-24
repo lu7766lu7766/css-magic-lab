@@ -838,6 +838,14 @@ ${hoverBounceCss}
     const spinTrapCss = state.cyberCardSpinTrap ? 'transform: rotate(180deg); /* ⚠️ 瘋狂翻滾失重 */' : '';
     const borderDottedTrap = state.cyberRainbowDottedTrap ? 'border: 3px dotted #ff00ff !important; /* ⚠️ 繽紛點狀小丑邊框 */' : '';
 
+    const avatarWrapperGlowCss = state.cyberAvatarGlow > 0
+      ? `.cyber-avatar-wrapper {\n  filter: drop-shadow(0 0 ${state.cyberAvatarGlow}px ${hexToRgba(state.cyberAccentColor, 0.75)});\n}\n\n`
+      : '';
+
+    const avatarGlowCss = state.cyberAvatarGlow > 0
+      ? `box-shadow: 0 0 ${state.cyberAvatarGlow}px ${hexToRgba(state.cyberAccentColor, 0.5)}, inset 0 0 ${Math.max(6, Math.round(state.cyberAvatarGlow * 0.75))}px ${hexToRgba(state.cyberAccentColor, 0.6)}; /* 💡 核心晶片外環光暈 */`
+      : 'box-shadow: none;';
+
     return `/* 🛠️ 我的賽博龐克全像通行證樣式 */
 @keyframes scanlineAnim {
   0% { transform: translateY(-100%); }
@@ -904,12 +912,12 @@ ${wrapperGlowCss}.cyber-pass {
   gap: 16px;
 }
 
-.cyber-avatar {
+${avatarWrapperGlowCss}.cyber-avatar {
   width: 54px;
   height: 54px;
   background: ${hexToRgba(state.cyberAccentColor, 0.15)};
   border: 2px solid ${state.cyberAccentColor};
-  box-shadow: 0 0 ${state.cyberAvatarGlow}px ${hexToRgba(state.cyberAccentColor, 0.6)}; /* 💡 核心晶片外環光暈 */
+  ${avatarGlowCss}
   display: flex;
   align-items: center;
   justify-content: center;
