@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
 import { MISSIONS } from './data/missions.js'
-import { BADGES } from './data/badges.js'
+import { BADGES, calculateExpByScore } from './data/badges.js'
 import { generateMissionCss } from './data/cssGenerators.js'
 import { evaluateMission } from './data/aiService.js'
 
@@ -378,7 +378,9 @@ onMounted(() => {
       // 略過
     }
   }
+  recalculateTotalExp()
   checkAndUnlockBadges()
+  saveStats()
 
   // 監聽 Hash 變更
   window.addEventListener('hashchange', handleHashChange)
@@ -479,6 +481,15 @@ function handleResetMission() {
   saveToolStates()
 }
 
+// 重新依據各關歷史最高分精算總經驗值（每關上限 100 EXP，總分上限 1000 EXP）
+function recalculateTotalExp() {
+  let sum = 0
+  for (const mid in stats.scores) {
+    sum += calculateExpByScore(stats.scores[mid])
+  }
+  stats.totalExp = sum
+}
+
 // 送交 AI 綜合評分
 function handleSubmitEvaluation() {
   const mid = currentMission.value.id
@@ -486,12 +497,20 @@ function handleSubmitEvaluation() {
   currentEvalResult.value = evalRes
 
   const prevScore = stats.scores[mid] || 0
+  const prevExp = calculateExpByScore(prevScore)
+
   if (evalRes.score > prevScore) {
     stats.scores[mid] = evalRes.score
     stats.stars[mid] = evalRes.stars
+  }
 
-    const expGained = evalRes.score >= 90 ? 100 : evalRes.score >= 80 ? 60 : 40
-    stats.totalExp += expGained
+  // 重新精算總經驗值（依據各關歷史最高分，每關最多上限 100 EXP）
+  recalculateTotalExp()
+
+  const newExp = calculateExpByScore(stats.scores[mid] || 0)
+  const expGained = Math.max(0, newExp - prevExp)
+  if (expGained > 0) {
+    triggerChangePulse(`獲得 +${expGained} EXP！`)
   }
 
   saveStats()
