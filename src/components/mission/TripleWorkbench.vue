@@ -51,6 +51,14 @@ function handleCopyColor(hex) {
 const scopedUserCss = computed(() => scopeCss(props.currentCss, 'user-workbench-canvas'))
 const scopedTargetCss = computed(() => scopeCss(props.mission.designerTargetCss, 'target-workbench-canvas'))
 
+// 針對不同關卡物件高度與排版模式自適應縮放，防止第四關表單等較大物件在三欄時被裁切
+const canvasScaleClass = computed(() => {
+  if (['mission-4', 'mission-8', 'mission-10'].includes(props.mission.id)) {
+    return layoutMode.value === 'triple' ? 'scale-[0.84] xl:scale-[0.82]' : 'scale-95 sm:scale-100'
+  }
+  return ''
+})
+
 // 格式化當前 CSS 每一行
 const formattedLines = computed(() => {
   const rawLines = props.currentCss.split('\n')
@@ -106,7 +114,7 @@ const formattedLines = computed(() => {
     <div class="grid grid-cols-1 gap-4 items-stretch" :class="layoutMode === 'split' ? 'xl:grid-cols-2' : 'xl:grid-cols-12'">
       <!-- ==================== 左側：當前樣式（我的作品） ==================== -->
       <div
-        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[460px] sm:min-h-[490px]"
+        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[480px] sm:min-h-[520px]"
         :class="layoutMode === 'split' ? 'w-full' : 'xl:col-span-4'"
       >
         <!-- 頂部標籤與設備切換 -->
@@ -150,10 +158,11 @@ const formattedLines = computed(() => {
           </component>
 
           <div
-            class="transition-all duration-300 flex items-center justify-center w-full"
+            class="transition-all duration-300 flex items-center justify-center w-full origin-center"
             :class="[
               previewDevice === 'mobile' ? 'max-w-[320px] border-2 border-dashed border-slate-300 dark:border-slate-700 p-2 rounded-2xl' : 'max-w-md',
-              hasRecentChange ? 'element-glow-pulse' : ''
+              hasRecentChange ? 'element-glow-pulse' : '',
+              canvasScaleClass
             ]"
           >
             <div class="user-workbench-canvas w-full flex justify-center" v-html="mission.htmlTemplate"></div>
@@ -170,7 +179,7 @@ const formattedLines = computed(() => {
       <!-- ==================== 中間：CSS 即時檢閱 (三欄模式下顯示在中央) ==================== -->
       <div
         v-if="layoutMode === 'triple'"
-        class="xl:col-span-4 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm overflow-hidden font-mono text-xs min-h-[460px] sm:min-h-[490px]"
+        class="xl:col-span-4 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm overflow-hidden font-mono text-xs min-h-[480px] sm:min-h-[520px]"
       >
         <!-- 頂部工具列 -->
         <div class="px-3.5 py-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between shrink-0">
@@ -232,7 +241,7 @@ const formattedLines = computed(() => {
 
       <!-- ==================== 右側：目標樣式（設計師樣板） ==================== -->
       <div
-        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[460px] sm:min-h-[490px]"
+        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[480px] sm:min-h-[520px]"
         :class="layoutMode === 'split' ? 'w-full' : 'xl:col-span-4'"
       >
         <!-- 頂部標題 -->
@@ -259,7 +268,7 @@ const formattedLines = computed(() => {
             {{ scopedTargetCss }}
           </component>
 
-          <div class="target-workbench-canvas w-full flex justify-center" v-html="mission.htmlTemplate"></div>
+          <div class="target-workbench-canvas w-full flex justify-center origin-center transition-transform" :class="canvasScaleClass" v-html="mission.htmlTemplate"></div>
         </div>
 
         <!-- 目標情報卡（色碼滴管 + 關鍵尺寸） -->
