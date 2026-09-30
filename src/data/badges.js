@@ -145,15 +145,15 @@ export function getRankByExp(exp) {
 
 /**
  * 依據關卡評分計算該關卡獲得的經驗值 (上限 100 EXP)
- * - 100 分 (完美滿分)：100 EXP
- * - 90 ~ 99 分 (★★★)：80 EXP
+ * - 98 分以上 (完美滿分)：100 EXP
+ * - 90 ~ 97 分 (★★★)：80 EXP
  * - 80 ~ 89 分 (★★☆)：60 EXP
  * - 70 ~ 79 分 (★☆☆)：40 EXP
  * - 未滿 70 分 (未及格)：0 EXP
  */
 export function calculateExpByScore(score) {
   const s = Number(score) || 0;
-  if (s >= 100) return 100;
+  if (s >= 98) return 100;
   if (s >= 90) return 80;
   if (s >= 80) return 60;
   if (s >= 70) return 40;
