@@ -48,7 +48,7 @@ export function generateMissionCss(missionId, state) {
   ${filterCss}
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: ${rotateCss ? rotateCss : 'none'};
+  transform: ${[rotateCss, state.hoverY < 0 ? `translateY(${state.hoverY / 2}px)` : ''].filter(Boolean).join(' ') || 'none'}; /* 💡 開關即有半程上浮，懸停時再全程反饋 */
 }
 
 .action-btn:hover {
@@ -92,6 +92,7 @@ export function generateMissionCss(missionId, state) {
   height: 80px;
   border-radius: ${state.avatarSquareTrap ? '0px !important; /* ⚠️ 直角方形頭像 */' : state.avatarRadius >= 50 ? '50%' : state.avatarRadius + '%'}; /* ${state.avatarRadius >= 50 ? '💡 50% 正圓形頭像裁切' : '💡 頭像倒角'} */
   border: 3px solid ${state.avatarRingColor}; /* 💡 專屬天藍高光外環 */
+  ${state.avatarSquareTrap ? 'transform: rotate(-8deg); /* ⚠️ 頭像歪斜失衡 */' : ''}
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
 }
 
@@ -157,7 +158,7 @@ export function generateMissionCss(missionId, state) {
   position: ${state.badgePosition}; /* ${state.badgePosition === 'absolute' ? '💡 position: absolute 自由浮空於圖片上方' : '💡 static 預設文檔流'} */
   top: ${state.badgeTop}px;
   left: 14px;
-  background: ${state.badgePosition === 'absolute' ? 'linear-gradient(135deg, #f59e0b, #ef4444)' : state.badgeBg};
+  background: ${state.badgePosition === 'absolute' ? 'linear-gradient(135deg, #f59e0b, ' + state.badgeBg + ')' : state.badgeBg}; /* 💡 浮空時以選擇色作為漸層尾端，調色即時可見 */
   color: #ffffff;
   font-size: 11px;
   font-weight: 700;
@@ -178,7 +179,9 @@ export function generateMissionCss(missionId, state) {
   if (missionId === 'mission-4') {
     const inputBorderCss = state.inputBorderHeavyTrap > 1
       ? `${state.inputBorderHeavyTrap}px solid #000000; /* ⚠️ 粗糙深黑邊框 */`
-      : '1.5px solid rgba(255, 255, 255, 0.1);';
+      : state.focusGlow
+        ? `1.5px solid ${hexToRgba(state.focusColor, 0.65)}; /* 💡 焦點色常駐描邊，未聚焦也能看見差異 */`
+        : '1.5px solid rgba(255, 255, 255, 0.1);';
 
     const inputBorderStyle = state.inputDottedTrap
       ? 'border-style: dotted; /* ⚠️ 點狀邊框線條 */'
@@ -206,7 +209,7 @@ export function generateMissionCss(missionId, state) {
   display: flex;
   flex-direction: column;
   gap: ${state.formGap}px; /* 💡 gap 讓每個輸入框保持舒適垂直間距 */
-  box-shadow: 0 25px ${state.formShadow || 40}px -12px rgba(0, 0, 0, 0.6);
+  box-shadow: ${state.formShadow > 0 ? `0 25px ${state.formShadow}px -12px rgba(0, 0, 0, 0.6)` : 'none'};
   ${formSkewCss}
 }
 
@@ -276,7 +279,7 @@ ${state.focusGlow ? `.form-input:focus {
   ${rainbowBorderCss}
   border-radius: ${state.heroRadius}px;
   text-align: center;
-  box-shadow: 0 30px ${state.heroShadow || 50}px -15px rgba(0, 0, 0, 0.8);
+  box-shadow: ${state.heroShadow > 0 ? `0 30px ${state.heroShadow}px -15px rgba(0, 0, 0, 0.8)` : 'none'};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -332,7 +335,7 @@ ${state.focusGlow ? `.form-input:focus {
       : 'none';
 
     const discRadiusCss = state.discSquareTrap
-      ? '0px; /* ⚠️ 直角鋸齒黑膠唱片 */'
+      ? '0px !important; /* ⚠️ 直角鋸齒黑膠唱片 */'
       : state.discRadius >= 50
         ? '50%; /* 💡 50% 圓潤黑膠唱片完美正圓 */'
         : `${state.discRadius}%; /* 💡 唱片倒角修飾 */`;
@@ -395,7 +398,7 @@ ${state.focusGlow ? `.form-input:focus {
   justify-content: center;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
   animation: ${discSpinAnim}
-  border: 2px solid #334155;
+  ${state.discSquareTrap ? 'border: 2px dashed #64748b; /* ⚠️ 鬆散虛線邊框 */' : 'border: 2px solid #334155;'}
   position: relative;
 }
 
@@ -619,7 +622,7 @@ ${state.focusGlow ? `.form-input:focus {
   height: ${state.stepNodeSize}px;
   border-radius: ${nodeRadiusCss}
   background: #1e293b;
-  border: 2px solid #334155;
+  ${state.stepNodeSquareTrap ? 'border: 2px dashed #64748b; /* ⚠️ 鬆散虛線邊框 */' : 'border: 2px solid #334155;'}
   color: #94a3b8;
   display: flex;
   align-items: center;
@@ -691,7 +694,7 @@ ${state.focusGlow ? `.form-input:focus {
       ? '0px; /* ⚠️ 銳利刺手直角氣泡 */'
       : `${state.bubbleRadius}px; /* 💡 柔和對話氣泡圓角 */`;
 
-    const arrowDisplay = state.bubbleArrow ? 'block' : 'none';
+    const arrowDisplay = (state.bubbleArrow || state.bubbleArrowDistortTrap) ? 'block' : 'none';
     const arrowRotate = state.bubbleArrowDistortTrap ? 'transform: rotate(45deg); /* ⚠️ 扭曲失控尖角 */' : '';
 
     const filterTrapCss = state.confessSepiaDarkTrap ? 'filter: sepia(90%); /* ⚠️ 泛黃老舊復古濾鏡 */' : '';
@@ -760,7 +763,7 @@ ${state.focusGlow ? `.form-input:focus {
   padding: 16px 18px;
   border-radius: ${bubbleRadiusCss}
   border-top-left-radius: 4px;
-  border: 1px solid #fecdd3;
+  ${state.bubbleSharpTrap ? 'border: 1px solid #94a3b8; /* ⚠️ 冷灰生硬描邊 */' : 'border: 1px solid #fecdd3;'}
 }
 
 .bubble-text {
@@ -803,6 +806,7 @@ ${state.focusGlow ? `.form-input:focus {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px ${state.heartBtnGlow}px ${hexToRgba(state.heartBtnBg, 0.4)}; /* 💡 心跳立體投影 */
+  ${state.heartHoverBounce ? 'transform: scale(1.03); /* 💡 常駐微放大，懸停時再彈跳至 1.08 */' : ''}
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 ${hoverBounceCss}
@@ -994,10 +998,10 @@ ${avatarWrapperGlowCss}.cyber-avatar {
       ? `background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #38bdf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; /* 💡 燙金銀白金屬文字裁切 */`
-      : 'color: #ffffff;';
+      : 'color: #94a3b8; /* 💡 未啟用金屬反射時為黯淡灰藍，啟用後即見燙金流光 */';
 
     const borderHighlightCss = state.prismBorderHighlight
-      ? 'border: 1px solid rgba(255, 255, 255, 0.18); /* 💡 0.5px 高折射率晶體外框 */'
+      ? 'border: 1px solid rgba(255, 255, 255, 0.45); /* 💡 高折射率晶體高光邊界 */'
       : 'border: none;';
 
     const cardRadiusCss = state.prismFlatZeroTrap
@@ -1030,6 +1034,7 @@ ${avatarWrapperGlowCss}.cyber-avatar {
   border-radius: ${cardRadiusCss}
   background: ${bgMuddyTrap}; /* 💡 黑曜石奢華底色 */
   ${tiltCss}
+  ${state.prismFlatZeroTrap ? 'filter: brightness(0.7); /* ⚠️ 扁平黯淡厚紙板 */' : ''}
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   box-shadow: ${shadowCss};
   display: flex;
