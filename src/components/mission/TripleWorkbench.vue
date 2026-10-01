@@ -51,14 +51,6 @@ function handleCopyColor(hex) {
 const scopedUserCss = computed(() => scopeCss(props.currentCss, 'user-workbench-canvas'))
 const scopedTargetCss = computed(() => scopeCss(props.mission.designerTargetCss, 'target-workbench-canvas'))
 
-// 針對不同關卡物件高度與排版模式自適應縮放，防止第四關表單等較大物件在三欄時被裁切
-const canvasScaleClass = computed(() => {
-  if (['mission-4', 'mission-8', 'mission-10'].includes(props.mission.id)) {
-    return layoutMode.value === 'triple' ? 'scale-[0.84] xl:scale-[0.82]' : 'scale-95 sm:scale-100'
-  }
-  return ''
-})
-
 // 格式化當前 CSS 每一行
 const formattedLines = computed(() => {
   const rawLines = props.currentCss.split('\n')
@@ -147,9 +139,9 @@ const formattedLines = computed(() => {
           </div>
         </div>
 
-        <!-- 渲染畫布容器 (充裕空間，內容完整置中，無滾動條) -->
+        <!-- 渲染畫布容器 (1:1 原尺寸渲染，與彈窗、吸附列完全一致，較高物件可內部滾動查看) -->
         <div
-          class="flex-1 p-5 sm:p-6 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 relative overflow-hidden no-scrollbar"
+          class="flex-1 p-5 sm:p-6 flex overflow-auto bg-slate-100/70 dark:bg-slate-950/70 relative"
           style="background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px); background-size: 16px 16px;"
         >
           <!-- 注入使用者目前的 CSS (使用 user-workbench-canvas 作用域隔離) -->
@@ -158,14 +150,13 @@ const formattedLines = computed(() => {
           </component>
 
           <div
-            class="transition-all duration-300 flex items-center justify-center w-full origin-center"
+            class="transition-all duration-300 flex justify-center w-full m-auto"
             :class="[
-              previewDevice === 'mobile' ? 'max-w-[320px] border-2 border-dashed border-slate-300 dark:border-slate-700 p-2 rounded-2xl' : 'max-w-md',
-              hasRecentChange ? 'element-glow-pulse' : '',
-              canvasScaleClass
+              previewDevice === 'mobile' ? 'max-w-[375px] border-2 border-dashed border-slate-300 dark:border-slate-700 p-2 rounded-2xl shrink-0' : 'max-w-none',
+              hasRecentChange ? 'element-glow-pulse' : ''
             ]"
           >
-            <div class="user-workbench-canvas w-full flex justify-center" v-html="mission.htmlTemplate"></div>
+            <div class="user-workbench-canvas flex justify-center" v-html="mission.htmlTemplate"></div>
           </div>
         </div>
 
@@ -258,9 +249,9 @@ const formattedLines = computed(() => {
           </span>
         </div>
 
-        <!-- 渲染目標成品畫布 (充裕空間，內容完整置中，無滾動條) -->
+        <!-- 渲染目標成品畫布 (1:1 原尺寸渲染，與彈窗、吸附列完全一致) -->
         <div
-          class="flex-1 p-5 sm:p-6 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 relative overflow-hidden no-scrollbar"
+          class="flex-1 p-5 sm:p-6 flex overflow-auto bg-slate-100/70 dark:bg-slate-950/70 relative"
           style="background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px); background-size: 16px 16px;"
         >
           <!-- 注入設計師 Target CSS (使用 target-workbench-canvas 命名空間隔離) -->
@@ -268,7 +259,7 @@ const formattedLines = computed(() => {
             {{ scopedTargetCss }}
           </component>
 
-          <div class="target-workbench-canvas w-full flex justify-center origin-center transition-transform" :class="canvasScaleClass" v-html="mission.htmlTemplate"></div>
+          <div class="target-workbench-canvas w-full flex justify-center m-auto" v-html="mission.htmlTemplate"></div>
         </div>
 
         <!-- 目標情報卡（色碼滴管 + 關鍵尺寸） -->

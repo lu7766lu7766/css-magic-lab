@@ -25,14 +25,6 @@ const scopedTargetCss = computed(() => {
   if (!props.mission?.designerTargetCss) return ''
   return scopeCss(props.mission.designerTargetCss, 'target-modal-canvas')
 })
-
-// 針對不同關卡物件高度自適應縮放，確保全貌完整呈現，絕不切掉
-const previewScaleClass = computed(() => {
-  if (['mission-4', 'mission-8', 'mission-10'].includes(props.mission?.id)) {
-    return 'scale-[0.78] sm:scale-[0.84] md:scale-90'
-  }
-  return 'scale-90 sm:scale-95 md:scale-100'
-})
 </script>
 
 <template>
@@ -94,12 +86,12 @@ const previewScaleClass = computed(() => {
                 {{ scopedTargetCss }}
               </component>
 
-              <!-- 預覽畫布 (點狀底紋，置中自適應縮放，物件絕不裁切) -->
+              <!-- 預覽畫布 (1:1 原尺寸渲染，與主工作台完全一致，較高物件可內部滾動查看) -->
               <div
-                class="min-h-[290px] sm:min-h-[330px] p-4 sm:p-6 flex items-center justify-center bg-slate-100/70 dark:bg-slate-950/70 relative overflow-hidden"
+                class="min-h-[290px] sm:min-h-[330px] max-h-[52vh] p-4 sm:p-6 flex bg-slate-100/70 dark:bg-slate-950/70 relative overflow-auto"
                 style="background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px); background-size: 16px 16px;"
               >
-                <div class="target-modal-canvas w-full flex justify-center origin-center transition-transform" :class="previewScaleClass">
+                <div class="target-modal-canvas w-full flex justify-center m-auto">
                   <div v-html="mission.htmlTemplate"></div>
                 </div>
               </div>

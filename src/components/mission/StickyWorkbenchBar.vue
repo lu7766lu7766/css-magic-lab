@@ -48,14 +48,6 @@ onUnmounted(() => {
 const scopedUserCss = computed(() => scopeCss(props.currentCss, 'sticky-user-scope'))
 const scopedTargetCss = computed(() => scopeCss(props.mission.designerTargetCss, 'sticky-target-scope'))
 
-// 針對不同關卡物件高度自適應縮放，防止第四關表單等較長物件被裁切
-const stickyScaleClass = computed(() => {
-  if (['mission-4', 'mission-8', 'mission-10'].includes(props.mission.id)) {
-    return 'scale-[0.58] sm:scale-[0.64] md:scale-[0.70]'
-  }
-  return 'scale-75 sm:scale-80 md:scale-85'
-})
-
 function copyColor(hex) {
   navigator.clipboard.writeText(hex)
   copiedColor.value = hex
@@ -162,12 +154,12 @@ function copyColor(hex) {
             {{ scopedUserCss }}
           </component>
 
-          <!-- 畫布內容區 (置中縮放，徹底無滾動條，整件物件一覽無遺) -->
+          <!-- 畫布內容區 (1:1 原尺寸渲染，與主工作台、彈窗完全一致，較高物件可內部滾動查看) -->
           <div
-            class="flex-1 w-full flex items-center justify-center p-2.5 overflow-hidden no-scrollbar bg-slate-50/60 dark:bg-slate-950/60"
+            class="flex-1 w-full flex p-2.5 overflow-auto bg-slate-50/60 dark:bg-slate-950/60"
             style="background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px); background-size: 14px 14px;"
           >
-            <div class="sticky-user-scope w-full flex justify-center origin-center shrink-0 transition-transform" :class="stickyScaleClass">
+            <div class="sticky-user-scope w-full flex justify-center m-auto">
               <div v-html="mission.htmlTemplate"></div>
             </div>
           </div>
@@ -189,12 +181,12 @@ function copyColor(hex) {
             {{ scopedTargetCss }}
           </component>
 
-          <!-- 畫布內容區 (置中縮放，徹底無滾動條，整件物件一覽無遺) -->
+          <!-- 畫布內容區 (1:1 原尺寸渲染，與主工作台、彈窗完全一致，較高物件可內部滾動查看) -->
           <div
-            class="flex-1 w-full flex items-center justify-center p-2.5 overflow-hidden no-scrollbar bg-slate-50/60 dark:bg-slate-950/60"
+            class="flex-1 w-full flex p-2.5 overflow-auto bg-slate-50/60 dark:bg-slate-950/60"
             style="background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px); background-size: 14px 14px;"
           >
-            <div class="sticky-target-scope w-full flex justify-center origin-center shrink-0 transition-transform" :class="stickyScaleClass">
+            <div class="sticky-target-scope w-full flex justify-center m-auto">
               <div v-html="mission.htmlTemplate"></div>
             </div>
           </div>
