@@ -109,8 +109,8 @@ const formattedLines = computed(() => {
         class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[480px] sm:min-h-[520px]"
         :class="layoutMode === 'split' ? 'w-full' : 'xl:col-span-4'"
       >
-        <!-- 頂部標籤與設備切換 -->
-        <div class="px-3.5 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 flex items-center justify-between shrink-0">
+        <!-- 頂部標籤與設備切換（h-11 與右欄等高，方便左右比對） -->
+        <div class="px-3.5 h-11 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 flex items-center justify-between shrink-0">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span>
             <span class="text-xs font-black text-slate-800 dark:text-slate-100 flex items-center gap-1">
@@ -160,8 +160,8 @@ const formattedLines = computed(() => {
           </div>
         </div>
 
-        <!-- 底部提示 -->
-        <div class="px-3.5 py-1.5 bg-slate-50 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between shrink-0">
+        <!-- 底部提示（h-9 與右欄等高，方便左右比對） -->
+        <div class="px-3.5 h-9 bg-slate-50 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400 flex items-center justify-between shrink-0">
           <span>💡 支援直接用滑鼠 Hover 測試</span>
           <span class="text-purple-500 font-bold">即時響應</span>
         </div>
@@ -172,8 +172,8 @@ const formattedLines = computed(() => {
         v-if="layoutMode === 'triple'"
         class="xl:col-span-4 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm overflow-hidden font-mono text-xs min-h-[480px] sm:min-h-[520px]"
       >
-        <!-- 頂部工具列 -->
-        <div class="px-3.5 py-2 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between shrink-0">
+        <!-- 頂部工具列（h-11 與左右欄等高） -->
+        <div class="px-3.5 h-11 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between shrink-0">
           <div class="flex items-center gap-2">
             <Code2 class="w-4 h-4 text-purple-400" />
             <span class="font-bold text-slate-200 text-xs font-sans">
@@ -223,8 +223,8 @@ const formattedLines = computed(() => {
           </div>
         </div>
 
-        <!-- 底部白話標籤提示 -->
-        <div class="px-3.5 py-1.5 bg-slate-950 border-t border-slate-800/80 text-[10px] font-sans text-slate-400 flex items-center justify-between shrink-0">
+        <!-- 底部白話標籤提示（h-9 與左右欄等高） -->
+        <div class="px-3.5 h-9 bg-slate-950 border-t border-slate-800/80 text-[10px] font-sans text-slate-400 flex items-center justify-between shrink-0">
           <span>💡 調整下方工具箱，代碼即時聯動</span>
           <span class="text-purple-400 font-semibold">內部滾動條已優化</span>
         </div>
@@ -235,8 +235,8 @@ const formattedLines = computed(() => {
         class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[480px] sm:min-h-[520px]"
         :class="layoutMode === 'split' ? 'w-full' : 'xl:col-span-4'"
       >
-        <!-- 頂部標題 -->
-        <div class="px-3.5 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 flex items-center justify-between shrink-0">
+        <!-- 頂部標題（h-11 與左欄等高，方便左右比對） -->
+        <div class="px-3.5 h-11 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/70 flex items-center justify-between shrink-0">
           <div class="flex items-center gap-2">
             <Target class="w-4 h-4 text-emerald-500" />
             <span class="text-xs font-black text-slate-800 dark:text-slate-100 flex items-center gap-1">
@@ -262,11 +262,11 @@ const formattedLines = computed(() => {
           <div class="target-workbench-canvas w-full flex justify-center m-auto" v-html="mission.htmlTemplate"></div>
         </div>
 
-        <!-- 目標情報卡（色碼滴管 + 關鍵尺寸） -->
-        <div class="p-2.5 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 space-y-1.5 text-xs shrink-0">
+        <!-- 目標情報卡（單列 h-9 與左欄等高，色碼滴管 + 關鍵指標，方便左右比對） -->
+        <div class="px-3.5 h-9 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex items-center gap-2 text-xs shrink-0 overflow-hidden">
           <!-- 色彩參考清單 -->
-          <div v-if="mission.targetInspector?.colors" class="flex flex-wrap items-center gap-1.5">
-            <div class="flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+          <div v-if="mission.targetInspector?.colors" class="flex items-center gap-1.5 min-w-0 shrink-0">
+            <div class="flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-300 shrink-0">
               <Palette class="w-3 h-3 text-purple-500" />
               <span class="text-[10px]">目標色碼：</span>
             </div>
@@ -275,7 +275,7 @@ const formattedLines = computed(() => {
               :key="c.hex"
               type="button"
               @click="handleCopyColor(c.hex)"
-              class="flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-purple-400 transition-all text-[10px] font-mono cursor-pointer"
+              class="flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-purple-400 transition-all text-[10px] font-mono cursor-pointer shrink-0"
               :title="`點擊複製 ${c.label} 色碼 (${c.hex})`"
             >
               <span class="w-2.5 h-2.5 rounded-full" :style="{ background: c.hex }"></span>
@@ -284,11 +284,11 @@ const formattedLines = computed(() => {
             </button>
           </div>
 
-          <!-- 關鍵尺寸與造型提示 -->
-          <div v-if="mission.targetInspector?.metrics" class="flex items-center gap-1 text-[10px] font-sans text-slate-500 dark:text-slate-400 truncate">
-            <span class="font-bold text-slate-700 dark:text-slate-300">關鍵指標：</span>
-            <span v-for="(m, i) in mission.targetInspector.metrics.slice(0, 3)" :key="i" class="truncate">
-              {{ m.label }} {{ m.value }}；
+          <!-- 關鍵尺寸與造型提示（同列截斷，窄欄自動省略） -->
+          <div v-if="mission.targetInspector?.metrics" class="flex items-center gap-1 text-[10px] font-sans text-slate-500 dark:text-slate-400 truncate min-w-0 flex-1">
+            <span class="font-bold text-slate-700 dark:text-slate-300 shrink-0">關鍵指標：</span>
+            <span class="truncate">
+              <span v-for="(m, i) in mission.targetInspector.metrics.slice(0, 3)" :key="i">{{ m.label }} {{ m.value }}；</span>
             </span>
           </div>
         </div>
