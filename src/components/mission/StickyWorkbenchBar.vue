@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { 
   ArrowUp, 
   Sparkles, 
@@ -39,49 +39,14 @@ function handleScroll() {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
-  updateFitZoom()
-  fitObserver = new ResizeObserver(() => updateFitZoom())
-  if (userBox.value) fitObserver.observe(userBox.value)
-  if (targetBox.value) fitObserver.observe(targetBox.value)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
-  if (fitObserver) fitObserver.disconnect()
 })
 
 const scopedUserCss = computed(() => scopeCss(props.currentCss, 'sticky-user-scope'))
 const scopedTargetCss = computed(() => scopeCss(props.mission.designerTargetCss, 'sticky-target-scope'))
-
-// 自動適配縮放：量測兩側內容自然尺寸（除以當前 zoom 還原真實值），取聯集後等比縮放至剛好容納
-// 塞得下時維持 zoom:1（1:1 原尺寸），兩側共用同一比例、左右基準一致，且永不出現捲軸
-const userBox = ref(null)
-const targetBox = ref(null)
-const userContent = ref(null)
-const targetContent = ref(null)
-const fitZoom = ref(1)
-let fitObserver = null
-
-function updateFitZoom() {
-  const box = userBox.value || targetBox.value
-  const uc = userContent.value
-  const tc = targetContent.value
-  if (!box || !uc || !tc || box.clientWidth === 0 || box.clientHeight === 0) return
-  const z = fitZoom.value || 1
-  const w = Math.max(uc.scrollWidth / z, tc.scrollWidth / z)
-  const h = Math.max(uc.scrollHeight / z, tc.scrollHeight / z)
-  if (!w || !h) return
-  const s = Math.min(1, box.clientWidth / w, box.clientHeight / h)
-  if (Math.abs(s - fitZoom.value) > 0.005) fitZoom.value = s
-}
-
-const fitZoomStyle = computed(() => ({ zoom: `${fitZoom.value}` }))
-
-watch(
-  () => [props.mission.id, props.currentCss, props.mission.designerTargetCss],
-  updateFitZoom,
-  { flush: 'post' }
-)
 
 function copyColor(hex) {
   navigator.clipboard.writeText(hex)
@@ -102,7 +67,7 @@ function copyColor(hex) {
       isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
     ]"
   >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- 頂部精簡控制資訊條 -->
       <div class="flex items-center justify-between gap-3 text-xs mb-1.5 pb-1 border-b border-slate-100 dark:border-slate-800/60">
         <!-- 關卡與得分狀態 -->
@@ -173,8 +138,8 @@ function copyColor(hex) {
 
       <!-- 雙畫布並排對照區 (當未收折時顯示，高度升級自適應，標籤獨立且元件全覽一眼看清) -->
       <div v-show="!isCollapsed" class="grid grid-cols-1 md:grid-cols-2 gap-3 transition-all duration-300">
-        <!-- 左欄：🛠️ 我的當前樣式 (即時連動使用者調整) -->
-        <div class="flex flex-col rounded-xl border border-purple-200 dark:border-purple-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs h-64 sm:h-72 md:h-80">
+        <!-- 左欄：🛠️ 我的當前樣式 (即時連動使用者調整，高度自動貼合內容) -->
+        <div class="flex flex-col rounded-xl border border-purple-200 dark:border-purple-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs min-h-[220px]">
           <!-- 獨立頂部標籤列（非 absolute 覆蓋，徹底避免遮蔽畫面物件） -->
           <div class="px-3 py-1.5 bg-purple-50/90 dark:bg-purple-950/60 border-b border-purple-100 dark:border-purple-900/50 flex items-center justify-between text-[11px] font-bold text-purple-700 dark:text-purple-300 shrink-0">
             <div class="flex items-center gap-1.5">
@@ -189,20 +154,19 @@ function copyColor(hex) {
             {{ scopedUserCss }}
           </component>
 
-          <!-- 畫布內容區 (自動適配縮放塞滿，1:1 優先，永不出現捲軸) -->
+          <!-- 畫布內容區 (1:1 原尺寸，高度自動貼合內容，不縮放、無捲軸) -->
           <div
-            ref="userBox"
-            class="flex-1 w-full overflow-hidden flex p-2.5 bg-slate-50/60 dark:bg-slate-950/60"
+            class="w-full flex p-2.5 bg-slate-50/60 dark:bg-slate-950/60"
             style="background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px); background-size: 14px 14px;"
           >
-            <div class="m-auto" :style="fitZoomStyle">
-              <div ref="userContent" class="sticky-user-scope" v-html="mission.htmlTemplate"></div>
+            <div class="sticky-user-scope w-full flex justify-center m-auto">
+              <div v-html="mission.htmlTemplate"></div>
             </div>
           </div>
         </div>
 
-        <!-- 右欄：🎯 設計師目標樣式 (滿分標準參考) -->
-        <div class="flex flex-col rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs h-64 sm:h-72 md:h-80">
+        <!-- 右欄：🎯 設計師目標樣式 (滿分標準參考，高度自動貼合內容) -->
+        <div class="flex flex-col rounded-xl border border-emerald-200 dark:border-emerald-900/60 bg-white dark:bg-slate-900 overflow-hidden shadow-xs min-h-[220px]">
           <!-- 獨立頂部標籤列（非 absolute 覆蓋，徹底避免遮蔽畫面物件） -->
           <div class="px-3 py-1.5 bg-emerald-50/90 dark:bg-emerald-950/60 border-b border-emerald-100 dark:border-emerald-900/50 flex items-center justify-between text-[11px] font-bold text-emerald-700 dark:text-emerald-300 shrink-0">
             <div class="flex items-center gap-1.5">
@@ -217,14 +181,13 @@ function copyColor(hex) {
             {{ scopedTargetCss }}
           </component>
 
-          <!-- 畫布內容區 (自動適配縮放塞滿，1:1 優先，永不出現捲軸) -->
+          <!-- 畫布內容區 (1:1 原尺寸，高度自動貼合內容，不縮放、無捲軸) -->
           <div
-            ref="targetBox"
-            class="flex-1 w-full overflow-hidden flex p-2.5 bg-slate-50/60 dark:bg-slate-950/60"
+            class="w-full flex p-2.5 bg-slate-50/60 dark:bg-slate-950/60"
             style="background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px); background-size: 14px 14px;"
           >
-            <div class="m-auto" :style="fitZoomStyle">
-              <div ref="targetContent" class="sticky-target-scope" v-html="mission.htmlTemplate"></div>
+            <div class="sticky-target-scope w-full flex justify-center m-auto">
+              <div v-html="mission.htmlTemplate"></div>
             </div>
           </div>
         </div>
