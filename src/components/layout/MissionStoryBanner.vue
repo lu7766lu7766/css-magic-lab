@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-purple-500/5 via-indigo-500/5 to-pink-500/5 dark:from-purple-950/20 dark:via-indigo-950/20 dark:to-pink-950/20 p-5 sm:p-6 mb-6">
+  <div class="relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-r from-purple-500/5 via-indigo-500/5 to-pink-500/5 dark:from-purple-950/20 dark:via-indigo-950/20 dark:to-pink-950/20 p-5 sm:p-6">
     <!-- 裝飾背景光芒 -->
     <div class="absolute -right-16 -top-16 w-64 h-64 bg-purple-500/10 dark:bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -56,10 +56,10 @@ const props = defineProps({
           <li
             v-for="(item, i) in mission.learningFocus.slice(0, 3)"
             :key="i"
-            class="text-[11px] text-slate-600 dark:text-slate-400 flex items-center gap-1.5"
+            class="text-[11px] leading-snug text-slate-600 dark:text-slate-400 flex items-start gap-1.5"
           >
-            <span class="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0"></span>
-            <span class="truncate">{{ item }}</span>
+            <span class="w-1.5 h-1.5 mt-1 rounded-full bg-purple-500 shrink-0"></span>
+            <span>{{ item }}</span>
           </li>
         </ul>
       </div>

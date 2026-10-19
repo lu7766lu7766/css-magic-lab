@@ -37,7 +37,6 @@ function setButtonRef(el, idx) {
 function updateScrollButtons() {
   if (!navRef.value) return
   const { scrollLeft, scrollWidth, clientWidth } = navRef.value
-  console.log('NAV SCROLL INFO:', { scrollLeft, scrollWidth, clientWidth, diff: scrollWidth - clientWidth })
   canScrollLeft.value = scrollLeft > 2
   canScrollRight.value = scrollLeft + clientWidth < scrollWidth - 2
 }
@@ -94,10 +93,10 @@ onUnmounted(() => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3 sm:gap-4">
       <!-- 品牌 Logo -->
       <div class="flex items-center gap-3 shrink-0">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-500 to-pink-500 flex items-center justify-center shadow-md shadow-purple-500/20 text-white font-black text-xl">
-          <Sparkles class="w-5 h-5 animate-pulse" />
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-500 to-pink-500 flex items-center justify-center shadow-md shadow-purple-500/20 text-white font-black text-xl">
+          <Sparkles class="w-5 h-5" />
         </div>
-        <div>
+        <div class="hidden sm:block">
           <div class="flex items-center gap-2">
             <h1 class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">
               CSS 魔法實驗室
@@ -121,6 +120,7 @@ onUnmounted(() => {
           type="button"
           class="shrink-0 p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-white dark:hover:bg-slate-800 shadow-xs transition-all cursor-pointer"
           title="向左滾動關卡"
+          aria-label="向左滾動關卡"
         >
           <ChevronLeft class="w-3.5 h-3.5" />
         </button>
@@ -138,6 +138,8 @@ onUnmounted(() => {
             :ref="el => setButtonRef(el, idx)"
             @click="emit('selectMission', idx)"
             type="button"
+            :aria-current="currentMissionIndex === idx ? 'step' : undefined"
+            :title="m.title"
             class="flex items-center gap-0.5 px-1.5 sm:px-2 py-1.5 rounded-lg text-xs font-semibold transition-all relative shrink-0 whitespace-nowrap cursor-pointer"
             :class="[
               currentMissionIndex === idx
@@ -160,6 +162,7 @@ onUnmounted(() => {
           type="button"
           class="shrink-0 p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-white dark:hover:bg-slate-800 shadow-xs transition-all cursor-pointer"
           title="向右滾動關卡"
+          aria-label="向右滾動關卡"
         >
           <ChevronRight class="w-3.5 h-3.5" />
         </button>
@@ -170,7 +173,9 @@ onUnmounted(() => {
         <button
           @click="isMobileMenuOpen = !isMobileMenuOpen"
           type="button"
-          class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer shadow-xs"
+          :aria-expanded="isMobileMenuOpen"
+          aria-label="選擇關卡"
+          class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer shadow-xs whitespace-nowrap"
         >
           <span>第 {{ currentMission?.number || 1 }} 關</span>
           <span v-if="(stats.scores[currentMission?.id] || 0) >= 70" class="text-amber-500 font-black text-[10px]">
@@ -188,7 +193,7 @@ onUnmounted(() => {
           <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 w-full max-w-xs shadow-2xl space-y-3">
             <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
               <span class="text-xs font-black text-slate-800 dark:text-slate-200">選擇關卡 (共 10 關)</span>
-              <button @click="isMobileMenuOpen = false" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+              <button @click="isMobileMenuOpen = false" aria-label="關閉" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
                 ✕
               </button>
             </div>
@@ -218,10 +223,10 @@ onUnmounted(() => {
       <!-- 右側：美感榮譽、稱號、明暗開關 -->
       <div class="flex items-center gap-2 sm:gap-3 shrink-0">
         <!-- 稱號與經驗值膠囊 -->
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs">
+        <div class="flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs">
           <Trophy class="w-4 h-4 text-amber-500 shrink-0" />
           <div class="flex flex-col text-left">
-            <span class="font-bold text-slate-800 dark:text-slate-200" :class="currentRank.color">
+            <span class="hidden sm:block font-bold text-slate-800 dark:text-slate-200" :class="currentRank.color">
               {{ currentRank.title }}
             </span>
             <span class="text-[10px] text-slate-400">
@@ -235,11 +240,12 @@ onUnmounted(() => {
           @click="emit('openBadges')"
           class="relative p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-700 cursor-pointer"
           title="美感成就榮譽室"
+          aria-label="美感成就榮譽室"
         >
           <Award class="w-5 h-5 text-purple-500" />
           <span
             v-if="unlockedBadgesCount > 0"
-            class="absolute -top-1 -right-1 px-1.5 py-0.2 rounded-full text-[9px] font-black bg-purple-600 text-white shadow-sm"
+            class="absolute -top-1 -right-1 px-1.5 py-px rounded-full text-[9px] font-black bg-purple-600 text-white shadow-sm"
           >
             {{ unlockedBadgesCount }}
           </span>
@@ -249,7 +255,8 @@ onUnmounted(() => {
         <button
           @click="emit('toggleDark')"
           class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-transparent hover:border-slate-200 dark:hover:border-slate-700 cursor-pointer"
-          title="切換色彩模式"
+          :title="isDark ? '切換為亮色模式' : '切換為暗色模式'"
+          :aria-label="isDark ? '切換為亮色模式' : '切換為暗色模式'"
         >
           <Sun v-if="isDark" class="w-5 h-5 text-amber-400" />
           <Moon v-else class="w-5 h-5 text-slate-600" />

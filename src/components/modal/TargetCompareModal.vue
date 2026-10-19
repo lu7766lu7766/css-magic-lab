@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { X, BookOpenCheck, Copy, Check, Sparkles, Code2 } from 'lucide-vue-next'
+import { useModalBehavior } from '../../composables/useModalBehavior.js'
 import { scopeCss } from '../../data/cssGenerators.js'
 
 const props = defineProps({
@@ -9,6 +10,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
+
+useModalBehavior(() => props.isOpen, () => emit('close'))
 
 const isCopied = ref(false)
 
@@ -44,10 +47,11 @@ const needsFullWidth = computed(() => {
     <div @click="emit('close')" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
 
     <!-- 彈窗內容：更寬敞大氣 (max-w-5xl)、排版舒展、雙欄視覺對照、完整呈現設計師樣式全貌 -->
-    <div class="relative w-full max-w-5xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-5 sm:p-7 overflow-hidden z-10 max-h-[92vh] flex flex-col animate-scale-up">
+    <div class="relative w-full max-w-5xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-5 sm:p-7 overflow-hidden z-10 max-h-[92vh] flex flex-col animate-scale-up" role="dialog" aria-modal="true" aria-label="設計師 Target 樣板祕笈">
       <!-- 關閉按鈕 -->
       <button
         @click="emit('close')"
+        aria-label="關閉"
         class="absolute top-4 sm:top-5 right-4 sm:right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer z-10"
         title="關閉彈窗"
       >

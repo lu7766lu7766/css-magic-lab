@@ -53,6 +53,24 @@ function handleValueChange(toolId, val) {
   emit('updateValue', { toolId, value: val })
 }
 
+// 色碼手打容錯：大小寫、漏打 #、3 碼縮寫一律轉為評分用的 6 碼小寫；無效輸入則還原
+function normalizeHex(raw) {
+  let v = String(raw || '').trim().toLowerCase()
+  if (!v.startsWith('#')) v = `#${v}`
+  if (/^#[0-9a-f]{3}$/.test(v)) v = `#${v[1]}${v[1]}${v[2]}${v[2]}${v[3]}${v[3]}`
+  return /^#[0-9a-f]{6}$/.test(v) ? v : null
+}
+
+function handleHexInput(toolId, event) {
+  const hex = normalizeHex(event.target.value)
+  if (hex) {
+    handleValueChange(toolId, hex)
+    event.target.value = hex
+  } else {
+    event.target.value = props.toolStates[toolId]?.value ?? ''
+  }
+}
+
 function applyEyedropper(toolId, hex) {
   emit('updateValue', { toolId, value: hex })
   emit('pickColor', hex)
@@ -106,15 +124,17 @@ function applyEyedropper(toolId, hex) {
         <button
           type="button"
           @click="handlePillClick(tool)"
+          :aria-pressed="!!toolStates[tool.id]?.enabled"
+          :title="tool.name"
           class="w-full p-2.5 text-left flex items-start justify-between gap-1.5 transition-colors cursor-pointer select-none"
         >
           <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-1.5 mb-1">
+            <div class="flex items-start gap-1.5 mb-1">
               <span
-                class="w-2 h-2 rounded-full shrink-0"
-                :class="toolStates[tool.id]?.enabled ? 'bg-purple-600 dark:bg-purple-400 animate-pulse' : 'bg-slate-300 dark:bg-slate-600'"
+                class="w-2 h-2 mt-1 rounded-full shrink-0"
+                :class="toolStates[tool.id]?.enabled ? 'bg-purple-600 dark:bg-purple-400' : 'bg-slate-300 dark:bg-slate-600'"
               ></span>
-              <span class="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+              <span class="text-xs font-bold leading-snug text-slate-800 dark:text-slate-100 line-clamp-2">
                 {{ tool.name }}
               </span>
             </div>
@@ -172,6 +192,7 @@ function applyEyedropper(toolId, hex) {
               :step="tool.step || 1"
               :value="toolStates[tool.id].value >= 9999 ? tool.max : toolStates[tool.id].value"
               @input="handleValueChange(tool.id, Number($event.target.value))"
+              :aria-label="`${tool.name} 數值`"
               class="w-full accent-purple-600 cursor-pointer h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg"
             />
             <!-- 膠囊快捷切換 -->
@@ -193,27 +214,32 @@ function applyEyedropper(toolId, hex) {
                 type="color"
                 :value="toolStates[tool.id].value"
                 @input="handleValueChange(tool.id, $event.target.value)"
+                :aria-label="`${tool.name} 選色器`"
                 class="w-7 h-7 rounded border border-slate-300 dark:border-slate-700 cursor-pointer p-0 shrink-0"
               />
               <input
                 type="text"
                 :value="toolStates[tool.id].value"
-                @change="handleValueChange(tool.id, $event.target.value)"
-                class="flex-1 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 font-mono text-[11px] text-slate-700 dark:text-slate-300 focus:outline-none"
-                placeholder="#xxxxxx"
+                @change="handleHexInput(tool.id, $event)"
+                @keydown.enter="$event.target.blur()"
+                :aria-label="`${tool.name} 色碼`"
+                spellcheck="false"
+                class="flex-1 min-w-0 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 font-mono text-[11px] text-slate-700 dark:text-slate-300 focus:outline-none focus:border-purple-400"
+                placeholder="#6366f1"
               />
             </div>
             <!-- 目標顏色快捷色票 -->
             <div v-if="targetColors.length > 0" class="flex items-center gap-1 pt-0.5">
-              <span class="text-[9px] text-slate-400">色票:</span>
+              <span class="text-[10px] text-slate-400">目標色票</span>
               <button
                 v-for="tc in targetColors.slice(0, 4)"
                 :key="tc.hex"
                 type="button"
                 @click="applyEyedropper(tool.id, tc.hex)"
-                class="w-3.5 h-3.5 rounded border border-slate-300 dark:border-slate-600 hover:scale-125 transition-transform"
+                class="w-5 h-5 rounded border border-slate-300 dark:border-slate-600 hover:scale-110 transition-transform cursor-pointer"
                 :style="{ background: tc.hex }"
                 :title="`帶入 ${tc.label} (${tc.hex})`"
+                :aria-label="`帶入 ${tc.label} ${tc.hex}`"
               ></button>
             </div>
           </div>

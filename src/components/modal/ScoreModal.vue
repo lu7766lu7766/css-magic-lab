@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, watch } from 'vue'
 import { X, Award, Sparkles, CheckCircle2, AlertCircle, AlertTriangle, ArrowRight, RotateCcw, HeartHandshake } from 'lucide-vue-next'
+import { useModalBehavior } from '../../composables/useModalBehavior.js'
 import confetti from 'canvas-confetti'
 
 const props = defineProps({
@@ -10,6 +11,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close', 'nextMission'])
+
+useModalBehavior(() => props.isOpen, () => emit('close'))
 
 watch(
   () => props.isOpen,
@@ -35,7 +38,7 @@ function triggerConfetti() {
     <div @click="emit('close')" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
 
     <!-- 評分彈窗核心容器 (自適應高、緊緻優雅、無滾動條) -->
-    <div class="relative w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-5 sm:p-7 overflow-y-auto no-scrollbar max-h-[92vh] z-10 animate-scale-up">
+    <div class="relative w-full max-w-lg rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-5 sm:p-7 overflow-y-auto no-scrollbar max-h-[92vh] z-10 animate-scale-up" role="dialog" aria-modal="true" aria-label="評分結果">
       <!-- 頂部光芒裝飾 -->
       <div
         class="absolute -top-20 -left-20 w-52 h-52 rounded-full blur-3xl pointer-events-none"
@@ -45,6 +48,7 @@ function triggerConfetti() {
       <!-- 關閉按鈕 -->
       <button
         @click="emit('close')"
+        aria-label="關閉"
         class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
       >
         <X class="w-5 h-5" />

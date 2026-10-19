@@ -18,6 +18,7 @@ import {
   Terminal,
   Gem
 } from 'lucide-vue-next'
+import { useModalBehavior } from '../../composables/useModalBehavior.js'
 import { BADGES, TITLE_RANKS, getRankByExp } from '../../data/badges.js'
 
 const props = defineProps({
@@ -26,6 +27,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
+
+useModalBehavior(() => props.isOpen, () => emit('close'))
 
 const currentRank = computed(() => getRankByExp(props.stats.totalExp || 0))
 
@@ -70,10 +73,11 @@ const unlockedCount = computed(() => {
     <div @click="emit('close')" class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"></div>
 
     <!-- 彈窗內容 (寬版 3 欄平鋪，無滾動條，一覽無遺) -->
-    <div class="relative w-full max-w-4xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 overflow-hidden z-10 max-h-[90vh] flex flex-col animate-scale-up">
+    <div class="relative w-full max-w-4xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl p-6 sm:p-8 overflow-hidden z-10 max-h-[90vh] flex flex-col animate-scale-up" role="dialog" aria-modal="true" aria-label="美感榮譽陳列室">
       <!-- 關閉按鈕 -->
       <button
         @click="emit('close')"
+        aria-label="關閉"
         class="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
       >
         <X class="w-5 h-5" />
@@ -130,7 +134,7 @@ const unlockedCount = computed(() => {
                 {{ badge.title }}
               </h4>
               <span
-                class="text-[10px] font-bold px-1.5 py-0.2 rounded-full shrink-0"
+                class="text-[10px] font-bold px-1.5 py-px rounded-full shrink-0"
                 :class="badge.unlocked ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400'"
               >
                 {{ badge.unlocked ? '已獲得' : '未解鎖' }}

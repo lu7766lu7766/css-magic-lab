@@ -31,7 +31,7 @@ const layoutMode = ref('split') // 'split' (雙大圖) | 'triple' (三欄)
 const isCssDrawerOpen = ref(true)
 
 function copyCss() {
-  navigator.clipboard.writeText(props.currentCss)
+  navigator.clipboard?.writeText(props.currentCss).catch(() => {})
   isCopied.value = true
   setTimeout(() => {
     isCopied.value = false
@@ -39,7 +39,7 @@ function copyCss() {
 }
 
 function handleCopyColor(hex) {
-  navigator.clipboard.writeText(hex)
+  navigator.clipboard?.writeText(hex).catch(() => {})
   copiedColor.value = hex
   emit('copyColor', hex)
   setTimeout(() => {
@@ -87,6 +87,7 @@ const formattedLines = computed(() => {
       <div class="flex items-center gap-1 bg-slate-200/70 dark:bg-slate-800 p-0.5 rounded-xl text-xs font-semibold">
         <button
           @click="layoutMode = 'split'"
+          :aria-pressed="layoutMode === 'split'"
           class="px-3 py-1 rounded-lg transition-all flex items-center gap-1"
           :class="layoutMode === 'split' ? 'bg-white dark:bg-slate-700 text-purple-600 dark:text-purple-300 shadow-xs' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'"
         >
@@ -94,6 +95,7 @@ const formattedLines = computed(() => {
         </button>
         <button
           @click="layoutMode = 'triple'"
+          :aria-pressed="layoutMode === 'triple'"
           class="px-3 py-1 rounded-lg transition-all flex items-center gap-1"
           :class="layoutMode === 'triple' ? 'bg-white dark:bg-slate-700 text-purple-600 dark:text-purple-300 shadow-xs' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'"
         >
@@ -106,7 +108,7 @@ const formattedLines = computed(() => {
     <div class="grid grid-cols-1 gap-4 items-stretch" :class="layoutMode === 'split' ? 'xl:grid-cols-2' : 'xl:grid-cols-12'">
       <!-- ==================== 左側：當前樣式（我的作品） ==================== -->
       <div
-        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[480px] sm:min-h-[520px]"
+        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[340px] sm:min-h-[380px]"
         :class="layoutMode === 'split' ? 'w-full' : 'xl:col-span-4'"
       >
         <!-- 頂部標籤與設備切換（h-11 與右欄等高，方便左右比對） -->
@@ -114,7 +116,7 @@ const formattedLines = computed(() => {
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span>
             <span class="text-xs font-black text-slate-800 dark:text-slate-100 flex items-center gap-1">
-              <span>🛠️ 我的當前樣式</span>
+              <span>我的當前樣式</span>
               <span class="text-[10px] font-bold text-purple-600 dark:text-purple-400">(即時反饋)</span>
             </span>
           </div>
@@ -124,7 +126,7 @@ const formattedLines = computed(() => {
               @click="previewDevice = 'desktop'"
               class="p-1 rounded text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               :class="{ 'bg-white dark:bg-slate-700 text-purple-600 dark:text-purple-300 shadow-xs': previewDevice === 'desktop' }"
-              title="桌面寬度"
+              title="桌面寬度" aria-label="桌面寬度預覽" :aria-pressed="previewDevice === 'desktop'"
             >
               <Monitor class="w-3.5 h-3.5" />
             </button>
@@ -132,7 +134,7 @@ const formattedLines = computed(() => {
               @click="previewDevice = 'mobile'"
               class="p-1 rounded text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               :class="{ 'bg-white dark:bg-slate-700 text-purple-600 dark:text-purple-300 shadow-xs': previewDevice === 'mobile' }"
-              title="手機寬度 (375px)"
+              title="手機寬度 (375px)，左右兩邊同步切換" aria-label="手機寬度預覽" :aria-pressed="previewDevice === 'mobile'"
             >
               <Smartphone class="w-3.5 h-3.5" />
             </button>
@@ -170,14 +172,14 @@ const formattedLines = computed(() => {
       <!-- ==================== 中間：CSS 即時檢閱 (三欄模式下顯示在中央) ==================== -->
       <div
         v-if="layoutMode === 'triple'"
-        class="xl:col-span-4 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm overflow-hidden font-mono text-xs min-h-[480px] sm:min-h-[520px]"
+        class="xl:col-span-4 flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-sm overflow-hidden font-mono text-xs min-h-[340px] sm:min-h-[380px]"
       >
         <!-- 頂部工具列（h-11 與左右欄等高） -->
         <div class="px-3.5 h-11 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between shrink-0">
           <div class="flex items-center gap-2">
             <Code2 class="w-4 h-4 text-purple-400" />
             <span class="font-bold text-slate-200 text-xs font-sans">
-              📝 style.css 即時檢閱
+              style.css 即時檢閱
             </span>
           </div>
 
@@ -215,7 +217,7 @@ const formattedLines = computed(() => {
 
               <span
                 v-if="item.explanation"
-                class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-sans font-medium bg-indigo-950/80 text-indigo-300 border border-indigo-800/80 shadow-xs"
+                class="inline-flex items-center gap-1 px-1.5 py-px rounded text-[10px] font-sans font-medium bg-indigo-950/80 text-indigo-300 border border-indigo-800/80 shadow-xs"
               >
                 <span>{{ item.explanation }}</span>
               </span>
@@ -226,13 +228,13 @@ const formattedLines = computed(() => {
         <!-- 底部白話標籤提示（h-9 與左右欄等高） -->
         <div class="px-3.5 h-9 bg-slate-950 border-t border-slate-800/80 text-[10px] font-sans text-slate-400 flex items-center justify-between shrink-0">
           <span>💡 調整下方工具箱，代碼即時聯動</span>
-          <span class="text-purple-400 font-semibold">內部滾動條已優化</span>
+          
         </div>
       </div>
 
       <!-- ==================== 右側：目標樣式（設計師樣板） ==================== -->
       <div
-        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[480px] sm:min-h-[520px]"
+        class="flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden min-h-[340px] sm:min-h-[380px]"
         :class="layoutMode === 'split' ? 'w-full' : 'xl:col-span-4'"
       >
         <!-- 頂部標題（h-11 與左欄等高，方便左右比對） -->
@@ -240,7 +242,7 @@ const formattedLines = computed(() => {
           <div class="flex items-center gap-2">
             <Target class="w-4 h-4 text-emerald-500" />
             <span class="text-xs font-black text-slate-800 dark:text-slate-100 flex items-center gap-1">
-              <span>🎯 設計師目標樣式</span>
+              <span>設計師目標樣式</span>
               <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">(滿分標準)</span>
             </span>
           </div>
@@ -259,7 +261,12 @@ const formattedLines = computed(() => {
             {{ scopedTargetCss }}
           </component>
 
-          <div class="target-workbench-canvas w-full flex justify-center m-auto" v-html="mission.htmlTemplate"></div>
+          <div
+            class="transition-all duration-300 flex justify-center w-full m-auto"
+            :class="previewDevice === 'mobile' ? 'max-w-[375px] border-2 border-dashed border-slate-300 dark:border-slate-700 p-2 rounded-2xl shrink-0' : 'max-w-none'"
+          >
+            <div class="target-workbench-canvas w-full flex justify-center" v-html="mission.htmlTemplate"></div>
+          </div>
         </div>
 
         <!-- 目標情報卡（單列 h-9 與左欄等高，色碼滴管 + 關鍵指標，方便左右比對） -->
@@ -299,15 +306,20 @@ const formattedLines = computed(() => {
     <div v-if="layoutMode === 'split'" class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 overflow-hidden shadow-sm transition-all duration-300">
       <div
         @click="isCssDrawerOpen = !isCssDrawerOpen"
+        @keydown.enter.self.prevent="isCssDrawerOpen = !isCssDrawerOpen"
+        @keydown.space.self.prevent="isCssDrawerOpen = !isCssDrawerOpen"
+        role="button"
+        tabindex="0"
+        :aria-expanded="isCssDrawerOpen"
         class="px-4 py-2.5 bg-slate-950 flex items-center justify-between cursor-pointer hover:bg-slate-900 transition-colors select-none"
       >
         <div class="flex items-center gap-2">
           <Code2 class="w-4 h-4 text-purple-400" />
           <span class="font-bold text-xs text-slate-200 font-sans">
-            📝 style.css 即時檢閱抽屜
+            style.css 即時檢閱
           </span>
           <span class="text-[11px] text-slate-400 font-sans">
-            {{ isCssDrawerOpen ? '(點擊收合)' : '(點擊展開查看帶白話生活註解的即時代碼)' }}
+            {{ isCssDrawerOpen ? '' : '（展開查看附白話註解的即時代碼）' }}
           </span>
         </div>
 
@@ -348,7 +360,7 @@ const formattedLines = computed(() => {
             </span>
             <span
               v-if="item.explanation"
-              class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-sans font-medium bg-indigo-950/80 text-indigo-300 border border-indigo-800/80 shadow-xs"
+              class="inline-flex items-center gap-1 px-1.5 py-px rounded text-[10px] font-sans font-medium bg-indigo-950/80 text-indigo-300 border border-indigo-800/80 shadow-xs"
             >
               <span>{{ item.explanation }}</span>
             </span>

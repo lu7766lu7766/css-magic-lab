@@ -73,6 +73,42 @@
   animation: codeLineFlash 2.5s ease-out forwards;
 }
 
+/* 工具展開、彈窗進場動畫（元件內已引用 animate-fade-in / animate-scale-up） */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.18s ease-out both;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 鍵盤操作焦點框：滑鼠點擊不顯示，Tab 切換時清楚可見 */
+:where(button, a, input, [tabindex]):focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: 2px;
+}
+
+/* 尊重系統「減少動態效果」設定（只關閉介面裝飾動畫，畫布內的關卡教材動畫保留） */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-scale-up,
+  .animate-pulse,
+  .animate-ping,
+  .element-glow-pulse {
+    animation: none !important;
+  }
+}
+
 /* 平滑自訂滾動條 */
 ::-webkit-scrollbar {
   width: 6px;

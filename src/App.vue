@@ -352,10 +352,6 @@ function getInitialTheme() {
 
 const isDark = ref(getInitialTheme())
 
-function saveToolStates() {
-  localStorage.setItem('css_lab_tool_states', JSON.stringify(missionToolStates))
-}
-
 function handleHashChange() {
   const hash = window.location.hash.replace('#', '')
   if (hash) {
@@ -420,13 +416,19 @@ function checkAndUnlockBadges() {
   })
 }
 
+// 微光動畫長度需與 style.css 的 pulseGlow (1.8s) 一致；連續操作時重新播放
+let pulseTimer = null
 function triggerChangePulse(msg) {
-  hasRecentChange.value = true
   lastFeedback.value = msg || ''
   stats.totalActions++
-  setTimeout(() => {
-    hasRecentChange.value = false
-  }, 120)
+  hasRecentChange.value = false
+  clearTimeout(pulseTimer)
+  requestAnimationFrame(() => {
+    hasRecentChange.value = true
+    pulseTimer = setTimeout(() => {
+      hasRecentChange.value = false
+    }, 1800)
+  })
 }
 
 // 點擊工具按鈕：點一下加上 CSS，再點一下還原
@@ -443,7 +445,6 @@ function handleToggleTool({ toolId, enabled, value }) {
   const actionText = enabled ? `啟用屬性：${toolDef?.name || toolId}` : `還原屬性：${toolDef?.name || toolId}`
   triggerChangePulse(actionText)
   saveStats()
-  saveToolStates()
 }
 
 // 拖拉滑桿或選取顏色更新數值
@@ -458,7 +459,6 @@ function handleUpdateToolValue({ toolId, value }) {
 
   triggerChangePulse(`微調數值：${value}`)
   saveStats()
-  saveToolStates()
 }
 
 // 吸取目標顏色
@@ -470,6 +470,8 @@ function handlePickColor(hex) {
 // 重置任務為陽春版
 function handleResetMission() {
   const mid = currentMission.value.id
+  const hasChanges = Object.values(missionToolStates[mid] || {}).some(s => s.enabled)
+  if (hasChanges && !window.confirm('確定要清除本關所有調整，回到陽春版嗎？')) return
   currentMission.value.tools.forEach(tool => {
     missionToolStates[mid][tool.id] = {
       enabled: false,
@@ -478,7 +480,6 @@ function handleResetMission() {
   })
   triggerChangePulse('已將所有工具重置為初始陽春狀態')
   saveStats()
-  saveToolStates()
 }
 
 // 重新依據各關歷史最高分精算總經驗值（每關上限 100 EXP，總分上限 1000 EXP）
@@ -536,7 +537,7 @@ function handleNextMission() {
 
 // 平滑滾動回主畫布
 function handleScrollToWorkbench() {
-  window.scrollTo({ top: 120, behavior: 'smooth' })
+  document.getElementById('workbench')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 </script>
 
@@ -574,6 +575,8 @@ function handleScrollToWorkbench() {
 
       <!-- 核心三欄對比工作台：左側當前樣式、中間 CSS 即時檢閱、右側目標樣式與滴管情報 -->
       <TripleWorkbench
+        id="workbench"
+        class="scroll-mt-20"
         :mission="currentMission"
         :currentCss="currentCss"
         :hasRecentChange="hasRecentChange"
