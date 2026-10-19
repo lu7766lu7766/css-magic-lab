@@ -48,12 +48,12 @@ export function generateMissionCss(missionId, state) {
   ${filterCss}
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: ${[rotateCss, state.hoverY < 0 ? `translateY(${state.hoverY / 2}px)` : ''].filter(Boolean).join(' ') || 'none'}; /* 💡 開關即有半程上浮，懸停時再全程反饋 */
+  transform: ${rotateCss || 'none'};
 }
 
-.action-btn:hover {
+.action-btn:hover, .preview-demo .action-btn {
   transform: translateY(${state.hoverY}px) scale(1.02) ${rotateCss}; /* 💡 滑鼠懸停時微彈性上浮反饋 */
-  box-shadow: 0 ${Math.abs(state.hoverY) + 8}px ${state.shadowBlur + 8}px -5px ${hexToRgba(state.shadowColor || '#6366f1', 0.6)};
+  box-shadow: 0 ${Math.abs(state.hoverY) + 12}px ${state.shadowBlur + 5}px -5px ${hexToRgba(state.bgType === 'gradient' ? state.gradientTo : (state.shadowColor || '#6366f1'), 0.6)};
 }`;
   }
 
@@ -179,9 +179,7 @@ export function generateMissionCss(missionId, state) {
   if (missionId === 'mission-4') {
     const inputBorderCss = state.inputBorderHeavyTrap > 1
       ? `${state.inputBorderHeavyTrap}px solid #000000; /* ⚠️ 粗糙深黑邊框 */`
-      : state.focusGlow
-        ? `1.5px solid ${hexToRgba(state.focusColor, 0.65)}; /* 💡 焦點色常駐描邊，未聚焦也能看見差異 */`
-        : '1.5px solid rgba(255, 255, 255, 0.1);';
+      : '1.5px solid rgba(255, 255, 255, 0.1);';
 
     const inputBorderStyle = state.inputDottedTrap
       ? 'border-style: dotted; /* ⚠️ 點狀邊框線條 */'
@@ -230,9 +228,9 @@ export function generateMissionCss(missionId, state) {
   transition: all 0.25s ease;
 }
 
-${state.focusGlow ? `.form-input:focus {
+${state.focusGlow ? `.form-input:focus, .preview-demo .form-input {
   border-color: ${state.focusColor}; /* 💡 天藍焦點高光色 */
-  box-shadow: 0 0 0 4px ${hexToRgba(state.focusColor, 0.25)}; /* 💡 聚焦發光外環光圈 */
+  box-shadow: 0 0 0 4px ${hexToRgba(state.focusColor, 0.2)}; /* 💡 聚焦發光外環光圈 */
   background: #0f172a;
 }` : ''}
 
@@ -346,7 +344,7 @@ ${state.focusGlow ? `.form-input:focus {
 
     const neonBorderCss = state.neonBorderTrap
       ? 'border: 4px double #ff007f; /* ⚠️ 刺眼霓虹雙線邊框 */'
-      : 'border: 1px solid rgba(255, 255, 255, 0.08); /* 💡 極簡低調收邊 */';
+      : '';
 
     const trackSkewCss = state.trackSkewTrap
       ? 'transform: skew(-15deg); /* ⚠️ 文字傾斜失衡 */'
@@ -589,7 +587,7 @@ ${state.focusGlow ? `.form-input:focus {
 
 .step-progress-line {
   position: absolute;
-  top: ${Math.round(state.stepNodeSize / 2) + 10}px;
+  top: ${Math.round(state.stepNodeSize / 2) + 9}px;
   left: 30px;
   right: 30px;
   height: ${state.stepLineHeight}px; /* 💡 進度軌道厚度 */
@@ -687,7 +685,7 @@ ${state.focusGlow ? `.form-input:focus {
 
   if (missionId === 'mission-8') {
     const cardShadowCss = state.confessCardShadow > 0
-      ? `0 15px ${state.confessCardShadow}px -5px rgba(244, 63, 94, 0.18), 0 5px 15px rgba(0, 0, 0, 0.05)`
+      ? `0 15px ${state.confessCardShadow}px -5px rgba(244, 63, 94, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05)`
       : 'none';
 
     const bubbleRadiusCss = state.bubbleSharpTrap
@@ -703,9 +701,9 @@ ${state.focusGlow ? `.form-input:focus {
 
     const hoverBounceCss = state.heartHoverBounce
       ? `
-.heart-btn:hover {
+.heart-btn:hover, .preview-demo .heart-btn {
   transform: scale(1.08); /* 💡 懸停心跳微彈跳反饋 */
-  box-shadow: 0 6px ${state.heartBtnGlow + 4}px ${hexToRgba(state.heartBtnBg, 0.5)};
+  box-shadow: 0 6px ${state.heartBtnGlow + 6}px ${hexToRgba(state.heartBtnBg, 0.5)};
 }`
       : '';
 
@@ -806,7 +804,6 @@ ${state.focusGlow ? `.form-input:focus {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px ${state.heartBtnGlow}px ${hexToRgba(state.heartBtnBg, 0.4)}; /* 💡 心跳立體投影 */
-  ${state.heartHoverBounce ? 'transform: scale(1.03); /* 💡 常駐微放大，懸停時再彈跳至 1.08 */' : ''}
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 ${hoverBounceCss}
@@ -828,7 +825,7 @@ ${hoverBounceCss}
       : '';
 
     const glowCss = state.cyberNeonGlow > 0
-      ? `box-shadow: 0 0 ${state.cyberNeonGlow}px ${hexToRgba(state.cyberNeonColor, 0.4)}, inset 0 0 ${Math.max(10, Math.round(state.cyberNeonGlow * 0.9))}px ${hexToRgba(state.cyberNeonColor, 0.35)}; /* 💡 雙重內外霓虹自發光 */`
+      ? `box-shadow: 0 0 ${state.cyberNeonGlow}px ${hexToRgba(state.cyberNeonColor, 0.4)}, inset 0 0 ${Math.max(10, state.cyberNeonGlow)}px ${hexToRgba(state.cyberNeonColor, 0.35)}; /* 💡 雙重內外霓虹自發光 */`
       : 'box-shadow: none;';
 
     const scanlineDisplay = state.cyberScanlineToggle ? 'block' : 'none';
@@ -843,11 +840,11 @@ ${hoverBounceCss}
     const borderDottedTrap = state.cyberRainbowDottedTrap ? 'border: 3px dotted #ff00ff !important; /* ⚠️ 繽紛點狀小丑邊框 */' : '';
 
     const avatarWrapperGlowCss = state.cyberAvatarGlow > 0
-      ? `.cyber-avatar-wrapper {\n  filter: drop-shadow(0 0 ${state.cyberAvatarGlow}px ${hexToRgba(state.cyberAccentColor, 0.75)});\n}\n\n`
+      ? `.cyber-avatar-wrapper {\n  filter: drop-shadow(0 0 ${state.cyberAvatarGlow}px ${hexToRgba(state.cyberAccentColor, 0.7)});\n}\n\n`
       : '';
 
     const avatarGlowCss = state.cyberAvatarGlow > 0
-      ? `box-shadow: 0 0 ${state.cyberAvatarGlow}px ${hexToRgba(state.cyberAccentColor, 0.5)}, inset 0 0 ${Math.max(6, Math.round(state.cyberAvatarGlow * 0.75))}px ${hexToRgba(state.cyberAccentColor, 0.6)}; /* 💡 核心晶片外環光暈 */`
+      ? `box-shadow: inset 0 0 ${Math.max(6, Math.round(state.cyberAvatarGlow * 0.75))}px ${hexToRgba(state.cyberAccentColor, 0.6)}; /* 💡 核心晶片外環光暈 */`
       : 'box-shadow: none;';
 
     return `/* 🛠️ 我的賽博龐克全像通行證樣式 */
@@ -989,7 +986,7 @@ ${avatarWrapperGlowCss}.cyber-avatar {
         : 'transform: none;';
 
     const shadowCss = state.prismShadow > 0
-      ? `-15px 25px ${state.prismShadow}px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.25)`
+      ? `-15px 25px ${state.prismShadow}px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.2)`
       : 'none';
 
     const auroraDisplay = state.prismAuroraBorder ? 'block' : 'none';
@@ -1001,7 +998,7 @@ ${avatarWrapperGlowCss}.cyber-avatar {
       : 'color: #94a3b8; /* 💡 未啟用金屬反射時為黯淡灰藍，啟用後即見燙金流光 */';
 
     const borderHighlightCss = state.prismBorderHighlight
-      ? 'border: 1px solid rgba(255, 255, 255, 0.45); /* 💡 高折射率晶體高光邊界 */'
+      ? 'border: 1px solid rgba(255, 255, 255, 0.15); /* 💡 高折射率晶體高光邊界 */'
       : 'border: none;';
 
     const cardRadiusCss = state.prismFlatZeroTrap

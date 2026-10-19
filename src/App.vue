@@ -431,6 +431,20 @@ function triggerChangePulse(msg) {
   })
 }
 
+// Hover / Focus 類工具平常看不到效果（畫面要與設計師目標一致），
+// 開啟或調整時在左側畫布短暫示範互動狀態，讓學生看見這個工具改了什麼
+const INTERACTION_TOOL_IDS = ['hoverY', 'focusGlowToggle', 'focusColor', 'heartHoverBounce']
+const isDemoingInteraction = ref(false)
+let demoTimer = null
+function demoInteractionIfNeeded(toolId, enabled) {
+  if (!enabled || !INTERACTION_TOOL_IDS.includes(toolId)) return
+  isDemoingInteraction.value = true
+  clearTimeout(demoTimer)
+  demoTimer = setTimeout(() => {
+    isDemoingInteraction.value = false
+  }, 1600)
+}
+
 // 點擊工具按鈕：點一下加上 CSS，再點一下還原
 function handleToggleTool({ toolId, enabled, value }) {
   const mid = currentMission.value.id
@@ -444,6 +458,7 @@ function handleToggleTool({ toolId, enabled, value }) {
   const toolDef = currentMission.value.tools.find(t => t.id === toolId)
   const actionText = enabled ? `啟用屬性：${toolDef?.name || toolId}` : `還原屬性：${toolDef?.name || toolId}`
   triggerChangePulse(actionText)
+  demoInteractionIfNeeded(toolId, enabled)
   saveStats()
 }
 
@@ -458,6 +473,7 @@ function handleUpdateToolValue({ toolId, value }) {
   }
 
   triggerChangePulse(`微調數值：${value}`)
+  demoInteractionIfNeeded(toolId, true)
   saveStats()
 }
 
@@ -580,6 +596,7 @@ function handleScrollToWorkbench() {
         :mission="currentMission"
         :currentCss="currentCss"
         :hasRecentChange="hasRecentChange"
+        :isDemoingInteraction="isDemoingInteraction"
         @copyColor="handlePickColor"
       />
 

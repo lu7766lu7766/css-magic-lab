@@ -1155,6 +1155,13 @@ export const MISSIONS = [
   letter-spacing: -0.8px;
 }
 
+.hero-desc {
+  color: #94a3b8;
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 440px;
+}
+
 .cta-primary {
   background: linear-gradient(135deg, #8b5cf6, #ec4899);
   color: #ffffff;
@@ -1738,8 +1745,8 @@ export const MISSIONS = [
         step: 2,
         defaultValue: 0,
         cleanValue: 8,
-        targetValue: 16,
-        targetRange: [10, 22],
+        targetValue: 20,
+        targetRange: [14, 26],
         isTrap: false,
         desc: '懸浮發光深度反饋'
       },
@@ -1760,12 +1767,12 @@ export const MISSIONS = [
         type: 'slider',
         unit: 'px',
         min: 0,
-        max: 40,
+        max: 60,
         step: 2,
         defaultValue: 0,
         cleanValue: 12,
-        targetValue: 24,
-        targetRange: [16, 32],
+        targetValue: 40,
+        targetRange: [30, 50],
         isTrap: false,
         desc: '深沉暗影浮動感'
       },
@@ -2167,12 +2174,12 @@ export const MISSIONS = [
         type: 'slider',
         unit: 'px',
         min: 0,
-        max: 40,
+        max: 60,
         step: 2,
         defaultValue: 0,
         cleanValue: 10,
-        targetValue: 20,
-        targetRange: [14, 28],
+        targetValue: 40,
+        targetRange: [30, 50],
         isTrap: false,
         desc: '浮起卡片階層景深'
       }
@@ -2274,7 +2281,7 @@ export const MISSIONS = [
 .bubble-text {
   font-size: 14px;
   color: #4c0519;
-  line-height: 1.6;
+  line-height: 22px;
   margin: 0;
 }
 
@@ -2330,7 +2337,7 @@ export const MISSIONS = [
       metrics: [
         { label: '氣泡圓角', value: '18px (帶有微倒角尖角)' },
         { label: '對話箭頭', value: '精準頂端三角定位' },
-        { label: '閱讀行高', value: '1.6 (24px 呼吸行距)' },
+        { label: '閱讀行高', value: '22px 呼吸行距' },
         { label: '懸停反饋', value: '1.08x 心跳彈跳' },
         { label: '柔霧背光', value: '景深 35px, 浪漫粉光' }
       ],
@@ -2455,8 +2462,8 @@ export const MISSIONS = [
         step: 2,
         defaultValue: 0,
         cleanValue: 8,
-        targetValue: 16,
-        targetRange: [10, 22],
+        targetValue: 14,
+        targetRange: [10, 20],
         isTrap: false,
         desc: '立體按鍵柔光投影'
       },
@@ -2491,8 +2498,8 @@ export const MISSIONS = [
         step: 1,
         defaultValue: 16,
         cleanValue: 28,
-        targetValue: 24,
-        targetRange: [20, 26],
+        targetValue: 22,
+        targetRange: [20, 25],
         isTrap: false,
         desc: '24px 舒適情書閱讀行距'
       },
@@ -2513,12 +2520,12 @@ export const MISSIONS = [
         type: 'slider',
         unit: 'px',
         min: 0,
-        max: 40,
-        step: 2,
+        max: 50,
+        step: 1,
         defaultValue: 0,
         cleanValue: 10,
-        targetValue: 20,
-        targetRange: [14, 26],
+        targetValue: 35,
+        targetRange: [26, 44],
         isTrap: false,
         desc: '溫潤多層次景深投影'
       }
@@ -3207,12 +3214,12 @@ export const MISSIONS = [
         type: 'slider',
         unit: 'px',
         min: 0,
-        max: 50,
+        max: 70,
         step: 2,
         defaultValue: 0,
         cleanValue: 14,
-        targetValue: 30,
-        targetRange: [20, 40],
+        targetValue: 50,
+        targetRange: [40, 60],
         isTrap: false,
         desc: '3D 浮空深邃投影'
       },

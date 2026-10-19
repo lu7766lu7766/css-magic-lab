@@ -20,7 +20,9 @@ import { copyText } from '../../utils/clipboard.js'
 const props = defineProps({
   mission: { type: Object, required: true },
   currentCss: { type: String, required: true },
-  hasRecentChange: { type: Boolean, default: false }
+  hasRecentChange: { type: Boolean, default: false },
+  // 剛調整 Hover / Focus 類工具時，短暫在左側畫布示範互動狀態
+  isDemoingInteraction: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['copyColor'])
@@ -159,7 +161,9 @@ const formattedLines = computed(() => {
               hasRecentChange ? 'element-glow-pulse' : ''
             ]"
           >
-            <div class="user-workbench-canvas flex justify-center" v-html="mission.htmlTemplate"></div>
+            <div class="user-workbench-canvas w-full flex justify-center">
+              <div class="contents" :class="{ 'preview-demo': isDemoingInteraction }" v-html="mission.htmlTemplate"></div>
+            </div>
           </div>
         </div>
 
