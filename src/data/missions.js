@@ -1006,7 +1006,7 @@ export const MISSIONS = [
         cleanValue: true,
         targetValue: true,
         isTrap: false,
-        desc: '點選時散發天藍擴散光暈圈'
+        desc: '點進輸入框時散發擴散光暈圈（顏色由焦點高光色彩決定）'
       },
       {
         id: 'focusColor',

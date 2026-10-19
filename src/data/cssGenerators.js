@@ -231,7 +231,7 @@ export function generateMissionCss(missionId, state) {
 ${state.focusGlow ? `.form-input:focus, .preview-demo .form-input {
   border-color: ${state.focusColor}; /* 💡 天藍焦點高光色 */
   box-shadow: 0 0 0 4px ${hexToRgba(state.focusColor, 0.2)}; /* 💡 聚焦發光外環光圈 */
-  background: #0f172a;
+  background: ${state.formBg === '#ffffff' ? '#ffffff' : '#0f172a'};
 }` : ''}
 
 .submit-btn {

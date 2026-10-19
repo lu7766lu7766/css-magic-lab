@@ -178,7 +178,8 @@ const activeComputedState = computed(() => {
       inputPadding: states.inputPadding?.enabled ? states.inputPadding.value : 2,
       inputRadius: states.inputRadius?.enabled ? states.inputRadius.value : 0,
       focusGlow: states.focusGlowToggle?.enabled || states.focusColor?.enabled,
-      focusColor: states.focusColor?.enabled ? states.focusColor.value : '#000000',
+      // 只開光暈開關時用醒目的靛紫色，否則黑色光圈在白底像瀏覽器預設外框、在深底完全看不見
+      focusColor: states.focusColor?.enabled ? states.focusColor.value : '#6366f1',
       submitBtnBg: states.submitBtnBg?.enabled ? states.submitBtnBg.value : '#000000',
       submitRadius: states.submitRadius?.enabled ? states.submitRadius.value : 0,
       formShadow: states.formShadow?.enabled ? states.formShadow.value : 0,
