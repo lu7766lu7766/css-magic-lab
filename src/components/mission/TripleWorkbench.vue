@@ -15,6 +15,7 @@ import {
   Maximize2
 } from 'lucide-vue-next'
 import { scopeCss } from '../../data/cssGenerators.js'
+import { copyText } from '../../utils/clipboard.js'
 
 const props = defineProps({
   mission: { type: Object, required: true },
@@ -30,16 +31,16 @@ const copiedColor = ref(null)
 const layoutMode = ref('split') // 'split' (雙大圖) | 'triple' (三欄)
 const isCssDrawerOpen = ref(true)
 
-function copyCss() {
-  navigator.clipboard?.writeText(props.currentCss).catch(() => {})
+async function copyCss() {
+  if (!(await copyText(props.currentCss))) return
   isCopied.value = true
   setTimeout(() => {
     isCopied.value = false
   }, 2000)
 }
 
-function handleCopyColor(hex) {
-  navigator.clipboard?.writeText(hex).catch(() => {})
+async function handleCopyColor(hex) {
+  if (!(await copyText(hex))) return
   copiedColor.value = hex
   emit('copyColor', hex)
   setTimeout(() => {

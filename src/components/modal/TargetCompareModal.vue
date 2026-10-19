@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { X, BookOpenCheck, Copy, Check, Sparkles, Code2 } from 'lucide-vue-next'
 import { useModalBehavior } from '../../composables/useModalBehavior.js'
 import { scopeCss } from '../../data/cssGenerators.js'
+import { copyText } from '../../utils/clipboard.js'
 
 const props = defineProps({
   isOpen: { type: Boolean, required: true },
@@ -15,8 +16,8 @@ useModalBehavior(() => props.isOpen, () => emit('close'))
 
 const isCopied = ref(false)
 
-function copyTargetCss() {
-  navigator.clipboard.writeText(props.mission.designerTargetCss)
+async function copyTargetCss() {
+  if (!(await copyText(props.mission.designerTargetCss))) return
   isCopied.value = true
   setTimeout(() => {
     isCopied.value = false

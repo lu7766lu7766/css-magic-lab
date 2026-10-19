@@ -13,6 +13,7 @@ import {
   ChevronUp
 } from 'lucide-vue-next'
 import { scopeCss } from '../../data/cssGenerators.js'
+import { copyText } from '../../utils/clipboard.js'
 
 const props = defineProps({
   mission: { type: Object, required: true },
@@ -51,8 +52,8 @@ onUnmounted(() => {
 const scopedUserCss = computed(() => scopeCss(props.currentCss, 'sticky-user-scope'))
 const scopedTargetCss = computed(() => scopeCss(props.mission.designerTargetCss, 'sticky-target-scope'))
 
-function copyColor(hex) {
-  navigator.clipboard?.writeText(hex).catch(() => {})
+async function copyColor(hex) {
+  if (!(await copyText(hex))) return
   copiedColor.value = hex
   emit('pickColor', hex)
   setTimeout(() => {

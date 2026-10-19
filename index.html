@@ -4,7 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSS 視覺魔法實驗室 | CSS Magic Lab - 現代前端切版與視覺實戰</title>
-    <meta name="description" content="資訊科技課程教材：從基礎核心、動態動畫、RWD 響應式佈局到 Tailwind CSS 4 與 AI 提示詞詠唱的 100 分鐘視覺魔法實驗室。" />
+    <meta name="description" content="零經驗新手美感沙盒：用 10 個情境關卡、即時三欄對照與視覺調校工具箱，把陽春元件改造成設計師成品並即時評分。" />
+    <!-- 在載入 CSS 前先套用深色模式，避免暗色使用者每次開啟都閃一下白畫面 -->
+    <script>
+      try {
+        if (localStorage.getItem('css_lab_theme_v2') === 'dark') document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

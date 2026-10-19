@@ -4,6 +4,7 @@ import { MISSIONS } from './data/missions.js'
 import { BADGES, calculateExpByScore } from './data/badges.js'
 import { generateMissionCss } from './data/cssGenerators.js'
 import { evaluateMission } from './data/aiService.js'
+import { getItem, setItem } from './utils/storage.js'
 
 import AppHeader from './components/layout/AppHeader.vue'
 import MissionStoryBanner from './components/layout/MissionStoryBanner.vue'
@@ -23,7 +24,7 @@ function getInitialMissionIndex() {
     const idx = MISSIONS.findIndex(m => m.id === hash)
     if (idx !== -1) return idx
   }
-  const savedIdx = localStorage.getItem('css_lab_current_mission')
+  const savedIdx = getItem('css_lab_current_mission')
   if (savedIdx !== null) {
     const parsed = parseInt(savedIdx, 10)
     if (!isNaN(parsed) && parsed >= 0 && parsed < MISSIONS.length) {
@@ -37,7 +38,7 @@ const currentMissionIndex = ref(getInitialMissionIndex())
 const currentMission = computed(() => MISSIONS[currentMissionIndex.value])
 
 watch(currentMissionIndex, (newIdx) => {
-  localStorage.setItem('css_lab_current_mission', String(newIdx))
+  setItem('css_lab_current_mission', String(newIdx))
   const targetHash = `#${MISSIONS[newIdx].id}`
   if (window.location.hash !== targetHash) {
     history.replaceState(null, '', targetHash)
@@ -59,7 +60,7 @@ function getInitialToolStates() {
   })
   // 2. 從 localStorage 讀取並深層合併
   try {
-    const saved = localStorage.getItem('css_lab_tool_states')
+    const saved = getItem('css_lab_tool_states')
     if (saved) {
       const parsed = JSON.parse(saved)
       Object.keys(parsed).forEach(mid => {
@@ -89,7 +90,7 @@ watch(
   missionToolStates,
   (newVal) => {
     try {
-      localStorage.setItem('css_lab_tool_states', JSON.stringify(newVal))
+      setItem('css_lab_tool_states', JSON.stringify(newVal))
     } catch (e) {
       console.error('Failed to save tool states:', e)
     }
@@ -331,7 +332,6 @@ const stats = reactive({
   stars: {},
   totalExp: 0,
   totalActions: 0,
-  promptUsageCount: 0,
   unlockedBadges: []
 })
 
@@ -343,7 +343,7 @@ const currentEvalResult = ref(null)
 
 // 深淺色模式（依據使用者明確需求：預設為亮色系）
 function getInitialTheme() {
-  const savedTheme = localStorage.getItem('css_lab_theme_v2')
+  const savedTheme = getItem('css_lab_theme_v2')
   if (savedTheme !== null) {
     return savedTheme === 'dark'
   }
@@ -365,7 +365,7 @@ function handleHashChange() {
 onMounted(() => {
   updateThemeClass()
 
-  const savedStats = localStorage.getItem('css_lab_stats_v2')
+  const savedStats = getItem('css_lab_stats_v2')
   if (savedStats) {
     try {
       const parsed = JSON.parse(savedStats)
@@ -391,7 +391,7 @@ onUnmounted(() => {
 
 function toggleDark() {
   isDark.value = !isDark.value
-  localStorage.setItem('css_lab_theme_v2', isDark.value ? 'dark' : 'light')
+  setItem('css_lab_theme_v2', isDark.value ? 'dark' : 'light')
   updateThemeClass()
 }
 
@@ -404,7 +404,7 @@ function updateThemeClass() {
 }
 
 function saveStats() {
-  localStorage.setItem('css_lab_stats_v2', JSON.stringify(stats))
+  setItem('css_lab_stats_v2', JSON.stringify(stats))
   checkAndUnlockBadges()
 }
 
@@ -523,7 +523,7 @@ function handleSelectMission(index) {
   if (index < 0 || index >= MISSIONS.length) return
   currentMissionIndex.value = index
   lastFeedback.value = ''
-  localStorage.setItem('css_lab_current_mission', String(index))
+  setItem('css_lab_current_mission', String(index))
   window.location.hash = MISSIONS[index].id
 }
 

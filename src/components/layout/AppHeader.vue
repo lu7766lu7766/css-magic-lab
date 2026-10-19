@@ -48,13 +48,16 @@ function scrollNav(direction) {
   setTimeout(updateScrollButtons, 320)
 }
 
+// 關卡列可橫向捲動時才攔截滾輪；捲到底或不需捲動時讓頁面正常上下捲
 function onNavWheel(e) {
-  if (!navRef.value) return
-  const { scrollWidth, clientWidth } = navRef.value
-  if (scrollWidth > clientWidth) {
-    navRef.value.scrollLeft += e.deltaY
-    updateScrollButtons()
-  }
+  if (!navRef.value || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return
+  const { scrollLeft, scrollWidth, clientWidth } = navRef.value
+  const atStart = scrollLeft <= 0 && e.deltaY < 0
+  const atEnd = scrollLeft + clientWidth >= scrollWidth - 1 && e.deltaY > 0
+  if (scrollWidth <= clientWidth || atStart || atEnd) return
+  e.preventDefault()
+  navRef.value.scrollLeft += e.deltaY
+  updateScrollButtons()
 }
 
 function scrollToActive(smooth = true) {
@@ -129,7 +132,7 @@ onUnmounted(() => {
         <nav
           ref="navRef"
           @scroll="updateScrollButtons"
-          @wheel.prevent="onNavWheel"
+          @wheel="onNavWheel"
           class="flex items-center gap-1 bg-slate-100/80 dark:bg-slate-900/80 p-1 rounded-xl border border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar scroll-smooth w-full"
         >
           <button

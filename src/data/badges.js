@@ -4,7 +4,7 @@ export const BADGES = [
     title: '美感初學者',
     icon: 'Sparkles',
     color: 'from-amber-400 to-orange-500',
-    description: '完成任意一次設計意圖注入或美化調整',
+    description: '在工具箱完成任意一次美化調整',
     requirement: '完成首次美化操作',
     isUnlocked: (stats) => stats.totalActions >= 1
   },
@@ -97,15 +97,6 @@ export const BADGES = [
     description: '登頂第 10 關終極 3D 稜鏡卡，融合透視景深與流光邊框',
     requirement: '關卡 10 得分 ≥ 85',
     isUnlocked: (stats) => (stats.scores['mission-10'] || 0) >= 85
-  },
-  {
-    id: 'prompt-alchemist',
-    title: '自然語言鍊金術士',
-    icon: 'Wand2',
-    color: 'from-fuchsia-500 to-violet-600',
-    description: '透過自然語言打字請 AI 助教美化介面達 3 次以上',
-    requirement: '使用自然語言美化 ≥ 3 次',
-    isUnlocked: (stats) => stats.promptUsageCount >= 3
   },
   {
     id: 'ui-grandmaster',
